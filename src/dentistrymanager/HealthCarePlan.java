@@ -6,14 +6,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class HealthCarePlan {
+public class HealthcarePlan {
 	
 	// Private variables
 	private String name;
 	private double monthlyPayment;
 	
 	// Constructor
-	public HealthCarePlan(String name, double monthlyPayment) {
+	public HealthcarePlan(String name, double monthlyPayment) {
 		this.name = name;
 		this.monthlyPayment = monthlyPayment;
 	}
@@ -28,15 +28,15 @@ public class HealthCarePlan {
 	}
 	
 	// Static methods
-	public static ArrayList<HealthCarePlan> getPlans(Connection connection) {
+	public static ArrayList<HealthcarePlan> getPlans(Connection connection) {
 		
-		ArrayList<HealthCarePlan> plans = new ArrayList<>();
+		ArrayList<HealthcarePlan> plans = new ArrayList<>();
 		
 		try(Statement stmt = connection.createStatement()) {
 			String query = "SELECT * FROM HealthCarePlan;";
 			ResultSet res = stmt.executeQuery(query);
 			while(res != null) {
-				plans.add(new HealthCarePlan(res.getString("name"), res.getDouble("monthlyPayment")));
+				plans.add(new HealthcarePlan(res.getString("name"), res.getDouble("monthlyPayment")));
 			}
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
@@ -45,6 +45,5 @@ public class HealthCarePlan {
 		}
 		
 		return plans;
-	}
-	
+	}	
 }
