@@ -21,6 +21,7 @@ public class TableBuilder {
 								+ "houseNumber INT (5) NOT NULL,"
 								+ "postCode VARCHAR (10) NOT NULL,"
 								+ "street VARCHAR (30) NOT NULL,"
+								+ "district VARCHAR(30) NOT NULL,"
 								+ "city VARCHAR (30) NOT NULL);",
 								
 			// Partner table
