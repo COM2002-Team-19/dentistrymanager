@@ -12,33 +12,32 @@ import java.util.Set;
 public class TableBuilder {
 	
 	// Constants
-	public static final String[] LIST_TABLES = {"Patient", "Appointment", "Partner", "Address", "PatientPlan", 
-												"HealthCarePlan", "Coverage", "Treatment", "TreatmentRecord", 
-												"HealthCarePlan"};
+	public static final String[] LIST_TABLES = {"Address", "Partner", "Treatment", "HealthcarePlan", "Patient", 
+			 									"PatientSubscription", "Appointment", "Coverage", "TreatmentRecord"};
 	
 	public static final String[] CREATE_TABLES = {
-			// table Address
+			// Address table
 			"CREATE TABLE Address (addressID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
 								+ "houseNumber INT (5) NOT NULL,"
 								+ "postCode VARCHAR (10) NOT NULL,"
 								+ "street VARCHAR (30) NOT NULL,"
 								+ "city VARCHAR (30) NOT NULL);",
 								
-			// table Partner
+			// Partner table
 			"CREATE TABLE Partner (partnerID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
 								+ "name VARCHAR (30) NOT NULL);",
 								
-			// table Treatment
+			// Treatment table
 			"CREATE TABLE Treatment (treatmentID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
 									+ "name VARCHAR (30) NOT NULL,"
 									+ "cost REAL);",
 								
-			// table HealthCarePlane
-			"CREATE TABLE HealthCarePlan (planID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
+			// HealthcarePlane table
+			"CREATE TABLE HealthcarePlan (planID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
 										+ "name VARCHAR (30) NOT NULL,"
 										+ "monthlyPayment REAL);",
 			
-			// table Patient				
+			// Patient table			
 			"CREATE TABLE Patient (patientID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
 								+ "title VARCHAR (5) NOT NULL,"
 								+ "forename VARCHAR (50) NOT NULL,"
@@ -49,16 +48,16 @@ public class TableBuilder {
 								+ "FOREIGN KEY (addressID) REFERENCES Address (addressID));",
 			
 			
-			// table PatientPlan	
-			"CREATE TABLE PatientPlan (patientID INT (10) NOT NULL,"
+			// PatientSubscription table
+			"CREATE TABLE PatientSubscription (patientID INT (10) NOT NULL,"
 									+ "planID INT (10) NOT NULL,"
 									+ "startDate DATE,"
 									+ "endDate DATE,"
 									+ "FOREIGN KEY (patientID) REFERENCES Patient (patientID),"
-									+ "FOREIGN KEY (planID) REFERENCES HealthCarePlan (planID));",
+									+ "FOREIGN KEY (planID) REFERENCES HealthcarePlan (planID));",
 			
 										
-			// table Appointment					
+			// Appointment table			
 			"CREATE TABLE Appointment (appointmentID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
 									+ "patientID INT (10) NOT NULL,"
 									+ "partnerID INT (10) NOT NULL,"
@@ -69,15 +68,15 @@ public class TableBuilder {
 									+ "FOREIGN KEY (patientID) REFERENCES Patient (patientID),"
 									+ "FOREIGN KEY (partnerID) REFERENCES Partner (partnerID));",
 							
-			// table Coverage
+			// Coverage table
 			"CREATE TABLE Coverage (planID INT (10) NOT NULL,"
 									+ "treatmentID INT (10) NOT NULL,"
 									+ "numOfTreatments INT(3) NOT NULL,"
-									+ "FOREIGN KEY (planID) REFERENCES HealthCarePlan (planID),"
+									+ "FOREIGN KEY (planID) REFERENCES HealthcarePlan (planID),"
 									+ "FOREIGN KEY (treatmentID) REFERENCES Treatment (treatmentID));",
 			
 			
-			// table TreatmentRecord
+			// TreatmentRecord table
 			"CREATE TABLE TreatmentRecord(appointmentID INT (10) NOT NULL,"
 										+ "treatmentID INT (10) NOT NULL,"
 										+ "FOREIGN KEY (appointmentID) REFERENCES Appointment (appointmentID),"
@@ -92,11 +91,11 @@ public class TableBuilder {
 			// Drop tables
 			"DROP TABLE IF EXISTS Appointment;",
 			"DROP TABLE IF EXISTS Patient;",
-			"DROP TABLE IF EXISTS PatientPlan;",
+			"DROP TABLE IF EXISTS PatientSubscription;",
 			"DROP TABLE IF EXISTS Address;",
 			"DROP TABLE IF EXISTS Partner;",
 			"DROP TABLE IF EXISTS Treatment;",
-			"DROP TABLE IF EXISTS HealthCarePlan;",
+			"DROP TABLE IF EXISTS HealthcarePlan;",
 			"DROP TABLE IF EXISTS Coverage;",
 			"DROP TABLE IF EXISTS TreatmentRecord;",
 			
@@ -104,10 +103,10 @@ public class TableBuilder {
 			"SET FOREIGN_KEY_CHECKS=1;"
 	};
 	
-	public static final HealthCarePlan[] PRESET_HEALTH_PLANS = {new HealthCarePlan("NHS free plan", 0),
-																new HealthCarePlan("Maintenance plan", 15),
-																new HealthCarePlan("Oral health plan", 21),
-																new HealthCarePlan("Dental repair plan", 36)
+	public static final HealthcarePlan[] PRESET_HEALTH_PLANS = {new HealthcarePlan("NHS free plan", 0),
+																new HealthcarePlan("Maintenance plan", 15),
+																new HealthcarePlan("Oral health plan", 21),
+																new HealthcarePlan("Dental repair plan", 36)
 	};
 	
 	
@@ -178,6 +177,4 @@ public class TableBuilder {
 			System.err.println(e);;
 		} 
 	}
-	
-
 }
