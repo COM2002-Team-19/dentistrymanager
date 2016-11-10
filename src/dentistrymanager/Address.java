@@ -49,7 +49,7 @@ public class Address {
 		Address address = null;
 		
 		try(Statement stmt = connection.createStatement()){
-			String query = "SELECT * FROM Address WHERE addressID = "+addressID;
+			String query = "SELECT * FROM Address WHERE addressID = "+addressID+";";
 			ResultSet res = stmt.executeQuery(query);
 			address = new Address(	res.getInt("houseNumber"), 
 									res.getString("street"), 
