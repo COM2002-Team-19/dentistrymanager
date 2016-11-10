@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class HealthcarePlan {
 	
-	// Private variables
+	// Instance variables
 	private String name;
 	private double monthlyPayment;
 	

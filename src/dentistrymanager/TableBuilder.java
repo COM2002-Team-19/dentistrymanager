@@ -40,7 +40,7 @@ public class TableBuilder {
 			
 			// Patient table			
 			"CREATE TABLE Patient (patientID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
-								+ "title VARCHAR (5) NOT NULL,"
+								+ "title VARCHAR (6) NOT NULL,"
 								+ "forename VARCHAR (50) NOT NULL,"
 								+ "surname VARCHAR (50) NOT NULL,"
 								+ "dateOfBirth VARCHAR (10) NOT NULL,"

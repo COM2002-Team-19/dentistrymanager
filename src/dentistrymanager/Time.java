@@ -2,7 +2,7 @@ package dentistrymanager;
 
 public class Time {
 	
-	//Variables
+	// Instance variables
 	private int hour;
 	private int minute;
 	

@@ -5,7 +5,7 @@ import java.sql.*;
 
 public class Treatment {
 	
-	// private variables 
+	// Instance variables 
 	private String name;
 	private double cost;
 	

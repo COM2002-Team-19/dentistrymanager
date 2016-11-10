@@ -2,6 +2,7 @@ package dentistrymanager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Address {
@@ -17,7 +18,7 @@ public class Address {
 	public Address(	int houseNumber, String street, String district, 
 					String city, String postCode){
 		this.houseNumber = houseNumber;
-		this.street = streer;
+		this.street = street;
 		this.district = district;
 		this.city = city;
 		this.postCode = postCode;
