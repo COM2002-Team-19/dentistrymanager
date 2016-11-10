@@ -9,7 +9,7 @@ public enum Title {
 	DR;
 	
 	public static Title called(String s) {
-		if  (  s != null )
+		if  (s != null)
 			switch(s.replace(".","").toUpperCase()) {
 				case "MR" :
 				case "MRS"  :
@@ -18,6 +18,8 @@ public enum Title {
 				case "MASTER" :
 				case "DR" :  
 					return Title.valueOf(s.toUpperCase());
+				case "DOCTOR" :
+					return Title.DR;
 				default :
 					return null;
 			}
@@ -32,8 +34,8 @@ public enum Title {
 			case MRS :
 			case MS :
 				s += ".";
-			default :
-				s = "";
+			default:
+				break;
 		}
 		return s;
 	}

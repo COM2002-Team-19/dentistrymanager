@@ -38,7 +38,7 @@ public class Time {
 			s+= "0"+getMin();
 		else
 			s+= getMin();
-		
+
 		return s;
 	}
 }

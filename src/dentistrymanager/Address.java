@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Address {
-	
+	// #TODO make toString() method!!!!!
 	// Private variables
 	private int houseNumber;
 	private String street;
