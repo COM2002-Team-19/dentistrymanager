@@ -28,6 +28,11 @@ public class Patient {
 		address = a;
 	}
 	
+	// Chained constructor allowing string param for title
+	public Patient(String t, String f, String s, long d, long p, Address a){
+		this(Title.called(t), f, s, d, p, a);
+	}
+	
 	// Default constructor, chained
 	public Patient() {
 		this(DEFAULT_TITLE, DEFAULT_F_NAME, DEFAULT_S_NAME, DEFAULT_DOB, DEFAULT_PHONE, DEFAULT_ADDRESS);
