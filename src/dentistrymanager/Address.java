@@ -1,12 +1,10 @@
 package dentistrymanager;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+
 
 public class Address {
-	// #TODO make toString() method!!!!!
+	
 	// Private variables
 	private int houseNumber;
 	private String street;
@@ -15,8 +13,7 @@ public class Address {
 	private String postCode;
 	
 	// Constructor
-	public Address(	int houseNumber, String street, String district, 
-					String city, String postCode){
+	public Address(int houseNumber, String street, String district, String city, String postCode){
 		this.houseNumber = houseNumber;
 		this.street = street;
 		this.district = district;
@@ -45,24 +42,45 @@ public class Address {
 		return postCode;
 	}
 	
-	public static Address getAddress(Connection connection, int addressID) {
-		
-		Address address = null;
-		
-		try(Statement stmt = connection.createStatement()){
-			String query = "SELECT * FROM Address WHERE addressID = "+addressID+";";
-			ResultSet res = stmt.executeQuery(query);
-			address = new Address(	res.getInt("houseNumber"), 
-									res.getString("street"), 
-									res.getString("district"), 
-									res.getString("city"), 
-									res.getString("postcode"));
-		} catch (SQLException e) {
+	// Database methods
+	
+	// Add
+	public boolean add(Connection connection) throws DuplicateKeyException {
+		try(Statement stmt = connection.createStatement()) {;
+			String sql = "INSERT INTO Address VALUES (" + houseNumber + ", '"
+														+ postCode.toUpperCase() + "', '" 
+														+ street + "', '"
+														+ district + "', '" 
+														+ city + "');";
+			stmt.executeUpdate(sql);
+			connection.commit();
+			return true;
+		} catch (SQLException e) { 
+			if(e.getErrorCode() == 1062)
+				throw new DuplicateKeyException("Address");
 			DBConnect.printSQLError(e);
-		} catch (Exception e) {
-			System.err.println(e);
+			return false;
+		}
+	}
+	
+	// Delete
+	public boolean delete(Connection connection) throws DeleteForeignKeyException {
+		try(Statement stmt = connection.createStatement()) {
+			String sql = "DELETE FROM Address WHERE"
+					+ " houseNumber = " +  houseNumber 
+					+ " AND postCode = " + postCode 
+					+ ");";
+			int numRows = stmt.executeUpdate(sql);
+			connection.commit();
+			return numRows == 1 ? true : false;
+		} catch (SQLException e) { 
+			if(e.getErrorCode() == 1451)
+				throw new DeleteForeignKeyException("Address");
+			else {
+				DBConnect.printSQLError(e);
+				return false;
+			}
 		}
 		
-		return address;
 	}
 }

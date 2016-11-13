@@ -7,6 +7,7 @@ import java.sql.Statement;
 
 public class Partner {
 	
+	/*
 	private String name;
 	private Appointment[] appointments;
 	
@@ -44,4 +45,5 @@ public class Partner {
 		
 		return partner;
 	}
+	*/
 }

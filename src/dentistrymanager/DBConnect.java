@@ -12,7 +12,18 @@ public class DBConnect {
 	public static final String PASSWORD = "982e4ce3";
 	
 	public static Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(HOST + DB_NAME, USER, PASSWORD);	
+		Connection connection = DriverManager.getConnection(HOST + DB_NAME, USER, PASSWORD);	
+		connection.setAutoCommit(false);
+		return connection;
+	}
+	
+	public static void rollback(Connection connection) {
+		try {
+			if (connection != null)
+				connection.rollback();
+		} catch(SQLException e) {
+			printSQLError(e);
+		}
 	}
 	
 	public static void printSQLError(SQLException e) {
