@@ -11,11 +11,14 @@ public class DBConnect {
 	public static final String USER = "team019";
 	public static final String PASSWORD = "982e4ce3";
 	
-	public static Connection getConnection() throws SQLException {
+	public static Connection getConnection(boolean autoCommit) throws SQLException {
 		Connection connection = DriverManager.getConnection(HOST + DB_NAME, USER, PASSWORD);	
-		connection.setAutoCommit(false);
+		if(autoCommit)
+			connection.setAutoCommit(false);
 		return connection;
 	}
+	
+	
 	
 	public static void rollback(Connection connection) {
 		try {

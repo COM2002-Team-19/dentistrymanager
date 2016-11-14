@@ -8,11 +8,13 @@ public class Treatment {
 	// Instance variables 
 	private String name;
 	private double cost;
+	private String typeOfTreatment;
 	
 	// Constructor
-	public Treatment(String name, double cost) {
+	public Treatment(String name, double cost, String typeOfTreatment) {
 		this.name = name;
 		this.cost = cost;
+		this.typeOfTreatment = typeOfTreatment;
 	}
 	
 	// Accessors
@@ -23,10 +25,24 @@ public class Treatment {
 	public double getCost() {
 		return cost;
 	}
-
-	// Static methods
-	public static ArrayList<Treatment> getAll(Connection connection) {
-		return new ArrayList<Treatment>();
+	
+	public String getTypeOfTreatment() {
+		return typeOfTreatment;
 	}
 	
+	// Static methods
+	public static ArrayList<Treatment> getAllByType(Connection connection, String typeOfTreatment) {
+		ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+		try(Statement stmt = connection.createStatement()) {
+			String sql = "SELECT * FROM Treatment WHERE typeOfTreatment = " + typeOfTreatment + ";";
+			ResultSet res = stmt.executeQuery(sql);
+			while(res.next())
+				treatments.add(new Treatment(res.getString("name"), 
+											res.getDouble("cost"), 
+											res.getString("typeOfTreatment")));
+		} catch(SQLException e) {
+			DBConnect.printSQLError(e);
+		} 
+		return treatments;
+	} 
 }

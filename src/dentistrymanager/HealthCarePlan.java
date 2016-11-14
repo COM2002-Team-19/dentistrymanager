@@ -1,21 +1,25 @@
 package dentistrymanager;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class HealthcarePlan {
 	
 	// Instance variables
 	private String name;
 	private double monthlyPayment;
+	private ArrayList<Coverage> coverage;
 	
 	// Constructor
-	public HealthcarePlan(String name, double monthlyPayment) {
+	public HealthcarePlan(String name, double monthlyPayment,  ArrayList<Coverage> coverage) {
 		this.name = name;
 		this.monthlyPayment = monthlyPayment;
+		this.coverage = coverage;
+	}
+	
+	public HealthcarePlan(String name, double monthlyPayment, Coverage[] coverage) {
+		this(name, monthlyPayment, new ArrayList<Coverage>(Arrays.asList(coverage)));
 	}
 	
 	// Accessors
@@ -27,23 +31,27 @@ public class HealthcarePlan {
 		return monthlyPayment;
 	}
 	
+	public ArrayList<Coverage> getCoverage() {
+		return coverage;
+	}
+	
 	// Static methods
-	public static ArrayList<HealthcarePlan> getPlans(Connection connection) {
-		
+	public static ArrayList<HealthcarePlan> getAll(Connection connection) {
 		ArrayList<HealthcarePlan> plans = new ArrayList<>();
-		
 		try(Statement stmt = connection.createStatement()) {
 			String query = "SELECT * FROM HealthCarePlan;";
 			ResultSet res = stmt.executeQuery(query);
 			while(res != null) {
-				plans.add(new HealthcarePlan(res.getString("name"), res.getDouble("monthlyPayment")));
+				String plan = res.getString("name");
+				
+				// Get the plan coverage
+				ArrayList<Coverage> planCoverage = Coverage.getCoverageByPlan(connection, plan);
+				
+				plans.add(new HealthcarePlan(plan, res.getDouble("monthlyPayment"), planCoverage));
 			}
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
-		} catch (Exception e) {
-			System.err.println(e);
-		}
-		
+		} 
 		return plans;
 	}	
 }

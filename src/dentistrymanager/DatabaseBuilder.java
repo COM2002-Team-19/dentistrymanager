@@ -1,15 +1,9 @@
 package dentistrymanager;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.*;
+import java.util.*;
 
-public class TableBuilder {
+public class DatabaseBuilder {
 	
 	// Constants
 	public static final String[] LIST_TABLES = {"Address", "Patient", "PatientPlan", "HealthcarePlan", "Coverage", 
@@ -33,7 +27,7 @@ public class TableBuilder {
 							+ "title VARCHAR (6) NOT NULL,"
 							+ "forename VARCHAR (50) NOT NULL,"
 							+ "surname VARCHAR (50) NOT NULL,"
-							+ "dateOfBirth VARCHAR (10) NOT NULL,"
+							+ "dateOfBirth DATE NOT NULL,"
 							+ "phoneNo VARCHAR (15) NOT NULL,"
 							+ "balance REAL DEFAULT 0,"
 							+ "houseNumber INT (5) NOT NULL,"
@@ -42,65 +36,63 @@ public class TableBuilder {
 								
 			// HealthcarePlane table
 			"CREATE TABLE HealthcarePlan ("
-							+ "planID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
-							+ "name VARCHAR (30) NOT NULL,"
+							+ "name VARCHAR (30) NOT NULL PRIMARY KEY,"
 							+ "monthlyPayment REAL);",
 								
 			// PatientSubscription table
 			"CREATE TABLE PatientPlan ("
 							+ "patientID INT (10) NOT NULL PRIMARY KEY,"
-							+ "planID INT (10) NOT NULL,"
+							+ "plan VARCHAR (30) NOT NULL,"
 							+ "startDate DATE NOT NULL,"
 							+ "endDate DATE NOT NULL,"
 							+ "FOREIGN KEY (patientID) REFERENCES Patient (patientID),"
-							+ "FOREIGN KEY (planID) REFERENCES HealthcarePlan (planID));",
+							+ "FOREIGN KEY (plan) REFERENCES HealthcarePlan (name));",
 									
 			// TypeOfTreatment table
 			"CREATE TABLE TypeOfTreatment ("
-							+ "typeID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
-							+ "type VARCHAR (30) NOT NULL,"
+							+ "name VARCHAR (30) NOT NULL PRIMARY KEY,"
 							+ "duration INT (3));",	
 																
 			// Treatment table
 			"CREATE TABLE Treatment ("
-							+ "treatmentID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
-							+ "name VARCHAR (30) NOT NULL,"
-							+ "cost REAL DEFAULT 0,"
-							+ "typeOfTreatmentID INT (10) NOT NULL,"
-							+ "FOREIGN KEY (typeOfTreatmentID) REFERENCES TypeOfTreatment (typeID));",
+							+ "name VARCHAR (30) NOT NULL PRIMARY KEY,"
+							+ "cost REAL NOT NULL,"
+							+ "typeOfTreatment VARCHAR (30) NOT NULL,"
+							+ "FOREIGN KEY (typeOfTreatment) REFERENCES TypeOfTreatment (name));",
 										
 			// Coverage table
 			"CREATE TABLE Coverage ("
-							+ "planID INT (10) NOT NULL,"
-							+ "typeOfTreatmentID INT (10) NOT NULL,"
+							+ "plan VARCHAR (30) NOT NULL,"
+							+ "typeOfTreatment VARCHAR (30) NOT NULL,"
 							+ "numOfTreatments INT(3) NOT NULL,"
 							+ "costCovered REAL NOT NULL,"
-							+ "PRIMARY KEY (planID, typeOfTreatmentID),"
-							+ "FOREIGN KEY (planID) REFERENCES HealthcarePlan (planID),"
-							+ "FOREIGN KEY (typeOfTreatmentID) REFERENCES TypeOfTreatment (typeID));",
+							+ "PRIMARY KEY (plan, typeOfTreatment),"
+							+ "FOREIGN KEY (plan) REFERENCES HealthcarePlan (name),"
+							+ "FOREIGN KEY (typeOfTreatment) REFERENCES TypeOfTreatment (name));",
 																
 			// Partner table
 			"CREATE TABLE Partner ("
-							+ "partnerID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
-							+ "name VARCHAR (30) NOT NULL);",
+							+ "name VARCHAR (30) NOT NULL PRIMARY KEY);",
 						
 			// Appointment table
 			"CREATE TABLE Appointment ("
 							+ "appointmentID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
-							+ "partnerID INT (10) NOT NULL,"
+							+ "partner VARCHAR (30) NOT NULL,"
 							+ "date DATE NOT NULL,"
 							+ "startTime TIME NOT NULL,"
 							+ "endTime TIME NOT NULL,"
 							+ "finish BOOL DEFAULT FALSE,"
-							+ "FOREIGN KEY (appointmentID) REFERENCES Partner (partnerID));",
+							+ "FOREIGN KEY (partner) REFERENCES Partner (name));",
 								
 			// TreatmentRecord table
 			"CREATE TABLE TreatmentRecord ("
 							+ "appointmentID INT (10) NOT NULL,"
-							+ "treatmentID INT (10) NOT NULL,"
-							+ "PRIMARY KEY (appointmentID, treatmentID),"
+							+ "treatment VARCHAR (30) NOT NULL,"
+							+ "outstandingCost REAL NOT NULL,"
+							+ "coveredCost REAL NOT NULL,"
+							+ "PRIMARY KEY (appointmentID, treatment),"
 							+ "FOREIGN KEY (appointmentID) REFERENCES Appointment (appointmentID),"
-							+ "FOREIGN KEY (treatmentID) REFERENCES Treatment (treatmentID));",	
+							+ "FOREIGN KEY (treatment) REFERENCES Treatment (name));",	
 										
 			// AppointmentsPerPatient table
 			"CREATE TABLE AppointmentsPerPatient ("
@@ -127,11 +119,11 @@ public class TableBuilder {
 							
 			// CoveredTreatment table
 			"CREATE TABLE CoveredTreatment ("
-							+ "typeOfTreatmentID INT (10) NOT NULL,"
+							+ "typeOfTreatment VARCHAR (30) NOT NULL,"
 							+ "patientID INT (10) NOT NULL,"
 							+ "coveredTreatmentsLeft INT (3) NOT NULL,"
-							+ "PRIMARY KEY (typeOfTreatmentID, patientID),"
-							+ "FOREIGN KEY (typeOfTreatmentID) REFERENCES TypeOfTreatment (typeID),"
+							+ "PRIMARY KEY (typeOfTreatment, patientID),"
+							+ "FOREIGN KEY (typeOfTreatment) REFERENCES TypeOfTreatment (name),"
 							+ "FOREIGN KEY (patientID) REFERENCES Patient (patientID));"
 												
 	};
@@ -161,17 +153,46 @@ public class TableBuilder {
 			"SET FOREIGN_KEY_CHECKS=1;"
 	};
 	
-	public static final HealthcarePlan[] PRESET_HEALTH_PLANS = {new HealthcarePlan("NHS free plan", 0),
-																new HealthcarePlan("Maintenance plan", 15),
-																new HealthcarePlan("Oral health plan", 21),
-																new HealthcarePlan("Dental repair plan", 36)};
+	public static final Partner[] PRESET_PARTNERS = {new Partner("HYGIENIST"),
+													 new Partner("DENTIST")};
 	
+	public static final HealthcarePlan[] PRESET_HEALTH_PLANS = {
+													new HealthcarePlan("NHS FREE PLAN", 0, new Coverage[] {
+																		new Coverage("CHECK-UP", 2, 45),
+																		new Coverage("HYGIENE", 2, 45),
+																		new Coverage("REPAIR", 6, 500)}),
+													new HealthcarePlan("MAINTENANCE PLAN", 15, new Coverage[] {
+																		new Coverage("CHECK-UP", 2, 45),
+																		new Coverage("HYGIENE", 2, 45)}),
+													new HealthcarePlan("ORAL HEALTHPLAN", 21, new Coverage[] {
+																		new Coverage("CHECK-UP", 2, 45),
+																		new Coverage("HYGIENE", 4, 45)}),
+													new HealthcarePlan("DENTAL REPAIR PLAN", 15, new Coverage[] {
+																		new Coverage("CHECK-UP", 2, 45),
+																		new Coverage("HYGIENE", 2, 45),
+																		new Coverage("REPAIR", 2, 500)})};
+	
+	public static final TypeOfTreatment[] PRESET_TYPES_OF_TREATMENT = {new TypeOfTreatment("REPAIR", 60),
+																		new TypeOfTreatment("HYGIENE", 20),
+																		new TypeOfTreatment("CHECK-UP", 20)};
+	
+	public static final Treatment[] PRESET_TREATMENTS = {new Treatment("HYGIENE", 45, "HYGIENE"),
+														 new Treatment("CHECK-UP", 45, "CHECK-UP"),
+														 new Treatment("SILVER AMALGAM FILLING", 90, "REPAIR"),
+														 new Treatment("WHITE COMPOSITE RESIN FILLING", 150, "REPAIR"),
+														 new Treatment("GOLD CROWN FITTING", 500, "REPAIR")};
+	
+	public static final Coverage[] PRESET_COVERAGE = {new Coverage("CHECK-UP", 2, 45),
+														new Coverage("HYGIENE", 2, 45),
+														new Coverage("REPAIR", 6, 500)
+														
+	};
 	
 	// Private variables
 	private Connection connection;
 	
 	// Constructor
-	public TableBuilder(Connection connection) {
+	public DatabaseBuilder(Connection connection) {
 		this.connection = connection;	
 	}
 	
@@ -204,7 +225,7 @@ public class TableBuilder {
 	}
 	
 	public void resetTables() {
-		try (Statement stmt = connection.createStatement()) {
+		try(Statement stmt = connection.createStatement()) {
 			
 			// Drops existing tables
 			for(String query: DROP_TABLES)
@@ -220,9 +241,64 @@ public class TableBuilder {
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
 			DBConnect.rollback(connection);
-		} catch(Exception e) {
-			System.err.println(e);
-		}
+		} 
+	}
+	
+	public void fillWithDefaultValues() {
+		try(PreparedStatement insertPartner = connection.prepareStatement("INSERT INTO Partner VALUES(?);");
+			PreparedStatement insertPlan = connection.prepareStatement("INSERT INTO HealthCarePlan VALUES(?, ?);");
+			PreparedStatement insertCoverage = connection.prepareStatement("INSERT INTO Coverage VALUES(?, ?, ?, ?);");
+			PreparedStatement insertTypeTreatment = connection.prepareStatement("INSERT INTO TypeOfTreatment VALUES(?, ?);");
+			PreparedStatement insertTreatment = connection.prepareStatement("INSERT INTO Treatment VALUES(?, ?, ?);");	
+			) {
+			
+			// Creates partners
+			for(Partner partner: PRESET_PARTNERS) {
+				insertPartner.setString(1, partner.getName());
+				insertPartner.addBatch();
+			} 
+			insertPartner.executeBatch();
+			connection.commit();
+				
+			// Creates types of treatments
+			for(TypeOfTreatment type: PRESET_TYPES_OF_TREATMENT) {
+				insertTypeTreatment.setString(1, type.getName());
+				insertTypeTreatment.setInt(2, type.getDuration());
+				insertTypeTreatment.addBatch();
+			}
+			insertTypeTreatment.executeBatch();
+			
+			// Creates health care plans
+			for(HealthcarePlan plan: PRESET_HEALTH_PLANS) {
+				insertPlan.setString(1, plan.getName());
+				insertPlan.setDouble(2, plan.getMonthlyPayment());
+				insertPlan.executeUpdate();
+				
+				// Creates the health care plans coverage
+				for(Coverage planCoverage: plan.getCoverage()) {
+					insertCoverage.setString(1, plan.getName());
+					insertCoverage.setString(2, planCoverage.getTypeOfTreatment());
+					insertCoverage.setInt(3, planCoverage.getNumOfTreatments());
+					insertCoverage.setDouble(4, planCoverage.getCostCovered());
+					insertCoverage.addBatch();
+				}
+				insertCoverage.executeBatch();
+			}
+
+			// Creates treatments
+			for(Treatment treatment: PRESET_TREATMENTS) {
+				insertTreatment.setString(1, treatment.getName());
+				insertTreatment.setDouble(2, treatment.getCost());
+				insertTreatment.setString(3, treatment.getTypeOfTreatment());
+				insertTreatment.addBatch();
+			}
+			insertTreatment.executeBatch();
+			connection.commit();		
+			
+		} catch(SQLException e) {
+			DBConnect.printSQLError(e);
+			DBConnect.rollback(connection);
+		} 
 	}
 		
 }
