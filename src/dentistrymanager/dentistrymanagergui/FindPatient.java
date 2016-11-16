@@ -33,18 +33,18 @@ public class FindPatient extends javax.swing.JFrame {
         searchResultsList = new javax.swing.JList<>();
         patientDetails = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        nameField = new javax.swing.JTextField();
+        addressLabel = new javax.swing.JLabel();
+        addressField = new javax.swing.JScrollPane();
+        addressArea = new javax.swing.JTextArea();
+        phoneLabel = new javax.swing.JLabel();
+        phoneField = new javax.swing.JTextField();
+        healthcareLabel = new javax.swing.JLabel();
+        healthCarePanel = new javax.swing.JPanel();
+        planNameArea = new javax.swing.JTextField();
+        subscribeButton = new javax.swing.JButton();
+        owedLabel = new javax.swing.JLabel();
+        owedField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(450, 380));
@@ -66,57 +66,57 @@ public class FindPatient extends javax.swing.JFrame {
 
         nameLabel.setText("Name:");
 
-        jTextField1.setEditable(false);
-        jTextField1.setText("jTextField1");
+        nameField.setEditable(false);
+        nameField.setText("jTextField1");
 
-        jLabel2.setText("Address:");
+        addressLabel.setText("Address:");
 
-        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        jScrollPane3.setMinimumSize(new java.awt.Dimension(12, 12));
+        addressField.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        addressField.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        addressField.setMinimumSize(new java.awt.Dimension(12, 12));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        addressArea.setColumns(20);
+        addressArea.setRows(5);
+        addressField.setViewportView(addressArea);
 
-        jLabel3.setText("Phone number:");
+        phoneLabel.setText("Phone number:");
 
-        jTextField2.setText("jTextField2");
+        phoneField.setText("jTextField2");
 
-        jLabel4.setText("Healthcare plan:");
+        healthcareLabel.setText("Healthcare plan:");
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        healthCarePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTextField3.setText("Name of plan");
+        planNameArea.setText("Name of plan");
 
-        jButton1.setText("jButton1");
+        subscribeButton.setText("jButton1");
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout healthCarePanelLayout = new javax.swing.GroupLayout(healthCarePanel);
+        healthCarePanel.setLayout(healthCarePanelLayout);
+        healthCarePanelLayout.setHorizontalGroup(
+            healthCarePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(healthCarePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField3)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(healthCarePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(planNameArea)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, healthCarePanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(subscribeButton)))
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        healthCarePanelLayout.setVerticalGroup(
+            healthCarePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(healthCarePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(planNameArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(subscribeButton)
                 .addContainerGap())
         );
 
-        jLabel5.setText("Owed:");
+        owedLabel.setText("Owed:");
 
-        jTextField4.setText("jTextField4");
+        owedField.setText("jTextField4");
 
         javax.swing.GroupLayout patientDetailsLayout = new javax.swing.GroupLayout(patientDetails);
         patientDetails.setLayout(patientDetailsLayout);
@@ -132,23 +132,23 @@ public class FindPatient extends javax.swing.JFrame {
                                     .addComponent(nameLabel)
                                     .addGap(24, 24, 24))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, patientDetailsLayout.createSequentialGroup()
-                                    .addComponent(jLabel3)
+                                    .addComponent(phoneLabel)
                                     .addGap(18, 18, 18)))
                             .addGroup(patientDetailsLayout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(addressLabel)
                                 .addGap(62, 62, 62)))
                         .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)))
+                            .addComponent(addressField, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(nameField)
+                            .addComponent(phoneField)))
                     .addGroup(patientDetailsLayout.createSequentialGroup()
                         .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
+                            .addComponent(healthcareLabel)
+                            .addComponent(owedLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField4))))
+                            .addComponent(healthCarePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(owedField))))
                 .addContainerGap())
         );
         patientDetailsLayout.setVerticalGroup(
@@ -157,27 +157,27 @@ public class FindPatient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameLabel)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addComponent(phoneField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(phoneLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(addressLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addressField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(7, 7, 7)
                 .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(healthcareLabel)
+                    .addComponent(healthCarePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(patientDetailsLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(owedLabel)
                         .addGap(70, 70, 70))
                     .addGroup(patientDetailsLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(owedField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -191,7 +191,7 @@ public class FindPatient extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(SearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))
+                        .addComponent(SearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(searchResults, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -207,8 +207,8 @@ public class FindPatient extends javax.swing.JFrame {
                     .addComponent(SearchButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchResults)
-                    .addComponent(patientDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(searchResults, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                    .addComponent(patientDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -253,21 +253,21 @@ public class FindPatient extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton SearchButton;
     private javax.swing.JTextField SearchField;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextArea addressArea;
+    private javax.swing.JScrollPane addressField;
+    private javax.swing.JLabel addressLabel;
+    private javax.swing.JPanel healthCarePanel;
+    private javax.swing.JLabel healthcareLabel;
+    private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLabel;
+    private javax.swing.JTextField owedField;
+    private javax.swing.JLabel owedLabel;
     private javax.swing.JPanel patientDetails;
+    private javax.swing.JTextField phoneField;
+    private javax.swing.JLabel phoneLabel;
+    private javax.swing.JTextField planNameArea;
     private javax.swing.JScrollPane searchResults;
     private javax.swing.JList<String> searchResultsList;
+    private javax.swing.JButton subscribeButton;
     // End of variables declaration//GEN-END:variables
 }
