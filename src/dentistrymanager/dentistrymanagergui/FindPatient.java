@@ -27,6 +27,15 @@ public class FindPatient extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        printReceipt = new javax.swing.JDialog();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        printRecieptPayButton = new javax.swing.JButton();
+        printRecieptCloseButton = new javax.swing.JButton();
+        changePlan = new javax.swing.JDialog();
+        planComboBox = new javax.swing.JComboBox<>();
+        updatePlan = new javax.swing.JButton();
+        planClosebutton = new javax.swing.JButton();
         SearchField = new javax.swing.JTextField();
         SearchButton = new javax.swing.JButton();
         searchResults = new javax.swing.JScrollPane();
@@ -44,10 +53,90 @@ public class FindPatient extends javax.swing.JFrame {
         planNameArea = new javax.swing.JTextField();
         subscribeButton = new javax.swing.JButton();
         owedLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         owedField = new javax.swing.JTextField();
+        receiptButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
+
+        printReceipt.setAlwaysOnTop(true);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        printRecieptPayButton.setText("Pay All");
+        printRecieptPayButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printRecieptPayButtonActionPerformed(evt);
+            }
+        });
+
+        printRecieptCloseButton.setText("Close");
+
+        javax.swing.GroupLayout printReceiptLayout = new javax.swing.GroupLayout(printReceipt.getContentPane());
+        printReceipt.getContentPane().setLayout(printReceiptLayout);
+        printReceiptLayout.setHorizontalGroup(
+            printReceiptLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(printReceiptLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(printReceiptLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                    .addGroup(printReceiptLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(printRecieptPayButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(printRecieptCloseButton)))
+                .addContainerGap())
+        );
+        printReceiptLayout.setVerticalGroup(
+            printReceiptLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(printReceiptLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(printReceiptLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(printRecieptPayButton)
+                    .addComponent(printRecieptCloseButton))
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
+
+        planComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        updatePlan.setText("Update Plan");
+
+        planClosebutton.setText("Close");
+
+        javax.swing.GroupLayout changePlanLayout = new javax.swing.GroupLayout(changePlan.getContentPane());
+        changePlan.getContentPane().setLayout(changePlanLayout);
+        changePlanLayout.setHorizontalGroup(
+            changePlanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(changePlanLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(changePlanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(planComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(changePlanLayout.createSequentialGroup()
+                        .addGap(0, 232, Short.MAX_VALUE)
+                        .addComponent(updatePlan)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(planClosebutton)))
+                .addContainerGap())
+        );
+        changePlanLayout.setVerticalGroup(
+            changePlanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(changePlanLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(planComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(changePlanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(updatePlan)
+                    .addComponent(planClosebutton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(450, 380));
+        setMinimumSize(new java.awt.Dimension(600, 400));
+        setPreferredSize(new java.awt.Dimension(600, 400));
+        setResizable(false);
 
         SearchField.setText("Search");
 
@@ -89,7 +178,7 @@ public class FindPatient extends javax.swing.JFrame {
 
         planNameArea.setText("Name of plan");
 
-        subscribeButton.setText("jButton1");
+        subscribeButton.setText("Subscribe");
 
         javax.swing.GroupLayout healthCarePanelLayout = new javax.swing.GroupLayout(healthCarePanel);
         healthCarePanel.setLayout(healthCarePanelLayout);
@@ -98,7 +187,7 @@ public class FindPatient extends javax.swing.JFrame {
             .addGroup(healthCarePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(healthCarePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(planNameArea)
+                    .addComponent(planNameArea, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, healthCarePanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(subscribeButton)))
@@ -116,7 +205,41 @@ public class FindPatient extends javax.swing.JFrame {
 
         owedLabel.setText("Owed:");
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         owedField.setText("jTextField4");
+
+        receiptButton.setText("Receipt");
+        receiptButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                receiptButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(owedField, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(receiptButton)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(owedField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(receiptButton)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        deleteButton.setText("Delete Patient");
 
         javax.swing.GroupLayout patientDetailsLayout = new javax.swing.GroupLayout(patientDetails);
         patientDetails.setLayout(patientDetailsLayout);
@@ -125,6 +248,7 @@ public class FindPatient extends javax.swing.JFrame {
             .addGroup(patientDetailsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(patientDetailsLayout.createSequentialGroup()
                         .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,7 +272,7 @@ public class FindPatient extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(healthCarePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(owedField))))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         patientDetailsLayout.setVerticalGroup(
@@ -170,15 +294,13 @@ public class FindPatient extends javax.swing.JFrame {
                 .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(healthcareLabel)
                     .addComponent(healthCarePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(patientDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(patientDetailsLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(owedLabel)
-                        .addGap(70, 70, 70))
-                    .addGroup(patientDetailsLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(owedField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(owedLabel)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(deleteButton)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -191,7 +313,7 @@ public class FindPatient extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(SearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
+                        .addComponent(SearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(searchResults, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -207,13 +329,21 @@ public class FindPatient extends javax.swing.JFrame {
                     .addComponent(SearchButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchResults, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
-                    .addComponent(patientDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(searchResults)
+                    .addComponent(patientDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void receiptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_receiptButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_receiptButtonActionPerformed
+
+    private void printRecieptPayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printRecieptPayButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_printRecieptPayButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -256,8 +386,13 @@ public class FindPatient extends javax.swing.JFrame {
     private javax.swing.JTextArea addressArea;
     private javax.swing.JScrollPane addressField;
     private javax.swing.JLabel addressLabel;
+    private javax.swing.JDialog changePlan;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JPanel healthCarePanel;
     private javax.swing.JLabel healthcareLabel;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField owedField;
@@ -265,9 +400,16 @@ public class FindPatient extends javax.swing.JFrame {
     private javax.swing.JPanel patientDetails;
     private javax.swing.JTextField phoneField;
     private javax.swing.JLabel phoneLabel;
+    private javax.swing.JButton planClosebutton;
+    private javax.swing.JComboBox<String> planComboBox;
     private javax.swing.JTextField planNameArea;
+    private javax.swing.JDialog printReceipt;
+    private javax.swing.JButton printRecieptCloseButton;
+    private javax.swing.JButton printRecieptPayButton;
+    private javax.swing.JButton receiptButton;
     private javax.swing.JScrollPane searchResults;
     private javax.swing.JList<String> searchResultsList;
     private javax.swing.JButton subscribeButton;
+    private javax.swing.JButton updatePlan;
     // End of variables declaration//GEN-END:variables
 }
