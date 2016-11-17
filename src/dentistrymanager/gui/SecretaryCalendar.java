@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dentistrymanager.gui;
 
 import java.awt.EventQueue;
@@ -190,7 +185,7 @@ public class SecretaryCalendar extends JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify
     private JButton dentistAddAppButton;
     private JList<String> dentistCalendarList;
     private JScrollPane dentistCalendarListPane;
@@ -202,5 +197,5 @@ public class SecretaryCalendar extends JFrame {
     private JButton hygienistDeleteAppButton;
     private JPanel hygienistTabPanel;
     private JTabbedPane secretaryCalendarTabPane;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration
 }

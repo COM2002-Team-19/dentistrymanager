@@ -6,12 +6,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TestSplash extends JPanel {
+public class TestAction extends JPanel {
 
 	/**
 	 * Create the panel.
 	 */
-	public TestSplash() {
+	public TestAction() {
 		
 		JButton btnSubscribe = new JButton("Subscribe");
 		btnSubscribe.addActionListener(new ActionListener() {

@@ -4,12 +4,8 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class SplashScreen extends JPanel {
 
@@ -35,58 +31,56 @@ public class SplashScreen extends JPanel {
         HygienistButton = new JButton();
 
         SecretaryButton.setText("Secretary");
-
         DentistButton.setText("Dentist");
-
         HygienistButton.setText("Hygienist");
 
         GroupLayout buttonPanelLayout = new GroupLayout(buttonPanel);
-        buttonPanel.setLayout(buttonPanelLayout);
         buttonPanelLayout.setHorizontalGroup(
-            buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(buttonPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(SecretaryButton, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(DentistButton, GroupLayout.PREFERRED_SIZE, 168, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(HygienistButton, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+        	buttonPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(buttonPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(SecretaryButton, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(DentistButton, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(HygienistButton, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+        			.addContainerGap())
         );
         buttonPanelLayout.setVerticalGroup(
-            buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(buttonPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(DentistButton, GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                    .addComponent(SecretaryButton, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(HygienistButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+        	buttonPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(buttonPanelLayout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(DentistButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+        				.addComponent(SecretaryButton, GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+        				.addComponent(HygienistButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
+        			.addContainerGap())
         );
+        buttonPanel.setLayout(buttonPanelLayout);
 
         GroupLayout layout = new GroupLayout(this);
-        this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(buttonPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(buttonPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        			.addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(buttonPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(168, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(90)
+        			.addComponent(buttonPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(92, Short.MAX_VALUE))
         );
+        this.setLayout(layout);
     }// </editor-fold>//GEN-END:initComponents
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify
     private JButton DentistButton;
     private JButton HygienistButton;
     private JButton SecretaryButton;
     private JPanel buttonPanel;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration
 }
