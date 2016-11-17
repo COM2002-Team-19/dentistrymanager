@@ -5,11 +5,25 @@
  */
 package dentistrymanager.gui;
 
-/**
- *
- * @author joe
- */
-public class SecretaryCalendar extends javax.swing.JFrame {
+import java.awt.EventQueue;
+
+import javax.swing.AbstractListModel;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.LayoutStyle;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class SecretaryCalendar extends JFrame {
 
     /**
      * Creates new form SecretaryCalendar
@@ -27,21 +41,21 @@ public class SecretaryCalendar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        secretaryCalendarTabPane = new javax.swing.JTabbedPane();
-        dentistTabPanel = new javax.swing.JPanel();
-        dentistCalendarListPane = new javax.swing.JScrollPane();
-        dentistCalendarList = new javax.swing.JList<>();
-        dentistAddAppButton = new javax.swing.JButton();
-        dentistDeleteAppButton = new javax.swing.JButton();
-        hygienistTabPanel = new javax.swing.JPanel();
-        hygienistCalendarListPane = new javax.swing.JScrollPane();
-        hygienistCalendarList = new javax.swing.JList<>();
-        hygienistAddAppButton = new javax.swing.JButton();
-        hygienistDeleteAppButton = new javax.swing.JButton();
+        secretaryCalendarTabPane = new JTabbedPane();
+        dentistTabPanel = new JPanel();
+        dentistCalendarListPane = new JScrollPane();
+        dentistCalendarList = new JList<>();
+        dentistAddAppButton = new JButton();
+        dentistDeleteAppButton = new JButton();
+        hygienistTabPanel = new JPanel();
+        hygienistCalendarListPane = new JScrollPane();
+        hygienistCalendarList = new JList<>();
+        hygienistAddAppButton = new JButton();
+        hygienistDeleteAppButton = new JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        dentistCalendarList.setModel(new javax.swing.AbstractListModel<String>() {
+        dentistCalendarList.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -52,28 +66,28 @@ public class SecretaryCalendar extends javax.swing.JFrame {
 
         dentistDeleteAppButton.setText("Delete appointment");
 
-        javax.swing.GroupLayout dentistTabPanelLayout = new javax.swing.GroupLayout(dentistTabPanel);
+        GroupLayout dentistTabPanelLayout = new GroupLayout(dentistTabPanel);
         dentistTabPanel.setLayout(dentistTabPanelLayout);
         dentistTabPanelLayout.setHorizontalGroup(
-            dentistTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            dentistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(dentistTabPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(dentistTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(dentistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(dentistCalendarListPane)
                     .addGroup(dentistTabPanelLayout.createSequentialGroup()
                         .addComponent(dentistAddAppButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dentistDeleteAppButton)
                         .addGap(0, 73, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         dentistTabPanelLayout.setVerticalGroup(
-            dentistTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            dentistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(dentistTabPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(dentistCalendarListPane, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(dentistTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(dentistCalendarListPane, GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(dentistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(dentistAddAppButton)
                     .addComponent(dentistDeleteAppButton))
                 .addContainerGap())
@@ -81,7 +95,7 @@ public class SecretaryCalendar extends javax.swing.JFrame {
 
         secretaryCalendarTabPane.addTab("Dentist", dentistTabPanel);
 
-        hygienistCalendarList.setModel(new javax.swing.AbstractListModel<String>() {
+        hygienistCalendarList.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -92,28 +106,28 @@ public class SecretaryCalendar extends javax.swing.JFrame {
 
         hygienistDeleteAppButton.setText("Delete appointment");
 
-        javax.swing.GroupLayout hygienistTabPanelLayout = new javax.swing.GroupLayout(hygienistTabPanel);
+        GroupLayout hygienistTabPanelLayout = new GroupLayout(hygienistTabPanel);
         hygienistTabPanel.setLayout(hygienistTabPanelLayout);
         hygienistTabPanelLayout.setHorizontalGroup(
-            hygienistTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            hygienistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(hygienistTabPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(hygienistTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(hygienistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(hygienistCalendarListPane)
                     .addGroup(hygienistTabPanelLayout.createSequentialGroup()
                         .addComponent(hygienistAddAppButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(hygienistDeleteAppButton)
                         .addGap(0, 73, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         hygienistTabPanelLayout.setVerticalGroup(
-            hygienistTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            hygienistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(hygienistTabPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(hygienistCalendarListPane, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(hygienistTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(hygienistCalendarListPane, GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(hygienistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(hygienistAddAppButton)
                     .addComponent(hygienistDeleteAppButton))
                 .addContainerGap())
@@ -121,17 +135,17 @@ public class SecretaryCalendar extends javax.swing.JFrame {
 
         secretaryCalendarTabPane.addTab("Hygienist", hygienistTabPanel);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(secretaryCalendarTabPane)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(secretaryCalendarTabPane)
@@ -151,25 +165,25 @@ public class SecretaryCalendar extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SecretaryCalendar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(SecretaryCalendar.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SecretaryCalendar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(SecretaryCalendar.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SecretaryCalendar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SecretaryCalendar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(SecretaryCalendar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(SecretaryCalendar.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new SecretaryCalendar().setVisible(true);
             }
@@ -177,16 +191,16 @@ public class SecretaryCalendar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton dentistAddAppButton;
-    private javax.swing.JList<String> dentistCalendarList;
-    private javax.swing.JScrollPane dentistCalendarListPane;
-    private javax.swing.JButton dentistDeleteAppButton;
-    private javax.swing.JPanel dentistTabPanel;
-    private javax.swing.JButton hygienistAddAppButton;
-    private javax.swing.JList<String> hygienistCalendarList;
-    private javax.swing.JScrollPane hygienistCalendarListPane;
-    private javax.swing.JButton hygienistDeleteAppButton;
-    private javax.swing.JPanel hygienistTabPanel;
-    private javax.swing.JTabbedPane secretaryCalendarTabPane;
+    private JButton dentistAddAppButton;
+    private JList<String> dentistCalendarList;
+    private JScrollPane dentistCalendarListPane;
+    private JButton dentistDeleteAppButton;
+    private JPanel dentistTabPanel;
+    private JButton hygienistAddAppButton;
+    private JList<String> hygienistCalendarList;
+    private JScrollPane hygienistCalendarListPane;
+    private JButton hygienistDeleteAppButton;
+    private JPanel hygienistTabPanel;
+    private JTabbedPane secretaryCalendarTabPane;
     // End of variables declaration//GEN-END:variables
 }
