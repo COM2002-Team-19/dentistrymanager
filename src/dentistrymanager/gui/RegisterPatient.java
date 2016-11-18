@@ -146,6 +146,7 @@ public class RegisterPatient extends JFrame {
 				if (formFilled()) {
 					updateDB();
 					JOptionPane.showMessageDialog(new JFrame(), "Registration Success");
+					// #TODO check for actual success!!
 					dispose();
 				}
 				else
