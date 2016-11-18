@@ -134,6 +134,9 @@ public class Patient {
 		}
 	}
 	
+	// Detail Owed
+	
+	
 	// Static methods
 	public static ArrayList<Patient> getPatient(Connection connection, String patientSearch){
 		ArrayList<Patient> patients = new ArrayList<>();

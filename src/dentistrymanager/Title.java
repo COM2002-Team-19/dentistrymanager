@@ -9,20 +9,22 @@ public enum Title {
 	DR;
 	
 	public static Title called(String s) {
-		if  (s != null)
-			switch(s.replace(".","").toUpperCase()) {
+		if  (s != null){
+			String aux = s.replace('.', ' ').toUpperCase().trim();
+			switch(s.replace('.', ' ').toUpperCase().trim()) {
 				case "MR" :
 				case "MRS"  :
 				case "MS" :
-				case "MISS" : 
+				case "MISS" :  
 				case "MASTER" :
 				case "DR" :  
-					return Title.valueOf(s.toUpperCase());
+					return Title.valueOf(aux);
 				case "DOCTOR" :
 					return Title.DR;
 				default :
 					return null;
 			}
+		}
 		return null;
 	}
 	

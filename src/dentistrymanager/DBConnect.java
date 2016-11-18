@@ -11,9 +11,9 @@ public class DBConnect {
 	public static final String USER = "team019";
 	public static final String PASSWORD = "982e4ce3";
 	
-	public static Connection getConnection(boolean autoCommit) throws SQLException {
+	public static Connection getConnection(boolean manualCommit) throws SQLException {
 		Connection connection = DriverManager.getConnection(HOST + DB_NAME, USER, PASSWORD);	
-		if(autoCommit)
+		if(manualCommit)
 			connection.setAutoCommit(false);
 		return connection;
 	}
