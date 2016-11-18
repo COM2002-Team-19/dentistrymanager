@@ -16,11 +16,12 @@ public class Appointment {
 	private int startTime;
 	private int endTime;
 	private boolean finish;
+	private String typeOfTreatment;
 	private int courseOfTreatment;
 	
 	// Constructor
 	public Appointment(int appointmentID, String partner, long date, int startTime, int endTime, 
-			boolean finish, int patientID, int courseOfTreatment) {
+			boolean finish, int patientID, String typeOfTreatment, int courseOfTreatment) {
 		this.appointmentID = appointmentID;
 		this.partner = partner; 
 		this.date = date;
@@ -28,6 +29,7 @@ public class Appointment {
 		this.endTime = endTime;
 		this.finish = finish;
 		this.patientID = patientID;
+		this.typeOfTreatment = typeOfTreatment;
 		this.courseOfTreatment = courseOfTreatment;
 	}
 	
@@ -56,6 +58,10 @@ public class Appointment {
 		return finish;
 	}
 	
+	public String getTypeOfTreatment() {
+		return typeOfTreatment;
+	}
+	
 	public int getCourseOfTreatment() {
 		return courseOfTreatment;
 	}
@@ -82,8 +88,8 @@ public class Appointment {
 	
 	public boolean add(Connection connection) throws DuplicateKeyException {
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "INSERT INTO Appointment (partner, date, startTime, endTime) "
-											+ "VALUES ('" + partner + "'," + startTime + "," + endTime + ");";
+			String sql = "INSERT INTO Appointment (partner, date, startTime, endTime, typeOfTreatment) "
+											+ "VALUES ('" + partner + "',"  + date + ", " + startTime + "," + endTime + "," + typeOfTreatment +");";
 			stmt.executeUpdate(sql);
 			if(patientID > 0) {
 				sql = "INSERT INTO ApointmentsPerPatient VALUES (" + patientID + ", " + appointmentID + ");";
@@ -140,6 +146,7 @@ public class Appointment {
 				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), res.getLong("Date"), 
 												 res.getInt("startTime"), res.getInt("endTime"), res.getBoolean("finish"),
 												 DBUtilities.nullToZero(res.getString("patientID")),
+												 res.getString("typeOfTreatment"),
 												 DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);

@@ -82,7 +82,9 @@ public class DatabaseBuilder {
 							+ "startTime TIME NOT NULL,"
 							+ "endTime TIME NOT NULL,"
 							+ "finish BOOL DEFAULT FALSE,"
-							+ "FOREIGN KEY (partner) REFERENCES Partner (name));",
+							+ "typeOfTreatment VARCHAR (30) NOT NULL,"
+							+ "FOREIGN KEY (partner) REFERENCES Partner (name),"
+							+ "FOREIGN KEY (typeOfTreatment) REFERENCES TypeOfTreatment (name));",
 								
 			// TreatmentRecord table
 			"CREATE TABLE TreatmentRecord ("
@@ -124,8 +126,14 @@ public class DatabaseBuilder {
 							+ "coveredTreatmentsLeft INT (3) NOT NULL,"
 							+ "PRIMARY KEY (typeOfTreatment, patientID),"
 							+ "FOREIGN KEY (typeOfTreatment) REFERENCES TypeOfTreatment (name),"
-							+ "FOREIGN KEY (patientID) REFERENCES Patient (patientID));"
-												
+							+ "FOREIGN KEY (patientID) REFERENCES Patient (patientID));",
+							
+			// TypesOfTreatmentPerPatient table
+			"CREATE TABLE TypesOfTreatmentPerPartner ("
+							+ "typeOfTreatment VARCHAR (30) NOT NULL PRIMARY KEY,"
+							+ "partner VARCHAR (30),"
+							+ "FOREIGN KEY (typeOfTreatment) REFERENCES TypeOfTreatment (name),"
+							+ "FOREIGN KEY (partner) REFERENCES Partner (name));"
 	};
 	
 	public static final String[] DROP_TABLES = {
@@ -148,6 +156,8 @@ public class DatabaseBuilder {
 			"DROP TABLE IF EXISTS CourseOfTreatment",
 			"DROP TABLE IF EXISTS AppointmentsPerCourseOfTreatment;",
 			"DROP TABLE IF EXISTS CoveredTreatment;",
+			"DROP TABLE IF EXISTS TypesOfTreatmentPerPartner;",
+			
 			
 			// Enable foreign key check
 			"SET FOREIGN_KEY_CHECKS=1;"
@@ -242,7 +252,7 @@ public class DatabaseBuilder {
 	
 	public void fillWithDefaultValues() {
 		try(PreparedStatement insertPartner = connection.prepareStatement("INSERT INTO Partner VALUES(?);");
-			PreparedStatement insertPlan = connection.prepareStatement("INSERT INTO HealthCarePlan VALUES(?, ?);");
+			PreparedStatement insertPlan = connection.prepareStatement("INSERT INTO HealthcarePlan VALUES(?, ?);");
 			PreparedStatement insertCoverage = connection.prepareStatement("INSERT INTO Coverage VALUES(?, ?, ?, ?);");
 			PreparedStatement insertTypeTreatment = connection.prepareStatement("INSERT INTO TypeOfTreatment VALUES(?, ?);");
 			PreparedStatement insertTreatment = connection.prepareStatement("INSERT INTO Treatment VALUES(?, ?, ?);");	

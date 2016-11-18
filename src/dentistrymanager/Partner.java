@@ -29,6 +29,7 @@ public class Partner {
 				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
                         						 res.getLong("date"), res.getInt("startTime"), res.getInt("endTime"), 
                         						 res.getBoolean("finish"), DBUtilities.nullToZero(res.getString("patientID")),
+                        						 res.getString("typeOfTreatment"),
                         						 DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
@@ -46,6 +47,7 @@ public class Partner {
 				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
                                                  res.getLong("Date"), res.getInt("startTime"), res.getInt("endTime"), 
                                                  res.getBoolean("finish"), DBUtilities.nullToZero(res.getString("patientID")),
+                                                 res.getString("typeOfTreatment"),
                                                  DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
@@ -63,6 +65,7 @@ public class Partner {
 				nextAppointment = new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
 						                          res.getLong("Date"), res.getInt("startTime"), res.getInt("endTime"), 
 						                          res.getBoolean("finish"), DBUtilities.nullToZero(res.getString("patientID")),
+						                          res.getString("typeOfTreatment"),
 	                                              DBUtilities.nullToZero(res.getString("courseOfTreatment")));
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
