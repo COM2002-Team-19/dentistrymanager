@@ -16,9 +16,9 @@ public class Patient {
 	private Address address;
 		
 	// Constructor
-	public Patient(int id, Title t, String f, String s, long d, String p, double b, Address a){
+	public Patient(int id, String t, String f, String s, long d, String p, double b, Address a){
 		patientID = id;
-		title = t;
+		title = Title.called(t);
 		forename = f.toUpperCase().substring(0, 1) + f.substring(1).toLowerCase(); // saves in form Xx...xx
 		surname = s.toUpperCase().substring(0, 1) + s.substring(1).toLowerCase();
 		dateOfBirth = d;
@@ -27,13 +27,9 @@ public class Patient {
 		address = a;
 	}
 	
-	// Chained constructor allowing string param for title
-	public Patient(String t, String f, String s, long d, String p, double b, Address a){
-		this(0, Title.called(t), f, s, d, p, b, a);
-	}
-	
-	public Patient(int id, String t, String f, String s, long d, String p, double b, Address a){
-		this(id, Title.called(t), f, s, d, p, b, a);
+	// Chained constructor with default 0 values for ID and balance
+	public Patient(String t, String f, String s, long d, String p, Address a){
+		this(0, t, f, s, d, p, 0.00, a);
 	}
 	
 
