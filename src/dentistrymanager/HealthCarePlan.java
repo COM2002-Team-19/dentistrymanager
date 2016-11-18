@@ -2,7 +2,6 @@ package dentistrymanager;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class HealthcarePlan {
 	
@@ -18,8 +17,8 @@ public class HealthcarePlan {
 		this.coverage = coverage;
 	}
 	
-	public HealthcarePlan(String name, double monthlyPayment, Coverage[] coverage) {
-		this(name, monthlyPayment, new ArrayList<Coverage>(Arrays.asList(coverage)));
+	public HealthcarePlan(String name, double monthlyPayment) {
+		this(name, monthlyPayment, new ArrayList<>());
 	}
 	
 	// Accessors
