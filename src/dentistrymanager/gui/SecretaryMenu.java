@@ -33,17 +33,17 @@ public class SecretaryMenu extends JFrame {
     private void initComponents() {
 
         jPanel1 = new JPanel();
-        jButton1 = new JButton();
-        jButton2 = new JButton();
-        jButton3 = new JButton();
+        calendarButton = new JButton();
+        registerButton = new JButton();
+        findPatientButton = new JButton();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Calendars");
+        calendarButton.setText("Calendars");
 
-        jButton2.setText("Register Patient");
+        registerButton.setText("Register Patient");
 
-        jButton3.setText("Find Patient");
+        findPatientButton.setText("Find Patient");
 
         GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -52,20 +52,20 @@ public class SecretaryMenu extends JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(calendarButton)
+                    .addComponent(registerButton)
+                    .addComponent(findPatientButton))
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(calendarButton)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
+                .addComponent(registerButton)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3)
+                .addComponent(findPatientButton)
                 .addContainerGap(134, Short.MAX_VALUE))
         );
 
@@ -125,9 +125,9 @@ public class SecretaryMenu extends JFrame {
     }
 
     // Variables declaration - do not modify
-    private JButton jButton1;
-    private JButton jButton2;
-    private JButton jButton3;
+    private JButton calendarButton;
+    private JButton registerButton;
+    private JButton findPatientButton;
     private JPanel jPanel1;
     // End of variables declaration
 }
