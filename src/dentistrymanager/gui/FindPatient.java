@@ -38,7 +38,16 @@ public class FindPatient extends JFrame {
     /**
      * Creates new form FindPatient
      */
+
+
     public FindPatient() {
+	try(Connection connection = DBConnect.getConnecton(false)){
+		this.patients = Patient.getPatients(connection);
+		this.selectedPatient = null;
+	}
+	catch(SQLException e){
+		DBConnect.printSQLError(e);
+	}
         initComponents();
     }
 
@@ -392,10 +401,12 @@ public class FindPatient extends JFrame {
         });
     }
 
-    // Variables declaration - do not modify
+    // System variables
+    private ArrayList<Patient> patients;
     private String enteredName;
     private Patient selectedPatient;
     
+    // GUI Variables
     private JButton searchButton;
     private JTextField searchField;
     private JScrollPane searchResults;
