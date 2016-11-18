@@ -13,9 +13,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -31,6 +31,8 @@ import dentistrymanager.Address;
 import dentistrymanager.DBConnect;
 import dentistrymanager.Patient;
 import dentistrymanager.Title;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.Component;
 
 public class RegisterPatient extends JFrame {
 
@@ -41,14 +43,18 @@ public class RegisterPatient extends JFrame {
         initComponents();
     }
     
+    /*
+     * Uploads new patient to servers
+     */
     public void updateDB() {
 		try(Connection connection = DBConnect.getConnection(true)){
 			String t = titleCombo.getSelectedItem().toString();
-			String fName = forenameField.getText();
-			String sName = surnameField.getText();
+			String fName = forenameField.getText().trim();
+			String sName = surnameField.getText().trim();
 			long dob = Long.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem() + dayCombo.getSelectedItem());
-			String phoneNo = phoneField.getText();
-			Address a = new Address(Integer.valueOf(houseNumberField.getText()),streetField.getText(),cityField.getText(),districtField.getText(),postcodeField.getText()); 
+			String phoneNo = phoneField.getText().trim();
+			Address a = new Address(Integer.valueOf(houseNumberField.getText()),streetField.getText().trim(),
+									cityField.getText().trim(),districtField.getText().trim(),postcodeField.getText().trim()); 
 			Patient p = new Patient(t,fName,sName,dob,phoneNo,a);
 			
 			p.add(connection);
@@ -56,6 +62,22 @@ public class RegisterPatient extends JFrame {
 		catch(SQLException e){
 			DBConnect.printSQLError(e);
 		}
+    }
+    
+    /*
+     * Checks if any of the text fields are empty
+     */
+    public boolean formFilled() {
+    	if (forenameField.getText().trim().isEmpty() 
+    			|| surnameField.getText().trim().isEmpty()
+    			|| phoneField.getText().trim().isEmpty()
+    			|| houseNumberField.getText().trim().isEmpty()
+    			|| streetField.getText().trim().isEmpty()
+    			|| cityField.getText().trim().isEmpty()
+    			|| districtField.getText().trim().isEmpty()
+    			|| postcodeField.getText().trim().isEmpty())
+    		return false;
+    	return true;
     }
 
     /**
@@ -67,7 +89,7 @@ public class RegisterPatient extends JFrame {
     //GEN-BEGIN:initComponents
     private void initComponents() {
         titleLabel = new JLabel();
-        titleCombo = new JComboBox(Title.values());
+        titleCombo = new JComboBox<>();
         firstNameLabel = new JLabel();
         forenameField = new JTextField();
         surnameLabel = new JLabel();
@@ -79,20 +101,18 @@ public class RegisterPatient extends JFrame {
         phoneLabel = new JLabel();
         phoneField = new JTextField();
         addressPanel = new JPanel();
-        houseNumberLabel = new JLabel();
-        houseNumberField = new JTextField();
-        streetLabel = new JLabel();
-        streetField = new JTextField();
-        districtLabel = new JLabel();
-        districtField = new JTextField();
-        cityLabel = new JLabel();
-        cityField = new JTextField();
         submitButton = new JButton();
         cancelButton = new JButton();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        Title[] titles =  Title.values();
+        String[] titlesStr = new String[titles.length];
+        for (int i=0; i<titles.length; i++)
+        	titlesStr[i] = titles[i].toString();
+        
         titleLabel.setText("Title:");
+        titleCombo.setModel(new DefaultComboBoxModel<String>(titlesStr));
         
         firstNameLabel.setText("Firstname:");
         surnameLabel.setText("Surname:");
@@ -107,7 +127,7 @@ public class RegisterPatient extends JFrame {
 			months[i-1] = String.valueOf(i);
 		ArrayList<String> years = new ArrayList<String>();
 		Calendar now = Calendar.getInstance();
-		for (int i=1996; i<=now.get(Calendar.YEAR); i++)
+		for (int i=1900; i<=now.get(Calendar.YEAR); i++)
 			years.add(String.valueOf(i));		
 		String[] y = new String[years.size()];
 		y = years.toArray(y);
@@ -119,20 +139,45 @@ public class RegisterPatient extends JFrame {
         phoneLabel.setText("Phone number:");
 
         addressPanel.setBorder(BorderFactory.createEtchedBorder());
-        houseNumberLabel.setText("House Number:");
-        streetLabel.setText("Street:");
-        districtLabel.setText("District:");
-        cityLabel.setText("City:");
         
         submitButton.setText("Submit");
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateDB();
+				if (formFilled())
+					updateDB();
+				else
+				    JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Submission Error",
+				            JOptionPane.ERROR_MESSAGE);
 			}
 		});
         cancelButton.setText("Cancel");
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
         
-        JLabel postcodeLabel = new JLabel("Postcode:");
+        houseNumberLabel = new JLabel("House Number");
+        
+        houseNumberField = new JTextField();
+        houseNumberField.setColumns(10);
+        
+        streetLabel = new JLabel("Street");
+        
+        streetField = new JTextField();
+        streetField.setColumns(10);
+        
+        cityLabel = new JLabel("City");
+        
+        cityField = new JTextField();
+        cityField.setColumns(10);
+        
+        districtLabel = new JLabel("District");
+        
+        districtField = new JTextField();
+        districtField.setColumns(10);
+        
+        postcodeLabel = new JLabel("Postcode");
         
         postcodeField = new JTextField();
         postcodeField.setColumns(10);
@@ -143,53 +188,44 @@ public class RegisterPatient extends JFrame {
         		.addGroup(addressPanelLayout.createSequentialGroup()
         			.addContainerGap()
         			.addGroup(addressPanelLayout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(addressPanelLayout.createParallelGroup(Alignment.TRAILING)
-        					.addGroup(addressPanelLayout.createSequentialGroup()
-        						.addGroup(addressPanelLayout.createParallelGroup(Alignment.LEADING)
-        							.addComponent(districtLabel)
-        							.addComponent(cityLabel))
-        						.addGap(109)
-        						.addGroup(addressPanelLayout.createParallelGroup(Alignment.TRAILING, false)
-        							.addComponent(districtField)
-        							.addComponent(cityField, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)))
-        					.addGroup(addressPanelLayout.createSequentialGroup()
-        						.addGroup(addressPanelLayout.createParallelGroup(Alignment.LEADING)
-        							.addComponent(houseNumberLabel)
-        							.addComponent(streetLabel))
-        						.addGap(74)
-        						.addGroup(addressPanelLayout.createParallelGroup(Alignment.TRAILING, false)
-        							.addComponent(streetField)
-        							.addComponent(houseNumberField, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))))
-        				.addGroup(addressPanelLayout.createSequentialGroup()
-        					.addComponent(postcodeLabel)
-        					.addGap(98)
-        					.addComponent(postcodeField)))
-        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        				.addComponent(houseNumberLabel)
+        				.addComponent(streetLabel)
+        				.addComponent(cityLabel)
+        				.addComponent(districtLabel)
+        				.addComponent(postcodeLabel))
+        			.addGap(94)
+        			.addGroup(addressPanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(streetField, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+        				.addComponent(houseNumberField, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+        				.addComponent(cityField, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+        				.addComponent(districtField, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+        				.addComponent(postcodeField, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE))
+        			.addContainerGap())
         );
         addressPanelLayout.setVerticalGroup(
         	addressPanelLayout.createParallelGroup(Alignment.LEADING)
         		.addGroup(addressPanelLayout.createSequentialGroup()
         			.addContainerGap()
         			.addGroup(addressPanelLayout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(houseNumberField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(houseNumberLabel))
+        				.addComponent(houseNumberLabel)
+        				.addComponent(houseNumberField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addGroup(addressPanelLayout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(streetLabel)
         				.addComponent(streetField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addGroup(addressPanelLayout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(districtField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(districtLabel))
+        				.addComponent(cityLabel)
+        				.addComponent(cityField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addGroup(addressPanelLayout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(cityField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(cityLabel))
+        			.addGroup(addressPanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(districtLabel)
+        				.addComponent(districtField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addGroup(addressPanelLayout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(postcodeField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(postcodeLabel))
-        			.addContainerGap(12, Short.MAX_VALUE))
+        			.addGroup(addressPanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(postcodeLabel)
+        				.addComponent(postcodeField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addContainerGap(14, Short.MAX_VALUE))
         );
         addressPanel.setLayout(addressPanelLayout);
 
@@ -310,26 +346,27 @@ public class RegisterPatient extends JFrame {
     // Variables declaration - do not modify
     private JPanel addressPanel;
     private JButton cancelButton;
-    private JTextField cityField;
-    private JLabel cityLabel;
     private JLabel dateOfBirthLabel;
     private JComboBox<String> dayCombo;
-    private JTextField districtField;
-    private JLabel districtLabel;
     private JLabel firstNameLabel;
-    private JTextField houseNumberField;
-    private JLabel houseNumberLabel;
     private JComboBox<String> monthCombo;
     private JTextField forenameField;
     private JLabel phoneLabel;
     private JTextField phoneField;
-    private JTextField streetField;
-    private JLabel streetLabel;
     private JButton submitButton;
     private JTextField surnameField;
     private JLabel surnameLabel;
     private JComboBox<String> titleCombo;
     private JLabel titleLabel;
     private JComboBox<String> yearCombo;
+    private JLabel houseNumberLabel;
+    private JTextField houseNumberField;
+    private JLabel streetLabel;
+    private JTextField streetField;
+    private JLabel cityLabel;
+    private JTextField cityField;
+    private JLabel districtLabel;
+    private JTextField districtField;
+    private JLabel postcodeLabel;
     private JTextField postcodeField;
 }
