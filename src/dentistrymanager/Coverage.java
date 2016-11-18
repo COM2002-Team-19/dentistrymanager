@@ -34,6 +34,11 @@ public class Coverage {
 		return costCovered;
 	}
 	
+	// Other methods
+	public String toString() {
+		return plan + " | " + typeOfTreatment + " | " + numOfTreatments + " | " + costCovered; 
+	}
+	
 	// Static methods 
 	public static ArrayList<Coverage> getCoverageByPlan(Connection connection, String plan) {
 		ArrayList<Coverage> planCoverage = new ArrayList<>();
