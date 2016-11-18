@@ -1,4 +1,4 @@
-package dentistrymanager.gui;
+package src.dentistrymanager.gui;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -27,10 +27,13 @@ import javax.swing.WindowConstants;
 
 import dentistrymanager.Patient;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import dentistrymanager.*;
+import java.sql.*;
 
 @SuppressWarnings("serial")
 public class FindPatient extends JFrame {
@@ -41,14 +44,14 @@ public class FindPatient extends JFrame {
 
 
     public FindPatient() {
-	try(Connection connection = DBConnect.getConnecton(false)){
-		this.patients = Patient.getPatients(connection);
-		this.selectedPatient = null;
-	}
-	catch(SQLException e){
-		DBConnect.printSQLError(e);
-	}
-        initComponents();
+		try(Connection connection = DBConnect.getConnection(false)){
+			this.patients = Patient.getPatient(connection, "");
+			this.selectedPatient = null;
+		}
+		catch(SQLException e){
+			DBConnect.printSQLError(e);
+		}
+		initComponents();
     }
 
     /**
@@ -67,7 +70,7 @@ public class FindPatient extends JFrame {
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				enteredName = searchField.getText();
-				
+				patients = Patient.getPatient()
 			}
 		});
         
