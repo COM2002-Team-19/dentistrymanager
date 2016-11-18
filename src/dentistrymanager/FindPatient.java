@@ -1,13 +1,14 @@
-package src.dentistrymanager.gui;
+package dentistrymanager;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -26,14 +27,15 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
-import dentistrymanager.Patient;
-
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import dentistrymanager.*;
+import javax.swing.ListSelectionModel;
+
+import dentistrymanager.gui.RegisterPatient;
+
 import java.sql.*;
 
 @SuppressWarnings("serial")
@@ -42,7 +44,6 @@ public class FindPatient extends JFrame {
     /**
      * Creates new form FindPatient
      */
-
 
     public FindPatient() {
 		try(Connection connection = DBConnect.getConnection(false)){
@@ -71,71 +72,82 @@ public class FindPatient extends JFrame {
         searchButton.setText("Search");
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				enteredName = searchField.getText();
-				try(Connection connection = DBConnect.getConnection(false)){
-					patients = Patient.getPatient(connection,enteredName);
-				}
-				catch(SQLException e){
-					DBConnect.printSQLError(e);
+				String enteredName = searchField.getText();
+				try(Connection connection = DBConnect.getConnection(false)) {
+					patients = Patient.getPatient(connection, enteredName);
+					updatePatientList();
+				} catch (SQLException ex) {
+					DBConnect.printSQLError(ex);
 				}
 			}
 		});
         
         searchResults = new JScrollPane();
-        searchResultsList = new JList<Patient>();
+        searchResultsList = new JList<>();
+        searchResultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        searchResultsList.setCellRenderer(new PatientListRenderer());
         
+        // Loads the list of patients when the menu is entered
+    	updatePatientList();
         
-        searchResultsList.setModel(new AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        
-        searchResultsList.
         patientDetails = new JPanel();
         
         nameLabel = new JLabel();
         nameLabel.setText("Name:");
         nameField = new JTextField();
-        nameField.setText("to fill"); //#TODO
         nameField.setEditable(false);
+        nameField.setEnabled(false);
         
         addressLabel = new JLabel();
         addressLabel.setText("Address:");
         addressField = new JScrollPane();
         addressArea = new JTextArea();
-        addressArea.setText("to fill"); //#TODO
         addressArea.setEditable(false);
+        addressArea.setEnabled(false);
         
         phoneLabel = new JLabel();
         phoneLabel.setText("Phone number:");
         phoneField = new JTextField();
-        phoneField.setText("to fill"); //#TODO
         phoneField.setEditable(false);
+        phoneField.setEnabled(false);
         
         healthcarePanel = new JPanel();
         healthcareLabel = new JLabel();
         healthcareLabel.setText("Healthcare plan:");
         planNameArea = new JTextField();
-        planNameArea.setText("to fill"); //#TODO
         planNameArea.setEditable(false);
+        planNameArea.setEnabled(false);
+        
         subscribeButton = new JButton();
         subscribeButton.setText("Subscribe"); // #TODO button action
+        subscribeButton.setVisible(false);
 
         changePlan = new JDialog();
         planComboBox = new JComboBox<>();
         planComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        planComboBox.setEnabled(false);
+        
         updatePlan = new JButton();
         updatePlan.setText("Update Plan");
+        
         planClosebutton = new JButton(); // #TODO button action
         planClosebutton.setText("Close");
         
         owedPanel = new JPanel();
+        
         owedLabel = new JLabel();
         owedLabel.setText("Owed:");
-        owedField = new JTextField();
-        owedField.setText("to fill");
-        owedField.setEditable(false);
+        amountOwedList = new JList<>();
+        amountOwedList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        
+        
+        
+        
+        
+        //owedField = new JTextField();
+        //owedField.setText("to fill");
+        //owedField.setEditable(false);
         
         receiptButton = new JButton(); // #TODO button action
         receiptButton.setText("Receipt");
@@ -271,7 +283,7 @@ public class FindPatient extends JFrame {
             .addGroup(owedPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(owedPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(owedField, GroupLayout.Alignment.TRAILING)
+                    .addComponent(amountOwedList, GroupLayout.Alignment.TRAILING)
                     .addGroup(GroupLayout.Alignment.TRAILING, owedPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(receiptButton)))
@@ -281,7 +293,7 @@ public class FindPatient extends JFrame {
             owedPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(owedPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(owedField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addComponent(amountOwedList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(receiptButton)
                 .addContainerGap(18, Short.MAX_VALUE))
@@ -379,6 +391,23 @@ public class FindPatient extends JFrame {
         pack();
     }//GEN-END:initComponents
 
+    // Our methods
+    
+    // Loads the list of patients
+    private void updatePatientList() {
+    	DefaultListModel<Patient> model = new DefaultListModel<>();
+    	for(Patient patient: this.patients)
+    		model.addElement(patient);
+    	
+    	this.searchResultsList.setModel(model);
+    }
+    
+    // Loads the detail of the amount owed by the patient
+    private void updatePatientOwedDetail() {
+    	DefaultListModel<String> model = new DefaultListModel<>();
+    	
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -412,11 +441,6 @@ public class FindPatient extends JFrame {
                 new FindPatient().setVisible(true);
             }
         });
-    }
-    
-    // my methods
-    private DefaultListModel refreshList(){
-    	DefaultListModel newModel = new DefaultListModel
     }
 
     // System variables
@@ -455,5 +479,7 @@ public class FindPatient extends JFrame {
     private JButton receiptButton;
     private JScrollPane jScrollPane1;
     private JTextArea jTextArea1;
+    
+    private JList<String> amountOwedList;
     // End of variables declaration
 }

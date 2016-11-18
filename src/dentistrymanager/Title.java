@@ -10,7 +10,7 @@ public enum Title {
 	
 	public static Title called(String s) {
 		if  (s != null) {
-			s.replace(".","").toUpperCase().trim();
+			s = s.replace(".","").toUpperCase().trim();
 			switch(s) {
 				case "MR" :
 				case "MRS"  :
