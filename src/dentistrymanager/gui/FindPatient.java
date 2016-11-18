@@ -25,6 +25,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
+import dentistrymanager.Patient;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout.Alignment;
@@ -53,6 +55,12 @@ public class FindPatient extends JFrame {
         searchField.setText("Patient Name");
         searchButton = new JButton(); // #TODO button action
         searchButton.setText("Search");
+		searchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				enteredName = searchField.getText();
+				
+			}
+		});
         
         searchResults = new JScrollPane();
         searchResultsList = new JList<>();
@@ -385,6 +393,9 @@ public class FindPatient extends JFrame {
     }
 
     // Variables declaration - do not modify
+    private String enteredName;
+    private Patient selectedPatient;
+    
     private JButton searchButton;
     private JTextField searchField;
     private JScrollPane searchResults;
