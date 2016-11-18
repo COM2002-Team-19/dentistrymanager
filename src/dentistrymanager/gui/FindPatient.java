@@ -67,6 +67,7 @@ public class FindPatient extends JFrame {
         addressLabel = new JLabel();
         addressField = new JScrollPane();
         addressArea = new JTextArea();
+        addressArea.setEditable(false);
         phoneLabel = new JLabel();
         phoneField = new JTextField();
         healthcareLabel = new JLabel();
@@ -155,7 +156,7 @@ public class FindPatient extends JFrame {
         );
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(600, 400));
+        setMinimumSize(new Dimension(700, 500));
         setPreferredSize(new Dimension(600, 400));
         setResizable(true);
 
@@ -188,7 +189,6 @@ public class FindPatient extends JFrame {
         addressArea.setColumns(20);
         addressArea.setRows(5);
         addressField.setViewportView(addressArea);
-        addressArea.setEditable(false);
 
         phoneLabel.setText("Phone number:");
         phoneField.setEditable(false);
