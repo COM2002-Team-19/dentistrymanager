@@ -21,16 +21,16 @@ public class Treatment {
 	public String getName() {
 		return name;
 	}
-	
 	public double getCost() {
 		return cost;
 	}
-	
 	public String getTypeOfTreatment() {
 		return typeOfTreatment;
 	}
 	
 	// Static methods
+	
+	// Returns list of treatments of a given type
 	public static ArrayList<Treatment> getAllByType(Connection connection, String typeOfTreatment) {
 		ArrayList<Treatment> treatments = new ArrayList<Treatment>();
 		try(Statement stmt = connection.createStatement()) {

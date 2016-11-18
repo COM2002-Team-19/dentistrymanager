@@ -9,10 +9,12 @@ import javax.swing.JFrame;
 
 public class ManagerDisplay extends JFrame {
 
+	// Instance Variables
 	private Container contentPane;
 	private int width;
 	private int height;
 	
+	// Constructor
 	public ManagerDisplay() {
 		//Set size, position and location
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

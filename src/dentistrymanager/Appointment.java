@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Appointment {
 	
-	// Private variables
+	// Instance variables
 	private int appointmentID;
 	private int patientID;
 	private String partner;
@@ -37,42 +37,36 @@ public class Appointment {
 	public int getAppointmentID() {
 		return appointmentID;
 	}
-	
 	public String getPartner() {
 		return partner;
 	}
-	
 	public long getDate() {
 		return date;
 	}
-	
 	public int getStartTime() {
 		return startTime;
 	}
-
 	public int getEndTime() {
 		return endTime;
 	}
-	
 	public boolean isFinished() {
 		return finish;
 	}
-	
 	public String getTypeOfTreatment() {
 		return typeOfTreatment;
 	}
-	
 	public int getCourseOfTreatment() {
 		return courseOfTreatment;
 	}
 	
-	// Other Methods
+	// toString
 	public String toString() {
 		return appointmentID + " : " + patientID + " : " + partner + " : " + date  + " : " +  startTime  + " : " 
 				+ endTime  + " : " + finish;  
 	}
 	
 	// Database methods
+
 	public boolean finish(Connection connection) {
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "UPDATE Appointment SET finish = TRUE WHERE appointmentID = " + appointmentID + ";";
@@ -86,6 +80,7 @@ public class Appointment {
 		}
 	}
 	
+	// Add
 	public boolean add(Connection connection) throws DuplicateKeyException {
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "INSERT INTO Appointment (partner, date, startTime, endTime, typeOfTreatment) "
@@ -111,6 +106,7 @@ public class Appointment {
 		}
 	}
 	
+	// Delete
 	public boolean delete(Connection connection) throws DeleteForeignKeyException {
 		try(Statement stmt = connection.createStatement()) {
 			String[] sqls = new String[] {"DELETE FROM AppointmentsPerCourseOfTreatment WHERE appointmentID = " + appointmentID + ";",

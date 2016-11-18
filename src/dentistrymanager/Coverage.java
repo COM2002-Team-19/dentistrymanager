@@ -5,6 +5,7 @@ import java.util.*;
 
 public class Coverage {
 
+	// Instance variables
 	private String plan;
 	private String typeOfTreatment;
 	private int numOfTreatments;
@@ -25,16 +26,14 @@ public class Coverage {
 	public String getTypeOfTreatment() {
 		return typeOfTreatment;
 	}
-	
 	public int getNumOfTreatments() {
 		return numOfTreatments;
 	}
-	
 	public double getCostCovered() {
 		return costCovered;
 	}
 	
-	// Other methods
+	// toString
 	public String toString() {
 		return plan + " | " + typeOfTreatment + " | " + numOfTreatments + " | " + costCovered; 
 	}
