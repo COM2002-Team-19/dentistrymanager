@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -61,6 +62,7 @@ public class FindPatient extends JFrame {
      */
     @SuppressWarnings("unchecked")
     //GEN-BEGIN:initComponents
+    
     private void initComponents() {
         
         searchField = new JTextField();
@@ -70,18 +72,26 @@ public class FindPatient extends JFrame {
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				enteredName = searchField.getText();
-				patients = Patient.getPatient()
+				try(Connection connection = DBConnect.getConnection(false)){
+					patients = Patient.getPatient(connection,enteredName);
+				}
+				catch(SQLException e){
+					DBConnect.printSQLError(e);
+				}
 			}
 		});
         
         searchResults = new JScrollPane();
-        searchResultsList = new JList<>();
+        searchResultsList = new JList<Patient>();
+        
+        
         searchResultsList.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         
+        searchResultsList.
         patientDetails = new JPanel();
         
         nameLabel = new JLabel();
@@ -402,6 +412,11 @@ public class FindPatient extends JFrame {
                 new FindPatient().setVisible(true);
             }
         });
+    }
+    
+    // my methods
+    private DefaultListModel refreshList(){
+    	DefaultListModel newModel = new DefaultListModel
     }
 
     // System variables
