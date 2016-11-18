@@ -38,7 +38,7 @@ public class ForTest {
 		
 		// Store new Address and Patient
 		Address testAddress = new Address(34, "clementson rd.","south yorkshire","sheffield","s10 1gs");
-		Patient testPatient = new Patient("dr","Dan","PetERs",19960906,"0345678911", 0, testAddress);
+		Patient testPatient = new Patient("dr","Dan","PetERs",19960906,"0345678911", testAddress);
 		
 		try (Connection con = DBConnect.getConnection(true)){
 			boolean executeNext = false;
@@ -55,7 +55,7 @@ public class ForTest {
 			DBConnect.printSQLError(e);
 		} 
 		
-		Patient testPatient1 = new Patient("dr","Fox","Mulder",19960906,"0345678911", 0, testAddress);
+		Patient testPatient1 = new Patient("dr","Fox","Mulder",19960906,"0345678911", testAddress);
 		
 		try (Connection con = DBConnect.getConnection(true)){
 			boolean executeNext = false;
@@ -71,17 +71,8 @@ public class ForTest {
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
 		} 
+
 		*/
-		
-		try(Connection con = DBConnect.getConnection(false)) {
-			ArrayList<Patient> patients = new ArrayList<Patient>();
-			patients = Patient.getPatient(con, "");
-			for(Patient patient: patients)
-				System.out.println(patient.toString());
-		} catch (SQLException e) {
-			DBConnect.printSQLError(e);
-		}
-		
-		
+
 	}
 }

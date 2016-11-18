@@ -8,16 +8,16 @@ public class Address {
 	// Private variables
 	private int houseNumber;
 	private String street;
-	private String district;
 	private String city;
+	private String district;
 	private String postCode;
 	
 	// Constructor
-	public Address(int houseNumber, String street, String district, String city, String postCode){
+	public Address(int houseNumber, String street, String city, String district, String postCode){
 		this.houseNumber = houseNumber;
 		this.street = street;
-		this.district = district;
 		this.city = city;
+		this.district = district;
 		this.postCode = postCode;
 	}
 	
@@ -30,12 +30,12 @@ public class Address {
 		return street;
 	}
 	
-	public String getDistrict() {
-		return district;
-	}
-	
 	public String getCity() {
 		return city;
+	}
+	
+	public String getDistrict() {
+		return district;
 	}
 	
 	public String getPostCode() {

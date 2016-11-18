@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
@@ -62,6 +63,7 @@ public class FindPatient extends JFrame {
      */
     @SuppressWarnings("unchecked")
     //GEN-BEGIN:initComponents
+    
     private void initComponents() {
         
         searchField = new JTextField();
@@ -405,9 +407,6 @@ public class FindPatient extends JFrame {
     	DefaultListModel<String> model = new DefaultListModel<>();
     	
     }
-    
-    
-    
     
     /**
      * @param args the command line arguments
