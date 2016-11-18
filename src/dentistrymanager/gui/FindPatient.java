@@ -48,53 +48,94 @@ public class FindPatient extends JFrame {
     @SuppressWarnings("unchecked")
     //GEN-BEGIN:initComponents
     private void initComponents() {
-
-        printReceipt = new JDialog();
-        jScrollPane1 = new JScrollPane();
-        jTextArea1 = new JTextArea();
-        printRecieptPayButton = new JButton();
-        printRecieptCloseButton = new JButton();
-        changePlan = new JDialog();
-        planComboBox = new JComboBox<>();
-        updatePlan = new JButton();
-        planClosebutton = new JButton();
-        SearchField = new JTextField();
-        SearchButton = new JButton();
+        
+        searchField = new JTextField();
+        searchField.setText("Patient Name");
+        searchButton = new JButton(); // #TODO button action
+        searchButton.setText("Search");
+        
         searchResults = new JScrollPane();
         searchResultsList = new JList<>();
+        searchResultsList.setModel(new AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        
         patientDetails = new JPanel();
+        
         nameLabel = new JLabel();
+        nameLabel.setText("Name:");
         nameField = new JTextField();
+        nameField.setText("to fill"); //#TODO
+        nameField.setEditable(false);
+        
         addressLabel = new JLabel();
+        addressLabel.setText("Address:");
         addressField = new JScrollPane();
         addressArea = new JTextArea();
+        addressArea.setText("to fill"); //#TODO
         addressArea.setEditable(false);
+        
         phoneLabel = new JLabel();
+        phoneLabel.setText("Phone number:");
         phoneField = new JTextField();
-        healthcareLabel = new JLabel();
+        phoneField.setText("to fill"); //#TODO
+        phoneField.setEditable(false);
+        
         healthcarePanel = new JPanel();
+        healthcareLabel = new JLabel();
+        healthcareLabel.setText("Healthcare plan:");
         planNameArea = new JTextField();
+        planNameArea.setText("to fill"); //#TODO
+        planNameArea.setEditable(false);
         subscribeButton = new JButton();
-        owedLabel = new JLabel();
+        subscribeButton.setText("Subscribe"); // #TODO button action
+
+        changePlan = new JDialog();
+        planComboBox = new JComboBox<>();
+        planComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        updatePlan = new JButton();
+        updatePlan.setText("Update Plan");
+        planClosebutton = new JButton(); // #TODO button action
+        planClosebutton.setText("Close");
+        
         owedPanel = new JPanel();
+        owedLabel = new JLabel();
+        owedLabel.setText("Owed:");
         owedField = new JTextField();
-        receiptButton = new JButton();
-        deleteButton = new JButton();
-
+        owedField.setText("to fill");
+        owedField.setEditable(false);
+        
+        receiptButton = new JButton(); // #TODO button action
+        receiptButton.setText("Receipt");
+        receiptButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+            	//printReceipt();
+            }
+        });
+        
+        printReceipt = new JDialog();
         printReceipt.setAlwaysOnTop(true);
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
+        printRecieptPayButton = new JButton();
         printRecieptPayButton.setText("Pay All");
         printRecieptPayButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //printRecieptPayButtonActionPerformed(evt);
+            	 // #TODO button action
             }
         });
-
+        printRecieptCloseButton = new JButton(); // #TODO button action
         printRecieptCloseButton.setText("Close");
+        
+        deleteButton = new JButton(); // #TODO button action
+        deleteButton.setText("Delete Patient");
+
+        //What/where are these?? #TODO
+        jScrollPane1 = new JScrollPane();
+        jTextArea1 = new JTextArea();
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
 
         GroupLayout printReceiptLayout = new GroupLayout(printReceipt.getContentPane());
         printReceipt.getContentPane().setLayout(printReceiptLayout);
@@ -122,12 +163,6 @@ public class FindPatient extends JFrame {
                     .addComponent(printRecieptCloseButton))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
-
-        planComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        updatePlan.setText("Update Plan");
-
-        planClosebutton.setText("Close");
 
         GroupLayout changePlanLayout = new GroupLayout(changePlan.getContentPane());
         changePlan.getContentPane().setLayout(changePlanLayout);
@@ -158,50 +193,21 @@ public class FindPatient extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(700, 500));
-        setPreferredSize(new Dimension(600, 400));
         setResizable(true);
 
-        SearchField.setText("Search");
-
-        SearchButton.setText("Search");
-
-        searchResultsList.setModel(new AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         searchResults.setViewportView(searchResultsList);
 
         patientDetails.setBorder(BorderFactory.createEtchedBorder());
-        patientDetails.setToolTipText(" details");
-        patientDetails.setName(""); // NOI18N
 
-        nameLabel.setText("Name:");
-
-        nameField.setEditable(false);
-        nameField.setText("jTextField1");
-
-        addressLabel.setText("Address:");
-
+        addressField.setViewportView(addressArea);
         addressField.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         addressField.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         addressField.setMinimumSize(new Dimension(12, 12));
 
         addressArea.setColumns(20);
         addressArea.setRows(5);
-        addressField.setViewportView(addressArea);
-
-        phoneLabel.setText("Phone number:");
-        phoneField.setEditable(false);
-
-        healthcareLabel.setText("Healthcare plan:");
 
         healthcarePanel.setBorder(BorderFactory.createEtchedBorder());
-
-        planNameArea.setText("Name of plan");
-        planNameArea.setEditable(false);
-
-        subscribeButton.setText("Subscribe");
 
         GroupLayout gl_healthCarePanel = new GroupLayout(healthcarePanel);
         healthcarePanel.setLayout(gl_healthCarePanel);
@@ -226,19 +232,7 @@ public class FindPatient extends JFrame {
                 .addContainerGap())
         );
 
-        owedLabel.setText("Owed:");
-
         owedPanel.setBorder(BorderFactory.createEtchedBorder());
-
-        owedField.setText("jTextField4");
-        owedField.setEditable(false);
-
-        receiptButton.setText("Receipt");
-        receiptButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-            	//printReceipt();
-            }
-        });
 
         GroupLayout owedPanelLayout = new GroupLayout(owedPanel);
         owedPanel.setLayout(owedPanelLayout);
@@ -263,26 +257,21 @@ public class FindPatient extends JFrame {
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        deleteButton.setText("Delete Patient");
-
         GroupLayout patientDetailsLayout = new GroupLayout(patientDetails);
         patientDetailsLayout.setHorizontalGroup(
         	patientDetailsLayout.createParallelGroup(Alignment.LEADING)
         		.addGroup(patientDetailsLayout.createSequentialGroup()
         			.addContainerGap()
         			.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(deleteButton, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
+        				.addComponent(deleteButton, GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
         				.addGroup(patientDetailsLayout.createSequentialGroup()
         					.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
-        						.addGroup(patientDetailsLayout.createParallelGroup(Alignment.TRAILING)
-        							.addGroup(patientDetailsLayout.createSequentialGroup()
-        								.addComponent(nameLabel)
-        								.addGap(24))
-        							.addGroup(patientDetailsLayout.createSequentialGroup()
-        								.addComponent(phoneLabel)
-        								.addGap(18)))
-        						.addComponent(addressLabel))
-        					.addGap(32)
+        						.addGroup(patientDetailsLayout.createSequentialGroup()
+        							.addComponent(phoneLabel)
+        							.addGap(18))
+        						.addComponent(addressLabel)
+        						.addComponent(nameLabel))
+        					.addGap(50)
         					.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
         						.addComponent(addressField, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         						.addComponent(nameField, 301, 301, 301)
@@ -293,8 +282,8 @@ public class FindPatient extends JFrame {
         						.addComponent(owedLabel))
         					.addPreferredGap(ComponentPlacement.RELATED)
         					.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(owedPanel, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
-        						.addComponent(healthcarePanel, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))))
+        						.addComponent(owedPanel, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+        						.addComponent(healthcarePanel, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))))
         			.addContainerGap())
         );
         patientDetailsLayout.setVerticalGroup(
@@ -302,8 +291,8 @@ public class FindPatient extends JFrame {
         		.addGroup(patientDetailsLayout.createSequentialGroup()
         			.addContainerGap()
         			.addGroup(patientDetailsLayout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(nameLabel)
-        				.addComponent(nameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(nameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(nameLabel))
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addGroup(patientDetailsLayout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(phoneField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -319,7 +308,7 @@ public class FindPatient extends JFrame {
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
         				.addComponent(owedLabel)
-        				.addComponent(owedPanel, GroupLayout.PREFERRED_SIZE, 70, Short.MAX_VALUE))
+        				.addComponent(owedPanel, GroupLayout.PREFERRED_SIZE, 102, Short.MAX_VALUE))
         			.addGap(18)
         			.addComponent(deleteButton)
         			.addContainerGap())
@@ -327,35 +316,35 @@ public class FindPatient extends JFrame {
         patientDetails.setLayout(patientDetailsLayout);
 
         GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(SearchField, GroupLayout.PREFERRED_SIZE, 350, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SearchButton, GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(searchResults, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(patientDetails, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, 350, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
+        					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(searchResults, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
+        					.addGap(18)
+        					.addComponent(patientDetails, GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)))
+        			.addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(SearchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SearchButton))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(searchResults)
-                    .addComponent(patientDetails, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(searchButton))
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(searchResults, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(patientDetails, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
+        			.addContainerGap())
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }//GEN-END:initComponents
@@ -396,36 +385,35 @@ public class FindPatient extends JFrame {
     }
 
     // Variables declaration - do not modify
-    private JButton SearchButton;
-    private JTextField SearchField;
+    private JButton searchButton;
+    private JTextField searchField;
+    private JScrollPane searchResults;
+    private JList<String> searchResultsList;
+    private JPanel patientDetails;
     private JTextArea addressArea;
     private JScrollPane addressField;
     private JLabel addressLabel;
-    private JDialog changePlan;
     private JButton deleteButton;
-    private JPanel healthCton;
     private JPanel healthcarePanel;
     private JLabel healthcareLabel;
     private JPanel owedPanel;
-    private JScrollPane jScrollPane1;
-    private JTextArea jTextArea1;
-    private JTextField nameField;
-    private JLabel nameLabel;
     private JTextField owedField;
     private JLabel owedLabel;
-    private JPanel patientDetails;
+    private JTextField nameField;
+    private JLabel nameLabel;
     private JTextField phoneField;
     private JLabel phoneLabel;
     private JButton planClosebutton;
     private JComboBox<String> planComboBox;
     private JTextField planNameArea;
+    private JButton subscribeButton;
+    private JDialog changePlan;
+    private JButton updatePlan;
     private JDialog printReceipt;
     private JButton printRecieptCloseButton;
     private JButton printRecieptPayButton;
     private JButton receiptButton;
-    private JScrollPane searchResults;
-    private JList<String> searchResultsList;
-    private JButton subscribeButton;
-    private JButton updatePlan;
+    private JScrollPane jScrollPane1;
+    private JTextArea jTextArea1;
     // End of variables declaration
 }
