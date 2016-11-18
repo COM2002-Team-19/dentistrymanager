@@ -157,7 +157,7 @@ public class FindPatient extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(600, 400));
         setPreferredSize(new Dimension(600, 400));
-        setResizable(false);
+        setResizable(true);
 
         SearchField.setText("Search");
 
