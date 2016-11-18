@@ -188,16 +188,17 @@ public class FindPatient extends JFrame {
         addressArea.setColumns(20);
         addressArea.setRows(5);
         addressField.setViewportView(addressArea);
+        addressArea.setEditable(false);
 
         phoneLabel.setText("Phone number:");
-
-        phoneField.setText("jTextField2");
+        phoneField.setEditable(false);
 
         healthcareLabel.setText("Healthcare plan:");
 
         healthCarePanel.setBorder(BorderFactory.createEtchedBorder());
 
         planNameArea.setText("Name of plan");
+        planNameArea.setEditable(false);
 
         subscribeButton.setText("Subscribe");
 
@@ -229,11 +230,12 @@ public class FindPatient extends JFrame {
         jPanel1.setBorder(BorderFactory.createEtchedBorder());
 
         owedField.setText("jTextField4");
+        owedField.setEditable(false);
 
         receiptButton.setText("Receipt");
         receiptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                receiptButtonActionPerformed(evt);
+                receiptButtonActionPerformed(evt); //#todo
             }
         });
 
