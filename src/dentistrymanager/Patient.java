@@ -149,7 +149,6 @@ public class Patient {
 								new Address(res.getInt("houseNumber"), res.getString("Street"), res.getString("district"),
 											res.getString("city"), res.getString("postCode"))
 							));
-
 			}
 
 		}

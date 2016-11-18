@@ -36,9 +36,11 @@ public class HealthcarePlan {
 	
 	// OtherMethods
 	public String toString() {
+		String plan = name + " | " + monthlyPayment + " | ";
 		
-		// Complete method ...
-		return  "";
+		for(Coverage cov: coverage)
+			plan += cov.toString();
+		return  plan;
 	}
 	
 	// Static methods
