@@ -31,8 +31,8 @@ import dentistrymanager.Address;
 import dentistrymanager.DBConnect;
 import dentistrymanager.Patient;
 import dentistrymanager.Title;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
+import java.awt.Dimension;
 
 public class RegisterPatient extends JFrame {
 
@@ -143,8 +143,11 @@ public class RegisterPatient extends JFrame {
         submitButton.setText("Submit");
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (formFilled())
+				if (formFilled()) {
 					updateDB();
+					JOptionPane.showMessageDialog(new JFrame(), "Registration Success");
+					dispose();
+				}
 				else
 				    JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Submission Error",
 				            JOptionPane.ERROR_MESSAGE);
