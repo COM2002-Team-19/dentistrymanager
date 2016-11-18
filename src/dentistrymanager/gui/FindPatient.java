@@ -72,11 +72,11 @@ public class FindPatient extends JFrame {
         phoneLabel = new JLabel();
         phoneField = new JTextField();
         healthcareLabel = new JLabel();
-        healthCarePanel = new JPanel();
+        healthcarePanel = new JPanel();
         planNameArea = new JTextField();
         subscribeButton = new JButton();
         owedLabel = new JLabel();
-        jPanel1 = new JPanel();
+        owedPanel = new JPanel();
         owedField = new JTextField();
         receiptButton = new JButton();
         deleteButton = new JButton();
@@ -90,7 +90,7 @@ public class FindPatient extends JFrame {
         printRecieptPayButton.setText("Pay All");
         printRecieptPayButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                printRecieptPayButtonActionPerformed(evt);
+                //printRecieptPayButtonActionPerformed(evt);
             }
         });
 
@@ -196,29 +196,29 @@ public class FindPatient extends JFrame {
 
         healthcareLabel.setText("Healthcare plan:");
 
-        healthCarePanel.setBorder(BorderFactory.createEtchedBorder());
+        healthcarePanel.setBorder(BorderFactory.createEtchedBorder());
 
         planNameArea.setText("Name of plan");
         planNameArea.setEditable(false);
 
         subscribeButton.setText("Subscribe");
 
-        GroupLayout healthCarePanelLayout = new GroupLayout(healthCarePanel);
-        healthCarePanel.setLayout(healthCarePanelLayout);
-        healthCarePanelLayout.setHorizontalGroup(
-            healthCarePanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(healthCarePanelLayout.createSequentialGroup()
+        GroupLayout gl_healthCarePanel = new GroupLayout(healthcarePanel);
+        healthcarePanel.setLayout(gl_healthCarePanel);
+        gl_healthCarePanel.setHorizontalGroup(
+            gl_healthCarePanel.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(gl_healthCarePanel.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(healthCarePanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(gl_healthCarePanel.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(planNameArea, GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
-                    .addGroup(GroupLayout.Alignment.TRAILING, healthCarePanelLayout.createSequentialGroup()
+                    .addGroup(GroupLayout.Alignment.TRAILING, gl_healthCarePanel.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(subscribeButton)))
                 .addContainerGap())
         );
-        healthCarePanelLayout.setVerticalGroup(
-            healthCarePanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(healthCarePanelLayout.createSequentialGroup()
+        gl_healthCarePanel.setVerticalGroup(
+            gl_healthCarePanel.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(gl_healthCarePanel.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(planNameArea, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -228,7 +228,7 @@ public class FindPatient extends JFrame {
 
         owedLabel.setText("Owed:");
 
-        jPanel1.setBorder(BorderFactory.createEtchedBorder());
+        owedPanel.setBorder(BorderFactory.createEtchedBorder());
 
         owedField.setText("jTextField4");
         owedField.setEditable(false);
@@ -236,26 +236,26 @@ public class FindPatient extends JFrame {
         receiptButton.setText("Receipt");
         receiptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                receiptButtonActionPerformed(evt); //#todo
+            	//printReceipt();
             }
         });
 
-        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        GroupLayout owedPanelLayout = new GroupLayout(owedPanel);
+        owedPanel.setLayout(owedPanelLayout);
+        owedPanelLayout.setHorizontalGroup(
+            owedPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(owedPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(owedPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(owedField, GroupLayout.Alignment.TRAILING)
-                    .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(GroupLayout.Alignment.TRAILING, owedPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(receiptButton)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        owedPanelLayout.setVerticalGroup(
+            owedPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(owedPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(owedField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -293,8 +293,8 @@ public class FindPatient extends JFrame {
         						.addComponent(owedLabel))
         					.addPreferredGap(ComponentPlacement.RELATED)
         					.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
-        						.addComponent(healthCarePanel, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))))
+        						.addComponent(owedPanel, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
+        						.addComponent(healthcarePanel, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))))
         			.addContainerGap())
         );
         patientDetailsLayout.setVerticalGroup(
@@ -315,11 +315,11 @@ public class FindPatient extends JFrame {
         			.addGap(7)
         			.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
         				.addComponent(healthcareLabel)
-        				.addComponent(healthCarePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(healthcarePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
         				.addComponent(owedLabel)
-        				.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 70, Short.MAX_VALUE))
+        				.addComponent(owedPanel, GroupLayout.PREFERRED_SIZE, 70, Short.MAX_VALUE))
         			.addGap(18)
         			.addComponent(deleteButton)
         			.addContainerGap())
@@ -359,14 +359,6 @@ public class FindPatient extends JFrame {
 
         pack();
     }//GEN-END:initComponents
-
-    private void receiptButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void printRecieptPayButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
 
     /**
      * @param args the command line arguments
@@ -411,9 +403,10 @@ public class FindPatient extends JFrame {
     private JLabel addressLabel;
     private JDialog changePlan;
     private JButton deleteButton;
-    private JPanel healthCarePanel;
+    private JPanel healthCton;
+    private JPanel healthcarePanel;
     private JLabel healthcareLabel;
-    private JPanel jPanel1;
+    private JPanel owedPanel;
     private JScrollPane jScrollPane1;
     private JTextArea jTextArea1;
     private JTextField nameField;
