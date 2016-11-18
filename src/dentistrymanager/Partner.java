@@ -27,8 +27,9 @@ public class Partner {
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next())
 				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
-                        						 res.getLong("Date"), res.getInt("startTime"), res.getInt("endTime"), 
-                        						 res.getBoolean("finish")));
+                        						 res.getLong("date"), res.getInt("startTime"), res.getInt("endTime"), 
+                        						 res.getBoolean("finish"), DBUtilities.nullToZero(res.getString("patientID")),
+                        						 DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
 		}
@@ -44,7 +45,8 @@ public class Partner {
 			while(res.next())
 				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
                                                  res.getLong("Date"), res.getInt("startTime"), res.getInt("endTime"), 
-                                                 res.getBoolean("finish")));
+                                                 res.getBoolean("finish"), DBUtilities.nullToZero(res.getString("patientID")),
+                                                 DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
 		}
@@ -60,7 +62,8 @@ public class Partner {
 			if(res.next())
 				nextAppointment = new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
 						                          res.getLong("Date"), res.getInt("startTime"), res.getInt("endTime"), 
-						                          res.getBoolean("finish"));
+						                          res.getBoolean("finish"), DBUtilities.nullToZero(res.getString("patientID")),
+	                                              DBUtilities.nullToZero(res.getString("courseOfTreatment")));
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
 		}

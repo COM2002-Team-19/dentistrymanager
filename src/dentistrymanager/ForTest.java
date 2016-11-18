@@ -5,6 +5,20 @@ import java.sql.*;
 public class ForTest {
 
 	public static void main(String[] args) {
+		
+		try (Connection con = DBConnect.getConnection(false)){
+			Statement stmt = con.createStatement();
+			String sql = "SELECT a.*, m.* FROM testa a LEFT OUTER JOIN testm m ON a.id = m.val2;";
+			ResultSet res = stmt.executeQuery(sql);
+			while(res.next()) {
+				System.out.println(res.getString(1) + " " + res.getString(2) + " " + res.getString(3) + " " +res.getString(4) + " " + res.getString(5));
+				System.out.println(res.getString(1) + " " + res.getString(2) + " " + DBUtilities.nullToZero(res.getString(3)) 
+                					+ " " +res.getString(4) + " " + res.getString(5));
+			}
+		} catch (SQLException e) {
+			DBConnect.printSQLError(e);
+		} 
+		/*
 		try (Connection con = DBConnect.getConnection(true)){
 			
 			DatabaseBuilder builder = new DatabaseBuilder(con);

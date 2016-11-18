@@ -55,7 +55,8 @@ public class Address {
 			stmt.executeUpdate(sql);
 			connection.commit();
 			return true;
-		} catch (SQLException e) { 
+		} catch (SQLException e) {
+			DBConnect.rollback(connection);
 			if(e.getErrorCode() == 1062)
 				throw new DuplicateKeyException("Address");
 			DBConnect.printSQLError(e);
@@ -74,12 +75,11 @@ public class Address {
 			connection.commit();
 			return numRows == 1 ? true : false;
 		} catch (SQLException e) { 
+			DBConnect.rollback(connection);
 			if(e.getErrorCode() == 1451)
 				throw new DeleteForeignKeyException("Address");
-			else {
-				DBConnect.printSQLError(e);
-				return false;
-			}
+			DBConnect.printSQLError(e);
+			return false;
 		}
 		
 	}

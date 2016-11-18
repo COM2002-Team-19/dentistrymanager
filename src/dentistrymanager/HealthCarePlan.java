@@ -35,6 +35,13 @@ public class HealthcarePlan {
 		return coverage;
 	}
 	
+	// OtherMethods
+	public String toString() {
+		
+		// Complete method ...
+		return  "";
+	}
+	
 	// Static methods
 	public static ArrayList<HealthcarePlan> getAll(Connection connection) {
 		ArrayList<HealthcarePlan> plans = new ArrayList<>();
@@ -46,12 +53,11 @@ public class HealthcarePlan {
 				
 				// Get the plan coverage
 				ArrayList<Coverage> planCoverage = Coverage.getCoverageByPlan(connection, plan);
-				
 				plans.add(new HealthcarePlan(plan, res.getDouble("monthlyPayment"), planCoverage));
 			}
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
 		} 
 		return plans;
-	}	
+	}
 }

@@ -228,15 +228,14 @@ public class DatabaseBuilder {
 		try(Statement stmt = connection.createStatement()) {
 			
 			// Drops existing tables
-			for(String query: DROP_TABLES)
-				stmt.addBatch(query);
+			for(String sql: DROP_TABLES)
+				stmt.addBatch(sql);
 			stmt.executeBatch();
 			
 			// Recreates tables
-			for(String query: CREATE_TABLES)
-				stmt.addBatch(query);
+			for(String sql: CREATE_TABLES)
+				stmt.addBatch(sql);
 			stmt.executeBatch();
-			
 			connection.commit();
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);

@@ -9,11 +9,18 @@ public class DateUtilities {
 	// Constants
 	public static final int WEEK_LENGTH = 5;
 	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
+	public static final int YEAR_FROM_TODAY = 1;
 	
 	// Methods
 	public static String today() {
 		Calendar cal = Calendar.getInstance();
 		return DATE_FORMAT.format(cal.getTime());	
+	}
+	
+	public static String oneYearFromToday() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.YEAR, YEAR_FROM_TODAY);
+		return DATE_FORMAT.format(cal.getTime());
 	}
 	
 	public static String startWeek(int week) {

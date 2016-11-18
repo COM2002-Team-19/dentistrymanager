@@ -1,6 +1,7 @@
 package dentistrymanager;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Patient {
 	
@@ -55,9 +56,9 @@ public class Patient {
 																+ balance + ", "
 																+ address.getHouseNumber() + ", '"
 																+ address.getPostCode() + "');";
-			stmt.executeUpdate(sql);
+			int numRowsUpdated = stmt.executeUpdate(sql);
 			connection.commit();
-			return true;
+			return numRowsUpdated == 1 ? true : false;
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
 			DBConnect.rollback(connection);
@@ -66,18 +67,65 @@ public class Patient {
 	}
 	
 	// Delete
-	public boolean delete(Connection connection) throws DeleteForeignKeyException{
-		try(Statement stmt = connection.createStatement()){
+	public boolean delete(Connection connection) throws DeleteForeignKeyException {
+		try(Statement stmt = connection.createStatement()) {
 			String sql = "DELETE FROM Patient WHERE patientID = " + patientID;
-			int numRows = stmt.executeUpdate(sql);
-			return numRows == 1 ? true : false;
+			int numRowsUpdated = stmt.executeUpdate(sql);
+			connection.commit();
+			return numRowsUpdated == 1 ? true : false;
 		} catch(SQLException e) {
+			DBConnect.rollback(connection);
 			if(e.getErrorCode() == 1451)
 				throw new DeleteForeignKeyException("Patient", this.toString());
 			else {
 				DBConnect.printSQLError(e);
 				return false;
 			}
+		}
+	}
+	
+	// Subscribe
+	public boolean subscribe(Connection connection, HealthcarePlan plan) throws DuplicateKeyException {
+		try(Statement stmt = connection.createStatement()) {		
+			String sql = "INSERT INTO PatientPlan VALUES (" + patientID + ", '" + plan.getName() +"', "
+							        + DateUtilities.today() + ", " + DateUtilities.oneYearFromToday() +");";
+			stmt.addBatch(sql);
+			
+			// Get the plan coverage
+			ArrayList<Coverage> planCoverage = Coverage.getCoverageByPlan(connection, plan.getName());
+			for(Coverage coverage: planCoverage) {
+				sql = "INSERT INTO CoveredTreatment VALUES ('" + coverage.getTypeOfTreatment() + "', " 
+															+ patientID + ", " + coverage.getNumOfTreatments() + ");";
+				stmt.addBatch(sql);
+			}
+			stmt.executeBatch();
+			connection.commit();
+			return true;							
+		} catch(SQLException e) {
+			DBConnect.rollback(connection);
+			if(e.getErrorCode() == 1062)
+				throw new DuplicateKeyException("Plan", this.toString()); // replace by plan.toString()
+			DBConnect.printSQLError(e);
+			return false;
+		}
+	}
+	
+	// Unsubscribe
+	public boolean unsubscribe(Connection connection) throws DeleteForeignKeyException {
+		try(Statement stmt = connection.createStatement()) {
+			String[] sqls = new String[] {"DELETE FROM PatientPlan WHERE patientID = " + patientID + ";",
+										 "DELETE FROM CoveredTreatment WHERE patientID = " + patientID + ";"};
+			for(String sql: sqls)
+				stmt.addBatch(sql);
+			stmt.executeBatch();
+			connection.commit();
+			return true;			
+		} catch(SQLException e) {
+			DBConnect.rollback(connection);
+			if(e.getErrorCode() == 1451)
+				throw new DeleteForeignKeyException("Plan", this.toString()); // replace by plan.toString()
+			DBConnect.printSQLError(e);
+			return false;
 		}
 	}
 	
