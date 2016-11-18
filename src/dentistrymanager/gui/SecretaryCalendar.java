@@ -1,6 +1,8 @@
 package dentistrymanager.gui;
 
 import java.awt.EventQueue;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.swing.AbstractListModel;
 import javax.swing.GroupLayout;
@@ -15,8 +17,10 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import dentistrymanager.*;
 
 public class SecretaryCalendar extends JFrame {
 
@@ -24,6 +28,17 @@ public class SecretaryCalendar extends JFrame {
      * Creates new form SecretaryCalendar
      */
     public SecretaryCalendar() {
+    	try(Connection connection = DBConnect.getConnection(false)){
+    		this.partners = Partner.getAll(connection);
+    		this.dentist = partners.get(0);
+    		this.hygienist = partners.get(1);
+    		this.dentistAppointments = dentist.getWeekAppointments(connection, 1);
+    		this.hygienistAppointment = hygienist.getWeekAppointments(connection, 1);
+    		
+    	}
+    	catch(SQLException e){
+    		DBConnect.printSQLError(e);
+    	}
         initComponents();
     }
 
@@ -184,6 +199,13 @@ public class SecretaryCalendar extends JFrame {
             }
         });
     }
+    
+    // System variables
+    private ArrayList<Partner> partners;
+    private Partner dentist;
+    private Partner hygienist;
+    private ArrayList<Appointment> dentistAppointments;
+    private ArrayList<Appointment> hygienistAppointment;
 
     // Variables declaration - do not modify
     private JButton dentistAddAppButton;
