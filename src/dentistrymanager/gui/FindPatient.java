@@ -428,7 +428,7 @@ public class FindPatient extends JFrame {
     private JButton searchButton;
     private JTextField searchField;
     private JScrollPane searchResults;
-    private JList<String> searchResultsList;
+    private JList<Patient> searchResultsList;
     private JPanel patientDetails;
     private JTextArea addressArea;
     private JScrollPane addressField;
