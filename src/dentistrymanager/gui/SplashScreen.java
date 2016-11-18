@@ -1,17 +1,13 @@
 package dentistrymanager.gui;
 
-import java.awt.Dimension;
-
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
-import javax.swing.WindowConstants;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-public class SplashScreen extends JFrame {
+public class SplashScreen extends JPanel {
 
     /**
      * Creates new form SplashScreen
@@ -77,12 +73,6 @@ public class SplashScreen extends JFrame {
         			.addComponent(buttonPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addContainerGap(92, Short.MAX_VALUE))
         );
-        
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(600, 400));
-        setPreferredSize(new Dimension(600, 400));
-        setResizable(true);
-        
         this.setLayout(layout);
     }// </editor-fold>//GEN-END:initComponents
 
