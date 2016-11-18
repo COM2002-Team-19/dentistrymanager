@@ -104,17 +104,17 @@ public class DatabaseBuilder {
 												
 			// CourseOfTreatment table
 			"CREATE TABLE CourseOfTreatment ("
-							+ "courseOfTreatmentID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
+							+ "courseOfTreatment INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
 							+ "patientID INT (10) NOT NULL,"
-							+ "isComplete BOOL DEFAULT FALSE,"
+							+ "complete BOOL DEFAULT FALSE,"
 							+ "FOREIGN KEY (patientID) REFERENCES Patient (patientID));",
 											
 			// AppointmentsPerCourseOfTreatment table
 			"CREATE TABLE AppointmentsPerCourseOfTreatment ("
-							+ "courseOfTreatmentID INT (10) NOT NULL,"
+							+ "courseOfTreatment INT (10) NOT NULL,"
 							+ "appointmentID INT (10) NOT NULL,"
-							+ "PRIMARY KEY (courseOfTreatmentID, appointmentID),"
-							+ "FOREIGN KEY (courseOfTreatmentID) REFERENCES CourseOfTreatment (courseOfTreatmentID),"
+							+ "PRIMARY KEY (courseOfTreatment, appointmentID),"
+							+ "FOREIGN KEY (courseOfTreatment) REFERENCES CourseOfTreatment (courseOfTreatment),"
 							+ "FOREIGN KEY (appointmentID) REFERENCES Appointment (appointmentID));",		
 							
 			// CoveredTreatment table
@@ -157,20 +157,23 @@ public class DatabaseBuilder {
 													 new Partner("DENTIST")};
 	
 	public static final HealthcarePlan[] PRESET_HEALTH_PLANS = {
-													new HealthcarePlan("NHS FREE PLAN", 0, new Coverage[] {
-																		new Coverage("CHECK-UP", 2, 45),
-																		new Coverage("HYGIENE", 2, 45),
-																		new Coverage("REPAIR", 6, 500)}),
-													new HealthcarePlan("MAINTENANCE PLAN", 15, new Coverage[] {
-																		new Coverage("CHECK-UP", 2, 45),
-																		new Coverage("HYGIENE", 2, 45)}),
-													new HealthcarePlan("ORAL HEALTHPLAN", 21, new Coverage[] {
-																		new Coverage("CHECK-UP", 2, 45),
-																		new Coverage("HYGIENE", 4, 45)}),
-													new HealthcarePlan("DENTAL REPAIR PLAN", 15, new Coverage[] {
-																		new Coverage("CHECK-UP", 2, 45),
-																		new Coverage("HYGIENE", 2, 45),
-																		new Coverage("REPAIR", 2, 500)})};
+													new HealthcarePlan("NHS FREE PLAN", 0),
+													new HealthcarePlan("MAINTENANCE PLAN", 15),
+													new HealthcarePlan("ORAL HEALTHPLAN", 21),
+													new HealthcarePlan("DENTAL REPAIR PLAN", 15)};
+	
+	public static final Coverage[] PRESET_PLAN_COVERAGE = {new Coverage("NHS FREE PLAN", "CHECK-UP", 2, 45),
+															new Coverage("NHS FREE PLAN", "HYGIENE", 2, 45),
+															new Coverage("NHS FREE PLAN", "REPAIR", 6, 500),
+															new Coverage("MAINTENANCE PLAN", "CHECK-UP", 2, 45),
+															new Coverage("MAINTENANCE PLAN", "HYGIENE", 2, 45),
+															new Coverage("ORAL HEALTHPLAN", "CHECK-UP", 2, 45),
+															new Coverage("ORAL HEALTHPLAN", "HYGIENE", 4, 45),
+															new Coverage("DENTAL REPAIR PLAN", "CHECK-UP", 2, 45),
+															new Coverage("DENTAL REPAIR PLAN", "HYGIENE", 2, 45),
+															new Coverage("DENTAL REPAIR PLAN", "REPAIR", 2, 500)};
+	
+	
 	
 	public static final TypeOfTreatment[] PRESET_TYPES_OF_TREATMENT = {new TypeOfTreatment("REPAIR", 60),
 																		new TypeOfTreatment("HYGIENE", 20),
@@ -181,12 +184,6 @@ public class DatabaseBuilder {
 														 new Treatment("SILVER AMALGAM FILLING", 90, "REPAIR"),
 														 new Treatment("WHITE COMPOSITE RESIN FILLING", 150, "REPAIR"),
 														 new Treatment("GOLD CROWN FITTING", 500, "REPAIR")};
-	
-	public static final Coverage[] PRESET_COVERAGE = {new Coverage("CHECK-UP", 2, 45),
-														new Coverage("HYGIENE", 2, 45),
-														new Coverage("REPAIR", 6, 500)
-														
-	};
 	
 	// Private variables
 	private Connection connection;
@@ -271,19 +268,20 @@ public class DatabaseBuilder {
 			for(HealthcarePlan plan: PRESET_HEALTH_PLANS) {
 				insertPlan.setString(1, plan.getName());
 				insertPlan.setDouble(2, plan.getMonthlyPayment());
-				insertPlan.executeUpdate();
-				
-				// Creates the health care plans coverage
-				for(Coverage planCoverage: plan.getCoverage()) {
-					insertCoverage.setString(1, plan.getName());
-					insertCoverage.setString(2, planCoverage.getTypeOfTreatment());
-					insertCoverage.setInt(3, planCoverage.getNumOfTreatments());
-					insertCoverage.setDouble(4, planCoverage.getCostCovered());
-					insertCoverage.addBatch();
-				}
-				insertCoverage.executeBatch();
+				insertPlan.addBatch();
 			}
-
+			insertPlan.executeBatch();
+	
+			// Creates the health care plans coverage
+			for(Coverage coverage: PRESET_PLAN_COVERAGE) {
+				insertCoverage.setString(1, coverage.getPlan());
+				insertCoverage.setString(2, coverage.getTypeOfTreatment());
+				insertCoverage.setInt(3, coverage.getNumOfTreatments());
+				insertCoverage.setDouble(4, coverage.getCostCovered());
+				insertCoverage.addBatch();
+			}
+			insertCoverage.executeBatch();
+			
 			// Creates treatments
 			for(Treatment treatment: PRESET_TREATMENTS) {
 				insertTreatment.setString(1, treatment.getName());

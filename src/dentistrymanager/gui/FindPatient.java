@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+@SuppressWarnings("serial")
 public class FindPatient extends JFrame {
 
     /**
