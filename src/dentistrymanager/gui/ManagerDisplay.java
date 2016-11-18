@@ -22,7 +22,7 @@ public class ManagerDisplay extends JFrame {
 		height = 3*scrHeight/4;
 		
 		this.setBounds(scrWidth/8,scrHeight/8,width,height); //Default frame takes 75% of screen
-		this.setTitle("Weather Record Viewer"); //Default frame title
+		this.setTitle("Dentistry Manager"); //Default frame title
 		contentPane = this.getContentPane();
 	}
 	

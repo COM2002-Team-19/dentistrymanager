@@ -129,6 +129,36 @@ public class Patient {
 		}
 	}
 	
+	// Static methods
+	public static ArrayList<Patient> getPatient(Connection connection, String patientSearch){
+		ArrayList<Patient> patients = new ArrayList<>();
+		try(Statement stmt = connection.createStatement()){
+			String sql = "SELECT p.*, a.street, a.district, a.city FROM Patient p JOIN Address a ON p.houseNumber=a.houseNumber AND p.postCode=a.postCode "+
+				+" WHERE forename LIKE '%"+ patientSearch +"%' OR surname LIKE '%"+ patientSearch +"%';"
+			ResultsSet res = stmt.executeQuery(sql);
+			while(res.next()){
+				patients.add(new Patient(res.getInt("patientID"),
+							res.getString("title"),
+							res.getString("forename"),
+							res.getString("surname"),
+							res.getLong("dateOfBirth"),
+							res.getString("phoneNo"),
+							res.getDouble("balance"),
+							new Address(res.getInt("houseNo"),
+							       res.getString("postcode"), 
+							       res.getString("Street"), 
+							       res.getStrig("city"))
+							));
+
+			}
+
+		}
+		catch(SQLException e){
+			DBConnect.printSQLError(e);
+		}
+		return patients;
+	}
+	
 	// Other methods
 	public String toString() {
 		String s = "";
