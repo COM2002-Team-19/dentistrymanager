@@ -29,6 +29,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import dentistrymanager.Address;
 import dentistrymanager.DBConnect;
+import dentistrymanager.DuplicateKeyException;
 import dentistrymanager.Patient;
 import dentistrymanager.Title;
 import java.awt.Component;
@@ -45,8 +46,11 @@ public class RegisterPatient extends JFrame {
     
     /*
      * Uploads new patient to servers
+     * @return boolean whether or not patient upload successful
      */
-    public void updateDB() {
+    public boolean updateDB() {
+		boolean success = false;
+		
 		try(Connection connection = DBConnect.getConnection(true)){
 			String t = titleCombo.getSelectedItem().toString();
 			String fName = forenameField.getText().trim();
@@ -57,11 +61,21 @@ public class RegisterPatient extends JFrame {
 									cityField.getText().trim(),districtField.getText().trim(),postcodeField.getText().trim()); 
 			Patient p = new Patient(t,fName,sName,dob,phoneNo,a);
 			
-			p.add(connection);
-		}
-		catch(SQLException e){
+			boolean executeNext = false;
+			try{
+				executeNext = a.add(connection);
+			} catch (DuplicateKeyException e) {
+				executeNext = true;
+			}
+			
+			if(executeNext)
+				success = p.add(connection);	
+
+		} catch (SQLException e){
 			DBConnect.printSQLError(e);
 		}
+		
+		return success;
     }
     
     /*
@@ -162,27 +176,18 @@ public class RegisterPatient extends JFrame {
 		});
         
         houseNumberLabel = new JLabel("House Number");
-        
         houseNumberField = new JTextField();
         houseNumberField.setColumns(10);
-        
         streetLabel = new JLabel("Street");
-        
         streetField = new JTextField();
         streetField.setColumns(10);
-        
         cityLabel = new JLabel("City");
-        
         cityField = new JTextField();
         cityField.setColumns(10);
-        
         districtLabel = new JLabel("District");
-        
         districtField = new JTextField();
         districtField.setColumns(10);
-        
         postcodeLabel = new JLabel("Postcode");
-        
         postcodeField = new JTextField();
         postcodeField.setColumns(10);
 
