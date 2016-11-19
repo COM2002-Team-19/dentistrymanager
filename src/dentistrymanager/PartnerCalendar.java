@@ -11,11 +11,15 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 @SuppressWarnings("serial")
 public class PartnerCalendar extends JFrame {
@@ -24,6 +28,7 @@ public class PartnerCalendar extends JFrame {
 	private ArrayList<Partner> partners;
 	private ArrayList<Appointment> nextPatients;
 	private Partner p;
+	private Appointment nextAppointment;
 
 	public static void main(String[] args) {
 		new PartnerCalendar(0);
@@ -34,7 +39,8 @@ public class PartnerCalendar extends JFrame {
 		try(Connection connection = DBConnect.getConnection(false)){
 			this.partners = Partner.getAll(connection);
 			this.p = partners.get(i);
-			this.nextPatients = p.getDaysAppointments(connection);   		
+			this.nextPatients = p.getDaysAppointments(connection);
+			this.nextAppointment = p.getNextAppointment(connection);
 		}
     	catch(SQLException e){
     		DBConnect.printSQLError(e);
@@ -47,7 +53,14 @@ public class PartnerCalendar extends JFrame {
 		JLabel currentAppTitle = new JLabel("Current Appointment:");
 		// Text area
 		JTextArea currentAppDisplay = new JTextArea();
+		
+		String newline = "\n";
+		String forenameLabel = nextAppointment.getPatient().getForename();
+		String surnameLabel = nextAppointment.getPatient().getSurname();
+		int startTimeLable = nextAppointment.getStartTime();
+				
 		JScrollPane scrollPaneCurrent = new JScrollPane(currentAppDisplay);
+		
 		//Adding to display
 		currentAppDisplay.setEditable(false);
 		currentAppointment.add(currentAppTitle, BorderLayout.NORTH);
@@ -67,10 +80,15 @@ public class PartnerCalendar extends JFrame {
 		JLabel nextAppTitle = new JLabel("Next Appointments:");
 		
 		// Insert JList
+		JList nextAppResultsList = new JList<Appointment>();
+		nextAppResultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
+		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
+
 		
-		JScrollPane scrollPaneNext = new JScrollPane(nextAppDisplay);
+//		JScrollPane scrollPaneNext = new JScrollPane(nextAppDisplay);
 		nextAppointment.add(nextAppTitle, BorderLayout.NORTH);
-		nextAppointment.add(scrollPaneNext, BorderLayout.CENTER);
+		nextAppointment.add(nextAppResults, BorderLayout.CENTER);
 		JPanel nextButtons = new JPanel();
 		nextButtons.setLayout(new GridLayout(1,0));
 		
