@@ -32,6 +32,10 @@ public class Patient {
 		this(0, t, f, s, d, p, 0.00, a);
 	}
 	
+	public Patient() {
+		this(0, "", "", "", 0, "", 0, null);
+	}
+	
 
 	// Accessors
 	public Title getTitle() { return title;	}
@@ -134,6 +138,7 @@ public class Patient {
 	
 	
 	// Static methods
+	// Returns all patients
 	public static ArrayList<Patient> getPatient(Connection connection, String patientSearch){
 		ArrayList<Patient> patients = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()){
@@ -155,6 +160,26 @@ public class Patient {
 			DBConnect.printSQLError(e);
 		}
 		return patients;
+	}
+	
+	public static Patient getPatientByID(Connection connection, int patientID) {
+		Patient patient = new Patient();
+		try(Statement stmt = connection.createStatement()){
+			String sql = "SELECT * FROM Patient "
+							+ "JOIN Address a ON p.houseNumber=a.houseNumber AND p.postCode=a.postCode "
+							+ "WHERE patientID = " + patientID +";";
+			ResultSet res = stmt.executeQuery(sql);
+			while(res.next()){
+				patient = new Patient(res.getInt("patientID"), res.getString("title"), res.getString("forename"),
+										res.getString("surname"), res.getLong("dateOfBirth"), res.getString("phoneNo"),
+										res.getDouble("balance"), 
+										new Address(res.getInt("houseNumber"), res.getString("Street"), res.getString("district"),
+													res.getString("city"), res.getString("postCode")));
+			}
+		} catch (SQLException e) {
+			DBConnect.printSQLError(e);
+		}
+		return patient;
 	}
 	
 	// Other methods

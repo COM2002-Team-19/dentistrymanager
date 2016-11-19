@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -137,8 +136,9 @@ public class FindPatient extends JFrame {
         
         owedLabel = new JLabel();
         owedLabel.setText("Owed:");
-        amountOwedList = new JList<>();
-        amountOwedList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        amountOwedList = new JTextArea();
+        
+        
         
         
         
@@ -479,7 +479,6 @@ public class FindPatient extends JFrame {
     private JButton receiptButton;
     private JScrollPane jScrollPane1;
     private JTextArea jTextArea1;
-    
-    private JList<String> amountOwedList;
+    private JTextArea amountOwedList;
     // End of variables declaration
 }

@@ -66,6 +66,10 @@ public class Appointment {
 		return courseOfTreatment;
 	}
 	
+	public int getPatientID() {
+		return patientID;
+	}
+	
 	// Other Methods
 	public String toString() {
 		return appointmentID + " : " + patientID + " : " + partner + " : " + date  + " : " +  startTime  + " : " 
