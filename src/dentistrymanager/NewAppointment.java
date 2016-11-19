@@ -79,7 +79,7 @@ public class NewAppointment extends JFrame {
 	 */
 	public NewAppointment(Patient p) {
 		this.patient = p;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 345, 250);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -113,7 +113,7 @@ public class NewAppointment extends JFrame {
 		
 		ArrayList<String> years = new ArrayList<String>();
 		Calendar now = Calendar.getInstance();
-		for (int i=1900; i<=now.get(Calendar.YEAR); i++)
+		for (int i=now.get(Calendar.YEAR); i<=now.get(Calendar.YEAR)+2; i++)
 			years.add(String.valueOf(i));		
 		String[] y = new String[years.size()];
 		y = years.toArray(y);

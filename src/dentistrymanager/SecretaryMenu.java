@@ -33,7 +33,7 @@ public class SecretaryMenu extends JFrame {
         registerButton = new JButton();
         findPatientButton = new JButton();
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         calendarButton.setText("Calendars");
         registerButton.setText("Register Patient");
@@ -41,17 +41,17 @@ public class SecretaryMenu extends JFrame {
         
         calendarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SecretaryCalendar sc = new SecretaryCalendar();
+				new SecretaryCalendar();
 			}
 		});
         registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegisterPatient sc = new RegisterPatient();
+				new RegisterPatient();
 			}
 		});
         findPatientButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				FindPatient sc = new FindPatient();
+				new FindPatient();
 			}
 		});
 

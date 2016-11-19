@@ -9,12 +9,12 @@ import java.util.ArrayList;
 public class Appointment {
 	
 	// Instance variables
-	private int appointmentID = 0; // Default, gets overwritten
+	private int appointmentID;
 	private String partner;
 	private long date;
 	private int startTime;
 	private int endTime;
-	private boolean finish = false; // Default
+	private boolean finish;
 	private String typeOfTreatment;
 	private int courseOfTreatment;
 	private Patient patient;
@@ -35,10 +35,12 @@ public class Appointment {
 	// Constructor w/out ID i.e. wholly new appointment
 	public Appointment(String partner, long date, int startTime, int endTime, 
 			Patient patient, String typeOfTreatment, int courseOfTreatment) {
+		this.appointmentID = 0;
 		this.partner = partner; 
 		this.date = date;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.finish = false;
 		this.patient = patient;
 		this.typeOfTreatment = typeOfTreatment;
 		this.courseOfTreatment = courseOfTreatment;

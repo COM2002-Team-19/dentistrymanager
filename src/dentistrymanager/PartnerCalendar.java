@@ -20,7 +20,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-@SuppressWarnings("serial")
 public class PartnerCalendar extends JFrame {
 
 	private JPanel contentPane;
@@ -34,7 +33,6 @@ public class PartnerCalendar extends JFrame {
  	}
  
 	public PartnerCalendar(int i) {
-		
 		try(Connection connection = DBConnect.getConnection(false)){
 			this.partners = Partner.getAll(connection);
 			this.p = partners.get(i);
@@ -104,7 +102,7 @@ public class PartnerCalendar extends JFrame {
 		JPanel nextButtons = new JPanel();
 		nextButtons.setLayout(new GridLayout(1,0));
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 500);
 		contentPane = new JPanel();
    		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
