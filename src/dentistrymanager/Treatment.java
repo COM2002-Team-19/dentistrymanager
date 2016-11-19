@@ -44,5 +44,20 @@ public class Treatment {
 			DBConnect.printSQLError(e);
 		} 
 		return treatments;
+	}
+	
+	public static ArrayList<Treatment> getAll(Connection connection) {
+		ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+		try(Statement stmt = connection.createStatement()) {
+			String sql = "SELECT * FROM Treatment;";
+			ResultSet res = stmt.executeQuery(sql);
+			while(res.next())
+				treatments.add(new Treatment(res.getString("name"), 
+											res.getDouble("cost"), 
+											res.getString("typeOfTreatment")));
+		} catch(SQLException e) {
+			DBConnect.printSQLError(e);
+		} 
+		return treatments;
 	} 
 }

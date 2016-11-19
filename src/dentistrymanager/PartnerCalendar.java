@@ -3,6 +3,8 @@ package dentistrymanager;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -76,11 +78,29 @@ public class PartnerCalendar extends JFrame {
 		currentAppointment.add(currentAppTitle, BorderLayout.NORTH);
 		currentAppointment.add(scrollPaneCurrent, BorderLayout.CENTER);
 		JPanel currentButtons = new JPanel();
+		
 		// Buttons at the bottom
 		currentButtons.setLayout(new GridLayout(1,0));
 		JButton addTreatment = new JButton("Add Treatment");
+		addTreatment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		
+		JButton delTreatment = new JButton("Delete Treatment");
+		delTreatment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		
 		JButton finishCurrent = new JButton("Finish Appointment");
+		finishCurrent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		
 		currentButtons.add(addTreatment);
+		currentButtons.add(delTreatment);
 		currentButtons.add(finishCurrent);
 		currentAppointment.add(currentButtons, BorderLayout.SOUTH);
 		
