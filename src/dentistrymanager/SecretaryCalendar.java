@@ -1,6 +1,8 @@
 package dentistrymanager;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -13,9 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.LayoutStyle;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -31,8 +36,8 @@ public class SecretaryCalendar extends JFrame {
     		this.partners = Partner.getAll(connection);
     		this.dentist = partners.get(0);
     		this.hygienist = partners.get(1);
-    		this.dentistAppointments = dentist.getWeekAppointments(connection, 1);
-    		this.hygienistAppointment = hygienist.getWeekAppointments(connection, 1);
+    		this.dentistAppointments = dentist.getWeekAppointments(connection, DateUtilities.thisWeek());
+    		this.hygienistAppointment = hygienist.getWeekAppointments(connection, DateUtilities.thisWeek());
     		
     	}
     	catch(SQLException e){
@@ -64,20 +69,61 @@ public class SecretaryCalendar extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        dentistCalendarList.setModel(new AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        dentistCalendarList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        dentistCalendarList.setCellRenderer(new AppointmentListRenderer());
+        dentistCalendarList.addListSelectionListener(new ListSelectionListener() {
+        	public void valueChanged(ListSelectionEvent event) {
+        		int selectedIndex = dentistCalendarList.getSelectedIndex();
+        		if(selectedIndex != -1) {
+        			selectedAppointmentDentist = dentistCalendarList.getSelectedValue();
+        		}
+        	}
         });
         dentistCalendarListPane.setViewportView(dentistCalendarList);
 
         // Buttons
         dentistAddAppButton.setText("Add appointment");
+        dentistAddAppButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFrame findPatient = new FindPatient();
+			}
+		});
+        
         dentistDeleteAppButton.setText("Delete appointment");
+        dentistDeleteAppButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try(Connection connection = DBConnect.getConnection(true)){
+					selectedAppointmentDentist.delete(connection);
+				}catch(SQLException ex){
+		    		DBConnect.printSQLError(ex);
+		    	}catch(DeleteForeignKeyException ex){
+		    		System.err.println(ex.getTable());
+		    	}
+			}
+		});
         
         hygienistAddAppButton.setText("Add appointment");
+        hygienistAddAppButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFrame findPatient = new FindPatient();
+				new FindPatient();
+			}
+		});
+        
         hygienistDeleteAppButton.setText("Delete appointment");
+        hygienistDeleteAppButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try(Connection connection = DBConnect.getConnection(true)){
+					selectedAppointmentHygienist.delete(connection);
+				}catch(SQLException ex){
+		    		DBConnect.printSQLError(ex);
+		    	}catch(DeleteForeignKeyException ex){
+		    		System.err.println(ex.getTable());
+		    	}
+			}
+		});
 
+                
         GroupLayout dentistTabPanelLayout = new GroupLayout(dentistTabPanel);
         dentistTabPanel.setLayout(dentistTabPanelLayout);
         dentistTabPanelLayout.setHorizontalGroup(
@@ -107,10 +153,15 @@ public class SecretaryCalendar extends JFrame {
 
         secretaryCalendarTabPane.addTab("Dentist", dentistTabPanel);
 
-        hygienistCalendarList.setModel(new AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        hygienistCalendarList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        hygienistCalendarList.setCellRenderer(new AppointmentListRenderer());
+        hygienistCalendarList.addListSelectionListener(new ListSelectionListener() {
+        	public void valueChanged(ListSelectionEvent event) {
+        		int selectedIndex = hygienistCalendarList.getSelectedIndex();
+        		if(selectedIndex != -1) {
+        			selectedAppointmentHygienist = hygienistCalendarList.getSelectedValue();
+        		}
+        	}
         });
         hygienistCalendarListPane.setViewportView(hygienistCalendarList);
 
@@ -204,15 +255,18 @@ public class SecretaryCalendar extends JFrame {
     private Partner hygienist;
     private ArrayList<Appointment> dentistAppointments;
     private ArrayList<Appointment> hygienistAppointment;
+    private Appointment selectedAppointmentDentist;
+    private Appointment selectedAppointmentHygienist;
+
 
     // Variables declaration - do not modify
     private JButton dentistAddAppButton;
-    private JList<String> dentistCalendarList;
+    private JList<Appointment> dentistCalendarList;
     private JScrollPane dentistCalendarListPane;
     private JButton dentistDeleteAppButton;
     private JPanel dentistTabPanel;
     private JButton hygienistAddAppButton;
-    private JList<String> hygienistCalendarList;
+    private JList<Appointment> hygienistCalendarList;
     private JScrollPane hygienistCalendarListPane;
     private JButton hygienistDeleteAppButton;
     private JPanel hygienistTabPanel;
