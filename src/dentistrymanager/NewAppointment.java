@@ -2,6 +2,8 @@ package dentistrymanager;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,33 +11,44 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 
-public class SecretaryAppointment extends JFrame {
+public class NewAppointment extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textForename;
+	private JTextField forenameField;
+	private JTextField surnameField;
 	private JLabel lblDate;
-	private JTextField textDate;
+	private JTextField dateField;
 	private JLabel lblStartTime;
-	private JTextField textStartTime;
+	private JTextField startTimeField;
 	private JLabel lblEndTime;
-	private JTextField textEndTime;
+	private JTextField endTimeField;
 	private JLabel lblTypeOfTreatment;
 	private JTextField textTreatmentType;
 	private JLabel lblCourseOfTreatment;
 	private JTextField textTreatmentCourse;
-	private JTextField textSurname;
 	private JTextField textDentistForename;
 	private JTextField textDentistSurname;
 
+    /*
+     * Checks if any of the text fields are empty
+     */
+    public boolean formFilled() {
+    	if (forenameField.getText().trim().isEmpty() 
+    			|| surnameField.getText().trim().isEmpty())
+    		return false;
+    	return true;
+    }
+    
 	/**
 	 * Create the frame.
 	 */
-	public SecretaryAppointment() {
+	public NewAppointment() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 444, 378);
 		contentPane = new JPanel();
@@ -44,23 +57,23 @@ public class SecretaryAppointment extends JFrame {
 		
 		JLabel lblPatientForename = new JLabel("Forename :");
 		
-		textForename = new JTextField();
-		textForename.setColumns(10);
+		forenameField = new JTextField();
+		forenameField.setColumns(10);
 		
 		lblDate = new JLabel("Date :");
 		
-		textDate = new JTextField();
-		textDate.setColumns(10);
+		dateField = new JTextField();
+		dateField.setColumns(10);
 		
 		lblStartTime = new JLabel("Start time : ");
 		
-		textStartTime = new JTextField();
-		textStartTime.setColumns(10);
+		startTimeField = new JTextField();
+		startTimeField.setColumns(10);
 		
 		lblEndTime = new JLabel("End time : ");
 		
-		textEndTime = new JTextField();
-		textEndTime.setColumns(10);
+		endTimeField = new JTextField();
+		endTimeField.setColumns(10);
 		
 		lblTypeOfTreatment = new JLabel("Type of Treatment : ");
 		
@@ -74,8 +87,8 @@ public class SecretaryAppointment extends JFrame {
 		
 		JLabel lblSurname = new JLabel("Surname : ");
 		
-		textSurname = new JTextField();
-		textSurname.setColumns(10);
+		surnameField = new JTextField();
+		surnameField.setColumns(10);
 		
 		JLabel lblForename = new JLabel("Forename : ");
 		
@@ -90,8 +103,25 @@ public class SecretaryAppointment extends JFrame {
 		JLabel lblDetailsOfAttending = new JLabel("Details of Attending Physician : ");
 		
 		JButton btnSubmit = new JButton("Submit");
+/*		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (formFilled()) {
+					if (updateDB())
+						JOptionPane.showMessageDialog(new JFrame(), "Registration Success");
+					dispose();
+				}
+				else
+				    JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Submission Error",
+				            JOptionPane.ERROR_MESSAGE);
+			}
+		});*/
 		
 		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -108,18 +138,18 @@ public class SecretaryAppointment extends JFrame {
 									.addGap(18)
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 										.addGroup(gl_contentPane.createSequentialGroup()
-											.addComponent(textForename, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+											.addComponent(forenameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addComponent(lblSurname)
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(textSurname, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+											.addComponent(surnameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 										.addGroup(gl_contentPane.createSequentialGroup()
-											.addComponent(textStartTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+											.addComponent(startTimeField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addComponent(lblEndTime)
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(textEndTime))
-										.addComponent(textDate)))
+											.addComponent(endTimeField))
+										.addComponent(dateField)))
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 										.addComponent(lblTypeOfTreatment)
@@ -153,19 +183,19 @@ public class SecretaryAppointment extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblPatientForename)
-						.addComponent(textForename, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(forenameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblSurname)
-						.addComponent(textSurname, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(surnameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblDate)
-						.addComponent(textDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(dateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblStartTime)
-						.addComponent(textStartTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(startTimeField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblEndTime)
-						.addComponent(textEndTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(endTimeField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblTypeOfTreatment)
@@ -190,21 +220,4 @@ public class SecretaryAppointment extends JFrame {
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SecretaryAppointment frame = new SecretaryAppointment();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 }
