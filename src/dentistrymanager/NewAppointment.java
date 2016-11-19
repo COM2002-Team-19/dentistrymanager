@@ -252,5 +252,6 @@ public class NewAppointment extends JFrame {
 					.addContainerGap())
 		);
 		contentPane.setLayout(gl_contentPane);
+		setVisible(true);
 	}
 }
