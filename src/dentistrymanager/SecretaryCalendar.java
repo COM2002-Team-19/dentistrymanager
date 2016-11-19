@@ -205,6 +205,7 @@ public class SecretaryCalendar extends JFrame {
         );
 
         pack();
+        setVisible(true);
     }
     
     // System variables
