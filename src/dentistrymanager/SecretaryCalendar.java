@@ -1,6 +1,8 @@
 package dentistrymanager;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -73,9 +75,31 @@ public class SecretaryCalendar extends JFrame {
 
         // Buttons
         dentistAddAppButton.setText("Add appointment");
+        dentistAddAppButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FindPatient fp = new FindPatient();
+				// redirects to FindPatient where they can choose patient the appointment is for
+			}
+		});
         dentistDeleteAppButton.setText("Delete appointment");
+        /*dentistDeleteAppButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Appointment app = dentistCalendarList.getSelectedValue(); //#TODO		
+				try (Connection con = DBConnect.getConnection(true)){
+					app.delete(con);
+				} catch (SQLException e) {
+					DBConnect.printSQLError(e);
+				} 
+			}
+		});*/
         
         hygienistAddAppButton.setText("Add appointment");
+        hygienistAddAppButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FindPatient fp = new FindPatient();
+				// redirects to FindPatient where they can choose patient the appointment is for
+			}
+		});
         hygienistDeleteAppButton.setText("Delete appointment");
 
         GroupLayout dentistTabPanelLayout = new GroupLayout(dentistTabPanel);

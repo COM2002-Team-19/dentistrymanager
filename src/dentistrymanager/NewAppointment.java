@@ -1,7 +1,5 @@
 package dentistrymanager;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -24,6 +22,7 @@ import javax.swing.JButton;
 
 public class NewAppointment extends JFrame {
 
+	// UI variables
 	private JPanel contentPane;
 	private JTextField patientNameField;
 	private JLabel lblDate;
@@ -33,17 +32,22 @@ public class NewAppointment extends JFrame {
 	private JTextField endTimeField;
 	private JLabel lblTypeOfTreatment;
 	private JTextField treatmentTypeField;
-	private JLabel lblCourseOfTreatment;
-	private JTextField treatmentCourseField;
     private JComboBox<String> dayCombo;
     private JComboBox<String> monthCombo;
     private JComboBox<String> yearCombo;
+    private JComboBox<String> partnerCombo;
+    
+    // Computing variables
+    private String[] partnersStr;
+    private Patient patient;
 
     /*
      * Checks if any of the text fields are empty
      */
     public boolean formFilled() {
-    	if (patientNameField.getText().trim().isEmpty())
+    	if (startTimeField.getText().trim().isEmpty()
+    			|| endTimeField.getText().trim().isEmpty()
+    			|| treatmentTypeField.getText().trim().isEmpty())
     		return false;
     	return true;
     }
@@ -56,17 +60,13 @@ public class NewAppointment extends JFrame {
 		boolean success = false;
 		
 		try(Connection connection = DBConnect.getConnection(true)){
-			String pName = patientNameField.getText().trim();
-			long dob = Long.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString());
-			//Appointment app = new Appointment();
-			/*
-			boolean executeNext = false;
-			try{
-				executeNext = app.add(connection);
-			} catch (DuplicateKeyException e) {
-				
-			}
-			*/
+			long date = Long.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString());
+			String partner = partnerCombo.getSelectedItem().toString();
+			int startTime = Integer.valueOf(startTimeField.getText());
+			int endTime = Integer.valueOf(endTimeField.getText());
+			String typeOfT = treatmentTypeField.getText();
+			int courseOfT = 0;//getCourseOfTreatment(); #TODO
+			Appointment app = new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
 		} catch (SQLException e){
 			DBConnect.printSQLError(e);
 		}
@@ -78,18 +78,26 @@ public class NewAppointment extends JFrame {
 	 * Create the frame.
 	 */
 	public NewAppointment(Patient p) {
+		this.patient = p;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 444, 270);
+		setBounds(100, 100, 345, 250);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
 		JLabel lblPatientName = new JLabel("Name:");
 		patientNameField = new JTextField();
+		patientNameField.setEditable(false);
 		patientNameField.setColumns(10);
-		patientNameField.setText(p.getForename()+" "+p.getSurname());
+		patientNameField.setText(patient.getForename()+" "+patient.getSurname());
 		
-		lblDate = new JLabel("Date :");
+		
+		// Date section
+		lblDate = new JLabel("Date:");
+		yearCombo = new JComboBox<String>();
+		monthCombo = new JComboBox<String>();
+		dayCombo = new JComboBox<String>();
+		
 		//Create arrays of date values
 		String[] days = new String[31];
 		for (int i=1; i<10; i++)
@@ -114,26 +122,36 @@ public class NewAppointment extends JFrame {
         monthCombo.setModel(new DefaultComboBoxModel<String>(months));
         yearCombo.setModel(new DefaultComboBoxModel<String>(y));
 		
+        
+        // Time section
 		lblStartTime = new JLabel("Start time: ");
-		
 		startTimeField = new JTextField();
 		startTimeField.setColumns(10);
 		
 		lblEndTime = new JLabel("End time: ");
-		
 		endTimeField = new JTextField();
 		endTimeField.setColumns(10);
 		
-		lblTypeOfTreatment = new JLabel("Type of Treatment: ");
 		
+		// Treatment section
+		lblTypeOfTreatment = new JLabel("Type of Treatment: ");
 		treatmentTypeField = new JTextField();
 		treatmentTypeField.setColumns(10);
 		
-		lblCourseOfTreatment = new JLabel("Course of Treatment: ");
+		// Select partner section
+		JLabel lblPartner = new JLabel("Physician:");
+		partnerCombo = new JComboBox<String>();
+		try(Connection con = DBConnect.getConnection(false)){
+			ArrayList<Partner> partners = Partner.getAll(con);
+			partnersStr = new String[partners.size()];
+			for (Partner pa : partners)
+				partnersStr[partners.indexOf(pa)] = (pa.toString());
+		} catch (SQLException e){
+			DBConnect.printSQLError(e);
+		}
+        partnerCombo.setModel(new DefaultComboBoxModel<String>(partnersStr));
 		
-		treatmentCourseField = new JTextField();
-		treatmentCourseField.setColumns(10);
-		
+		// Buttons
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -141,8 +159,8 @@ public class NewAppointment extends JFrame {
 					if (updateDB())
 						JOptionPane.showMessageDialog(new JFrame(), "Appointment Added");
 					else
-					    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in adding this appointment. Please try again.", "Submission Error",
-					            JOptionPane.ERROR_MESSAGE);
+					    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in adding this appointment. Please try again.",
+					    		"Submission Error", JOptionPane.ERROR_MESSAGE);
 					dispose();
 				}
 				else
@@ -151,56 +169,53 @@ public class NewAppointment extends JFrame {
 			}
 		});
 		
-		JButton btnBack = new JButton("Back");
-		btnBack.addActionListener(new ActionListener() {
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
 		
-		yearCombo = new JComboBox();
-		monthCombo = new JComboBox();
-		dayCombo = new JComboBox();
+		// Generated code - do not modify
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(btnBack)
-							.addGap(18)
-							.addComponent(btnSubmit))
+							.addComponent(btnCancel)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnSubmit)
+							.addPreferredGap(ComponentPlacement.RELATED))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblPatientName)
 								.addComponent(lblStartTime)
 								.addComponent(lblDate))
 							.addGap(18)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(patientNameField, GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addComponent(startTimeField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(lblEndTime)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(endTimeField))
+									.addComponent(endTimeField, 78, 78, 78))
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addComponent(dayCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(monthCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(yearCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-									.addGap(18)
-									.addComponent(patientNameField, GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE))))
-						.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(yearCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblTypeOfTreatment)
-								.addComponent(lblCourseOfTreatment))
-							.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(lblPartner))
+							.addGap(14)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(treatmentCourseField, GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-								.addComponent(treatmentTypeField, GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))))
+								.addComponent(partnerCombo, 0, 181, Short.MAX_VALUE)
+								.addComponent(treatmentTypeField, GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))))
 					.addGap(62))
 		);
 		gl_contentPane.setVerticalGroup(
@@ -226,14 +241,14 @@ public class NewAppointment extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblTypeOfTreatment)
 						.addComponent(treatmentTypeField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(partnerCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblPartner))
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCourseOfTreatment)
-						.addComponent(treatmentCourseField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnSubmit)
-						.addComponent(btnBack))
+						.addComponent(btnCancel)
+						.addComponent(btnSubmit))
 					.addContainerGap())
 		);
 		contentPane.setLayout(gl_contentPane);

@@ -9,17 +9,17 @@ import java.util.ArrayList;
 public class Appointment {
 	
 	// Instance variables
-	private int appointmentID;
+	private int appointmentID = 0; // Default, gets overwritten
 	private String partner;
 	private long date;
 	private int startTime;
 	private int endTime;
-	private boolean finish;
+	private boolean finish = false; // Default
 	private String typeOfTreatment;
 	private int courseOfTreatment;
 	private Patient patient;
 	
-	// Constructor
+	// Constructor for taking existing appointment from database
 	public Appointment(int appointmentID, String partner, long date, int startTime, int endTime, 
 			boolean finish, Patient patient, String typeOfTreatment, int courseOfTreatment) {
 		this.appointmentID = appointmentID;
@@ -28,6 +28,17 @@ public class Appointment {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.finish = finish;
+		this.patient = patient;
+		this.typeOfTreatment = typeOfTreatment;
+		this.courseOfTreatment = courseOfTreatment;
+	}
+	// Constructor w/out ID i.e. wholly new appointment
+	public Appointment(String partner, long date, int startTime, int endTime, 
+			Patient patient, String typeOfTreatment, int courseOfTreatment) {
+		this.partner = partner; 
+		this.date = date;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.patient = patient;
 		this.typeOfTreatment = typeOfTreatment;
 		this.courseOfTreatment = courseOfTreatment;
@@ -58,7 +69,6 @@ public class Appointment {
 	public int getCourseOfTreatment() {
 		return courseOfTreatment;
 	}
-	
 	public Patient getPatient() {
 		return patient;
 	}
