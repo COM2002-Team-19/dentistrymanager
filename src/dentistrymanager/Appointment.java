@@ -67,6 +67,7 @@ public class Appointment {
 	
 	// Database methods
 
+	// Sets isFinished to true
 	public boolean finish(Connection connection) {
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "UPDATE Appointment SET finish = TRUE WHERE appointmentID = " + appointmentID + ";";
