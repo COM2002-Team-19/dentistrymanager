@@ -2,7 +2,6 @@ package dentistrymanager;
 
 import java.sql.*;
 
-
 public class Address {
 	
 	// Instance variables
