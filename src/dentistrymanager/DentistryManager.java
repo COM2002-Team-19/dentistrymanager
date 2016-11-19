@@ -10,4 +10,7 @@ public class DentistryManager {
 		
 	}
 	
+	public static void main(String[] args){
+		new SplashScreen();
+	}
 }

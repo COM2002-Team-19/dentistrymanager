@@ -113,7 +113,7 @@ public class NewAppointment extends JFrame {
 		
 		ArrayList<String> years = new ArrayList<String>();
 		Calendar now = Calendar.getInstance();
-		for (int i=1900; i<=now.get(Calendar.YEAR); i++)
+		for (int i=now.get(Calendar.YEAR); i<=now.get(Calendar.YEAR)+2; i++)
 			years.add(String.valueOf(i));		
 		String[] y = new String[years.size()];
 		y = years.toArray(y);
