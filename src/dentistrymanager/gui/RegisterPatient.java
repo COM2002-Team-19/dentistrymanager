@@ -29,6 +29,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import dentistrymanager.Address;
 import dentistrymanager.DBConnect;
+import dentistrymanager.DuplicateKeyException;
 import dentistrymanager.Patient;
 import dentistrymanager.Title;
 import java.awt.Component;
@@ -45,8 +46,11 @@ public class RegisterPatient extends JFrame {
     
     /*
      * Uploads new patient to servers
+     * @return boolean whether or not patient upload successful
      */
-    public void updateDB() {
+    public boolean updateDB() {
+		boolean success = false;
+		
 		try(Connection connection = DBConnect.getConnection(true)){
 			String t = titleCombo.getSelectedItem().toString();
 			String fName = forenameField.getText().trim();
@@ -57,11 +61,21 @@ public class RegisterPatient extends JFrame {
 									cityField.getText().trim(),districtField.getText().trim(),postcodeField.getText().trim()); 
 			Patient p = new Patient(t,fName,sName,dob,phoneNo,a);
 			
-			p.add(connection);
-		}
-		catch(SQLException e){
+			boolean executeNext = false;
+			try{
+				executeNext = a.add(connection);
+			} catch (DuplicateKeyException e) {
+				executeNext = true;
+			}
+			
+			if(executeNext)
+				success = p.add(connection);	
+
+		} catch (SQLException e){
 			DBConnect.printSQLError(e);
 		}
+		
+		return success;
     }
     
     /*
@@ -120,11 +134,17 @@ public class RegisterPatient extends JFrame {
         
 		//Create arrays of date values
 		String[] days = new String[31];
-		for (int i=1; i<=31; i++)
+		for (int i=1; i<10; i++)
+			days[i-1] = "0" + String.valueOf(i);
+		for (int i=10; i<=31; i++)
 			days[i-1] = String.valueOf(i);
+		
 		String[] months = new String[12];
-		for (int i=1; i<=12; i++)
+		for (int i=1; i<10; i++)
+			months[i-1] = "0" + String.valueOf(i);
+		for(int i=10; i<=12; i++)
 			months[i-1] = String.valueOf(i);
+		
 		ArrayList<String> years = new ArrayList<String>();
 		Calendar now = Calendar.getInstance();
 		for (int i=1900; i<=now.get(Calendar.YEAR); i++)
@@ -144,9 +164,8 @@ public class RegisterPatient extends JFrame {
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (formFilled()) {
-					updateDB();
-					JOptionPane.showMessageDialog(new JFrame(), "Registration Success");
-					// #TODO check for actual success!!
+					if (updateDB())
+						JOptionPane.showMessageDialog(new JFrame(), "Registration Success");
 					dispose();
 				}
 				else
@@ -162,27 +181,18 @@ public class RegisterPatient extends JFrame {
 		});
         
         houseNumberLabel = new JLabel("House Number");
-        
         houseNumberField = new JTextField();
         houseNumberField.setColumns(10);
-        
         streetLabel = new JLabel("Street");
-        
         streetField = new JTextField();
         streetField.setColumns(10);
-        
         cityLabel = new JLabel("City");
-        
         cityField = new JTextField();
         cityField.setColumns(10);
-        
         districtLabel = new JLabel("District");
-        
         districtField = new JTextField();
         districtField.setColumns(10);
-        
         postcodeLabel = new JLabel("Postcode");
-        
         postcodeField = new JTextField();
         postcodeField.setColumns(10);
 
