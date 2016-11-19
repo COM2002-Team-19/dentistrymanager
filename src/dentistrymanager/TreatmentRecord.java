@@ -5,11 +5,13 @@ import java.util.ArrayList;
 
 public class TreatmentRecord {
 	
+	// Instance variables
 	public int appointmentID;
 	public String treatment;
 	public double outstandingCost;
 	public double coveredCost;
 	
+	// Constructor
 	public TreatmentRecord(int appointmentID, String treatment, double outstandingCost, double coveredCost) {
 		this.appointmentID = appointmentID;
 		this.treatment = treatment;
@@ -17,25 +19,23 @@ public class TreatmentRecord {
 		this.coveredCost = coveredCost;
 	}
 	
+	// Accessors
 	public int getAppointmentID() {
 		return appointmentID;
 	}
-	
 	public String getTreatment() {
 		return treatment;
 	}
-	
 	public double getOutstandingCost() {
 		return outstandingCost;
 	}
-	
 	public double getCoveredCost() {
 		return coveredCost;
 	}
 	
 	// Database methods
 	
-	// Add
+	// Add treatment record to database
 	public boolean add(Connection connection) throws DuplicateKeyException {
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "INSERT INTO TreatmentRecord VALUES (" + appointmentID + ", '" + treatment + "', "
@@ -52,7 +52,7 @@ public class TreatmentRecord {
 		}
 	}
 	
-	// Delete
+	// Delete treatment record to database
 	public boolean delete(Connection connection) throws DeleteForeignKeyException {
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "DELETE FROM TreatmentRecord WHERE appointmentID = " + appointmentID 
@@ -69,6 +69,8 @@ public class TreatmentRecord {
 	}
 	
 	// Static methods
+	
+	// Returns all recorded treatments from an appointment
 	public static ArrayList<TreatmentRecord> getAll(Connection connection, int appointmentID) {
 		ArrayList<TreatmentRecord> treatmentsPerformed = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {

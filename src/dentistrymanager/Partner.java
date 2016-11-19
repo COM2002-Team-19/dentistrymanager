@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Partner {
 	
+	// Instance variables
 	private String name;
 	
 	// Constructor
@@ -17,7 +18,8 @@ public class Partner {
 		return name;
 	}
 	
-	// Other Methods
+	// Instance Methods
+	// Returns appointments for a given week
 	public ArrayList<Appointment> getWeekAppointments(Connection connection, int week) {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
@@ -37,6 +39,7 @@ public class Partner {
 		return appointments;
 	}
 	
+	// Returns appointments for current day
 	public ArrayList<Appointment> getDaysAppointments(Connection connection) {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
@@ -55,6 +58,7 @@ public class Partner {
 		return appointments;
 	}
 	
+	// Returns immediate next appointment
 	public Appointment getNextAppointment(Connection connection) {
 		Appointment nextAppointment = null;
 		try(Statement stmt = connection.createStatement()) {

@@ -134,9 +134,6 @@ public class Patient {
 		}
 	}
 	
-	// Detail Owed
-	
-	
 	// Static methods
 	// Returns all patients
 	public static ArrayList<Patient> getPatient(Connection connection, String patientSearch){

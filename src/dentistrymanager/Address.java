@@ -5,7 +5,7 @@ import java.sql.*;
 
 public class Address {
 	
-	// Private variables
+	// Instance variables
 	private int houseNumber;
 	private String street;
 	private String city;
@@ -25,26 +25,22 @@ public class Address {
 	public int getHouseNumber() {
 		return houseNumber;
 	}
-	
 	public String getStreet() {
 		return street;
 	}
-	
-	public String getCity() {
-		return city;
-	}
-	
 	public String getDistrict() {
 		return district;
 	}
-	
+	public String getCity() {
+		return city;
+	}
 	public String getPostCode() {
 		return postCode;
 	}
 	
 	// Database methods
 	
-	// Add
+	// Add instance to database
 	public boolean add(Connection connection) throws DuplicateKeyException {
 		try(Statement stmt = connection.createStatement()) {;
 			String sql = "INSERT INTO Address VALUES (" + houseNumber + ", '"
@@ -64,7 +60,7 @@ public class Address {
 		}
 	}
 	
-	// Delete
+	// Delete instance from database
 	public boolean delete(Connection connection) throws DeleteForeignKeyException {
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "DELETE FROM Address WHERE"
@@ -81,6 +77,5 @@ public class Address {
 			DBConnect.printSQLError(e);
 			return false;
 		}
-		
 	}
 }

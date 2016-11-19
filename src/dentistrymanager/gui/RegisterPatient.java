@@ -32,6 +32,7 @@ import dentistrymanager.DBConnect;
 import dentistrymanager.Patient;
 import dentistrymanager.Title;
 import java.awt.Component;
+import java.awt.Dimension;
 
 public class RegisterPatient extends JFrame {
 
@@ -50,7 +51,7 @@ public class RegisterPatient extends JFrame {
 			String t = titleCombo.getSelectedItem().toString();
 			String fName = forenameField.getText().trim();
 			String sName = surnameField.getText().trim();
-			long dob = Long.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem() + dayCombo.getSelectedItem());
+			long dob = Long.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString());
 			String phoneNo = phoneField.getText().trim();
 			Address a = new Address(Integer.valueOf(houseNumberField.getText()),streetField.getText().trim(),
 									cityField.getText().trim(),districtField.getText().trim(),postcodeField.getText().trim()); 
@@ -142,8 +143,12 @@ public class RegisterPatient extends JFrame {
         submitButton.setText("Submit");
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (formFilled())
+				if (formFilled()) {
 					updateDB();
+					JOptionPane.showMessageDialog(new JFrame(), "Registration Success");
+					// #TODO check for actual success!!
+					dispose();
+				}
 				else
 				    JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Submission Error",
 				            JOptionPane.ERROR_MESSAGE);

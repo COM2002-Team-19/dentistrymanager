@@ -15,7 +15,5 @@ public class DBUtilities {
 		} catch(NullPointerException e) {
 			return 0;
 		}
-		
 	}
-
 }

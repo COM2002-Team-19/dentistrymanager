@@ -1,7 +1,6 @@
 package dentistrymanager;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class ForTest {
 
@@ -20,7 +19,7 @@ public class ForTest {
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
 		}
-		
+		*/
 		
 		try (Connection con = DBConnect.getConnection(true)){
 			
@@ -70,9 +69,6 @@ public class ForTest {
 			
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
-		} 
-
-		*/
-
+		} 		
 	}
 }

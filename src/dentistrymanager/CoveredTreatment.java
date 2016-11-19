@@ -4,24 +4,25 @@ import java.sql.*;
 
 public class CoveredTreatment {
 	
+	// Instance variables
 	public String typeOfTreatment;
 	public int patientID;
 	public int coveredTreatmentsLeft;
 	
+	// Constructor
 	public CoveredTreatment(String typeOfTreatment, int patientID, int coveredTreatmentsLeft) {
 		this.typeOfTreatment = typeOfTreatment;
 		this.patientID = patientID;
 		this.coveredTreatmentsLeft = coveredTreatmentsLeft;
 	}
 	
+	// Accessors
 	public String getTypeOfTreatment() {
 		return typeOfTreatment;
 	}
-	
 	public int getPatientID() {
 		return patientID;
 	}
-	
 	public int getCoveredTreatmentsLeft() {
 		return coveredTreatmentsLeft;
 	}
@@ -40,5 +41,4 @@ public class CoveredTreatment {
 			return false;
 		}
 	}
-
 }

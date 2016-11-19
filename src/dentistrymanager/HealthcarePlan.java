@@ -16,7 +16,6 @@ public class HealthcarePlan {
 		this.monthlyPayment = monthlyPayment;
 		this.coverage = coverage;
 	}
-	
 	public HealthcarePlan(String name, double monthlyPayment) {
 		this(name, monthlyPayment, new ArrayList<>());
 	}
@@ -25,16 +24,14 @@ public class HealthcarePlan {
 	public String getName() {
 		return name;
 	}
-
 	public double getMonthlyPayment() {
 		return monthlyPayment;
 	}
-	
 	public ArrayList<Coverage> getCoverage() {
 		return coverage;
 	}
 	
-	// OtherMethods
+	// toString
 	public String toString() {
 		String plan = name + " | " + monthlyPayment + " | ";
 		
@@ -44,6 +41,8 @@ public class HealthcarePlan {
 	}
 	
 	// Static methods
+	
+	//Returns list of all HealthcarePlans in database
 	public static ArrayList<HealthcarePlan> getAll(Connection connection) {
 		ArrayList<HealthcarePlan> plans = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {

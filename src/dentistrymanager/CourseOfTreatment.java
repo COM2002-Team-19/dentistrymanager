@@ -4,28 +4,29 @@ import java.sql.*;
 
 public class CourseOfTreatment {
 	
+	// Instance variables
 	private int courseOfTreatment;
 	private int patientID;
 	private boolean complete;
 	
+	// Constructor
 	public CourseOfTreatment(int courseOfTreatment, int patientID, boolean complete) {
 		this.courseOfTreatment = courseOfTreatment;
 		this.patientID = patientID;
 		this.complete = complete;
 	}
-	
+	// Default constructor
 	public CourseOfTreatment() {
 		this(0,0,false);
 	}
 	
+	// Accessors
 	public int getCourseOfTreatment() {
 		return courseOfTreatment;
 	}
-	
 	public int getPatientID() {
 		return patientID;
 	}
-	
 	public boolean isComplete() {
 		return complete;
 	}
@@ -77,5 +78,4 @@ public class CourseOfTreatment {
 		}
 		return courseOfTreatment;
 	}
-
 }

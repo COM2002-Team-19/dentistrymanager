@@ -5,17 +5,17 @@ import java.util.ArrayList;
 
 public class TypeOfTreatment {
 	
+	// Instance variables
 	private String name;
 	private int duration;
 	private ArrayList<Treatment> treatments;
 	
+	// Constructors
 	public TypeOfTreatment(String name, int duration, ArrayList<Treatment> treatments) {
 		this.name = name;
 		this.duration = duration;
 		this.treatments = treatments;
 	}
-	
-	
 	public TypeOfTreatment(String name, int duration) {
 		this(name, duration, new ArrayList<>());
 	}
@@ -24,11 +24,9 @@ public class TypeOfTreatment {
 	public String getName() {
 		return name;
 	}
-	
 	public int getDuration() {
 		return duration;
 	}
-	
 	public ArrayList<Treatment> getTreatments() {
 		return treatments;
 	}
@@ -51,6 +49,5 @@ public class TypeOfTreatment {
 			DBConnect.printSQLError(e);
 		} 
 		return typesOfTreatments;
-	}
-	
+	}	
 }
