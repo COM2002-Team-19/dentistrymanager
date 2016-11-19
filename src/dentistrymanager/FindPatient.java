@@ -67,7 +67,6 @@ public class FindPatient extends JFrame {
     private void initComponents() {
         
         searchField = new JTextField();
-        searchField.setText("Patient Name");
         searchButton = new JButton(); // #TODO button action
         searchButton.setText("Search");
 		searchButton.addActionListener(new ActionListener() {
