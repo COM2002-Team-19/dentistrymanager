@@ -64,8 +64,7 @@ public class RegisterPatient extends JFrame {
 			}
 			
 			if(executeNext)
-				success = p.add(connection);	
-
+				success = p.add(connection);
 		} catch (SQLException e){
 			DBConnect.printSQLError(e);
 		}
@@ -115,6 +114,8 @@ public class RegisterPatient extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        
+        // Title section
         Title[] titles =  Title.values();
         String[] titlesStr = new String[titles.length];
         for (int i=0; i<titles.length; i++)

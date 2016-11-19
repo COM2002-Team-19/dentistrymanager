@@ -101,12 +101,13 @@ public class SecretaryCalendar extends JFrame {
 		    	}
 			}
 		});
+
         
         hygienistAddAppButton.setText("Add appointment");
         hygienistAddAppButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFrame findPatient = new FindPatient();
-				new FindPatient();
+				FindPatient fp = new FindPatient();
+				// redirects to FindPatient where they can choose patient the appointment is for
 			}
 		});
         

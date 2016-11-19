@@ -18,6 +18,11 @@ public class Partner {
 		return name;
 	}
 	
+	// toString
+	public String toString(){
+		return this.getName();
+	}
+	
 	// Instance Methods
 	// Returns appointments for a given week
 	public ArrayList<Appointment> getWeekAppointments(Connection connection, int week) {
