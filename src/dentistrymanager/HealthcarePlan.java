@@ -46,7 +46,7 @@ public class HealthcarePlan {
 	public static ArrayList<HealthcarePlan> getAll(Connection connection) {
 		ArrayList<HealthcarePlan> plans = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
-			String query = "SELECT * FROM HealthCarePlan;";
+			String query = "SELECT * FROM HealthcarePlan;";
 			ResultSet res = stmt.executeQuery(query);
 			while(res != null) {
 				String plan = res.getString("name");

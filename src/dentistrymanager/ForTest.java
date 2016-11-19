@@ -20,7 +20,7 @@ public class ForTest {
 			DBConnect.printSQLError(e);
 		}
 		*/
-		
+		/*
 		try (Connection con = DBConnect.getConnection(true)){
 			
 			DatabaseBuilder builder = new DatabaseBuilder(con);
@@ -69,6 +69,13 @@ public class ForTest {
 			
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
-		} 		
+		} 	
+		*/
+		try (Connection con = DBConnect.getConnection(false)){
+			
+		} catch (SQLException e) {
+			DBConnect.printSQLError(e);
+		} 
+		
 	}
 }
