@@ -29,4 +29,8 @@ public class PlanSubscription {
 	public long getEndDate() {
 		return endDate;
 	}
+	
+	// Database methods
+	
+	
 }

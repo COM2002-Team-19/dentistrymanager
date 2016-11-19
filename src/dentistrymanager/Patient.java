@@ -38,13 +38,15 @@ public class Patient {
 	
 
 	// Accessors
+	public int getPatientID() { return patientID; }
 	public Title getTitle() { return title;	}
 	public String getForename() { return forename;}
 	public String getSurname() { return surname;}
 	public long getDateOfBirth() { return dateOfBirth;}
 	public String getPhoneNo() { return phoneNo;}
-	public double balance() { return balance;}
+	public double getBalance() { return balance;}
 	public Address getAddress() { return address;}
+	
 	
 	// Database Methods
 	

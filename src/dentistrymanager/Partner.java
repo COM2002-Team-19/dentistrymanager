@@ -25,14 +25,19 @@ public class Partner {
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "SELECT * FROM Appointment WHERE partner = " + name
 												+ " AND date BETWEEN "+ DateUtilities.startWeek(week) 
-												+ " AND " + DateUtilities.endWeek(week)+ ";";
+												+ " AND " + DateUtilities.endWeek(week)+ " AND finish = FALSE;";
 			ResultSet res = stmt.executeQuery(sql);
-			while(res.next())
+			while(res.next()) {
+				Patient patient = new Patient();
+				int patientID = DBUtilities.nullToZero(res.getString("patientID"));
+				if(patientID != 0) {
+					patient = Patient.getPatientByID(connection, patientID);
+				}
 				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
                         						 res.getLong("date"), res.getInt("startTime"), res.getInt("endTime"), 
-                        						 res.getBoolean("finish"), DBUtilities.nullToZero(res.getString("patientID")),
-                        						 res.getString("typeOfTreatment"),
+                        						 res.getBoolean("finish"), patient, res.getString("typeOfTreatment"),
                         						 DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
+			}
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
 		}
@@ -44,14 +49,19 @@ public class Partner {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "SELECT * FROM Appointment WHERE partner = " + name
-												+ " AND date = "+ DateUtilities.today() + ";";
+												+ " AND date = "+ DateUtilities.today() + " AND finish = FALSE;";
 			ResultSet res = stmt.executeQuery(sql);
-			while(res.next())
+			while(res.next()) {
+				Patient patient = new Patient();
+				int patientID = DBUtilities.nullToZero(res.getString("patientID"));
+				if(patientID != 0) {
+					patient = Patient.getPatientByID(connection, patientID);
+				}
 				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
                                                  res.getLong("Date"), res.getInt("startTime"), res.getInt("endTime"), 
-                                                 res.getBoolean("finish"), DBUtilities.nullToZero(res.getString("patientID")),
-                                                 res.getString("typeOfTreatment"),
+                                                 res.getBoolean("finish"), patient, res.getString("typeOfTreatment"),
                                                  DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
+			}
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
 		}
@@ -65,12 +75,17 @@ public class Partner {
 			String sql = "SELECT * FROM Appointment WHERE appointmentID = "
 						+ "(SELECT MIN(appointmentID) FROM Appointment WHERE partner = " + name + "AND finish = FALSE;";
 			ResultSet res = stmt.executeQuery(sql);
-			if(res.next())
+			if(res.next()) {
+				Patient patient = new Patient();
+				int patientID = DBUtilities.nullToZero(res.getString("patientID"));
+				if(patientID != 0) {
+					patient = Patient.getPatientByID(connection, patientID);
+				}
 				nextAppointment = new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
 						                          res.getLong("Date"), res.getInt("startTime"), res.getInt("endTime"), 
-						                          res.getBoolean("finish"), DBUtilities.nullToZero(res.getString("patientID")),
-						                          res.getString("typeOfTreatment"),
+						                          res.getBoolean("finish"), patient, res.getString("typeOfTreatment"),
 	                                              DBUtilities.nullToZero(res.getString("courseOfTreatment")));
+			}
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
 		}

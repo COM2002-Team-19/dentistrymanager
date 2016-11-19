@@ -10,7 +10,6 @@ public class Appointment {
 	
 	// Instance variables
 	private int appointmentID;
-	private int patientID;
 	private String partner;
 	private long date;
 	private int startTime;
@@ -18,17 +17,18 @@ public class Appointment {
 	private boolean finish;
 	private String typeOfTreatment;
 	private int courseOfTreatment;
+	private Patient patient;
 	
 	// Constructor
 	public Appointment(int appointmentID, String partner, long date, int startTime, int endTime, 
-			boolean finish, int patientID, String typeOfTreatment, int courseOfTreatment) {
+			boolean finish, Patient patient, String typeOfTreatment, int courseOfTreatment) {
 		this.appointmentID = appointmentID;
 		this.partner = partner; 
 		this.date = date;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.finish = finish;
-		this.patientID = patientID;
+		this.patient = patient;
 		this.typeOfTreatment = typeOfTreatment;
 		this.courseOfTreatment = courseOfTreatment;
 	}
@@ -59,14 +59,14 @@ public class Appointment {
 		return courseOfTreatment;
 	}
 	
-	public int getPatientID() {
-		return patientID;
+	public Patient getPatient() {
+		return patient;
 	}
 	
 	// Other Methods
 	// toString
 	public String toString() {
-		return appointmentID + " : " + patientID + " : " + partner + " : " + date  + " : " +  startTime  + " : " 
+		return appointmentID + " : " + patient + " : " + partner + " : " + date  + " : " +  startTime  + " : " 
 				+ endTime  + " : " + finish;  
 	}
 	
@@ -92,8 +92,8 @@ public class Appointment {
 			String sql = "INSERT INTO Appointment (partner, date, startTime, endTime, typeOfTreatment) "
 											+ "VALUES ('" + partner + "',"  + date + ", " + startTime + "," + endTime + "," + typeOfTreatment +");";
 			stmt.executeUpdate(sql);
-			if(patientID > 0) {
-				sql = "INSERT INTO ApointmentsPerPatient VALUES (" + patientID + ", " + appointmentID + ");";
+			if(patient != null) {
+				sql = "INSERT INTO ApointmentsPerPatient VALUES (" + patient.getPatientID() + ", " + appointmentID + ");";
 				stmt.executeUpdate(sql);
 			}
 			
@@ -134,22 +134,28 @@ public class Appointment {
 	}
 	
 	// Static methods
-	public static ArrayList<Appointment>findByPartnerPatient(Connection connection, String patient, String partner) {
+	public static ArrayList<Appointment>findByPartnerPatient(Connection connection, String patientSearchTerm, 
+																							String partnerSearchTerm) {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "SELECT a.*, ap.patientID, ac.courseOfTreatment FROM Appointment a "
 							+ "LEFT OUTER JOIN AppointmentsPerPatient ap ON a.appointmentID = ap.appointmentID"
 							+ "LEFT JOIN Patient p ON ap.patientID = p.patientID"
 							+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment ac ON a.appointmentID = ac.appointmentID"
-							+ "WHERE a.partner = '%" + partner + "%' AND (p.forename = '%" + patient +"%' "
-									+ "OR p.surname = '%" + patient +"%');";
+							+ "WHERE a.partner = '%" + partnerSearchTerm + "%' AND (p.forename = '%" + patientSearchTerm +"%' "
+									+ "OR p.surname = '%" + patientSearchTerm +"%');";
 			ResultSet res = stmt.executeQuery(sql);
-			while(res.next())
+			while(res.next()) {
+				Patient patient = new Patient();
+				int patientID = DBUtilities.nullToZero(res.getString("patientID"));
+				if(patientID != 0) {
+					patient = Patient.getPatientByID(connection, patientID);
+				}
 				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), res.getLong("Date"), 
 												 res.getInt("startTime"), res.getInt("endTime"), res.getBoolean("finish"),
-												 DBUtilities.nullToZero(res.getString("patientID")),
-												 res.getString("typeOfTreatment"),
+												 patient, res.getString("typeOfTreatment"),
 												 DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
+			}
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
 		}

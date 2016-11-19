@@ -25,6 +25,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -85,6 +87,14 @@ public class FindPatient extends JFrame {
         searchResultsList = new JList<>();
         searchResultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         searchResultsList.setCellRenderer(new PatientListRenderer());
+        searchResultsList.addListSelectionListener(new ListSelectionListener() {
+        	public void valueChanged(ListSelectionEvent event) {
+        		int selectedIndex = searchResultsList.getSelectedIndex();
+        		if(selectedIndex != -1) {
+        			selectedPatient = searchResultsList.getSelectedValue();
+        		}
+        	}
+        });
         
         // Loads the list of patients when the menu is entered
     	updatePatientList();
@@ -124,33 +134,23 @@ public class FindPatient extends JFrame {
         changePlan = new JDialog();
         planComboBox = new JComboBox<>();
         planComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        planComboBox.setEnabled(false);
         
         updatePlan = new JButton();
         updatePlan.setText("Update Plan");
         
-        planClosebutton = new JButton(); // #TODO button action
+        planClosebutton = new JButton(); 
         planClosebutton.setText("Close");
         
         owedPanel = new JPanel();
         
         owedLabel = new JLabel();
         owedLabel.setText("Owed:");
-        amountOwedList = new JTextArea();
+        amountOwedList = new JTextArea(AMOUNT_TEXT_AREA_ROWS, AMOUNT_TEXT_AREA_COLUMNS);
+        amountOwedList.setEnabled(false);
         
-        
-        
-        
-        
-        
-        
-        
-        //owedField = new JTextField();
-        //owedField.setText("to fill");
-        //owedField.setEditable(false);
-        
-        receiptButton = new JButton(); // #TODO button action
+        receiptButton = new JButton(); 
         receiptButton.setText("Receipt");
+        receiptButton.setEnabled(false);
         receiptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
             	//printReceipt();
@@ -389,7 +389,7 @@ public class FindPatient extends JFrame {
         getContentPane().setLayout(layout);
 
         pack();
-    }//GEN-END:initComponents
+    }
 
     // Our methods
     
@@ -402,10 +402,43 @@ public class FindPatient extends JFrame {
     	this.searchResultsList.setModel(model);
     }
     
+    // Loads the details of the selected patient
+    private void loadSelectedPatientDetails() {
+    	
+    	nameField.setEnabled(true);
+    	nameField.setText(selectedPatient.getForename() + " " + selectedPatient.getSurname());
+    	addressArea.setText(selectedPatient.getAddress().getHouseNumber() + "\n" +
+    						selectedPatient.getAddress().getStreet() + "\n" +
+    						selectedPatient.getAddress().getCity() + "\n" +
+    						selectedPatient.getAddress().getDistrict() + "\n" +
+    						selectedPatient.getAddress().getPostCode());
+    	phoneField.setEnabled(true);
+    	phoneField.setText(selectedPatient.getPhoneNo());
+    	
+    	// Obtains plan details
+    	//try(Connection connection = DBConnect.getConnection(false)) {
+    		
+    	//}
+    	
+    	
+    	planNameArea.setEnabled(true);
+    	
+    	
+    }
+    
+    // Enable patient fields 
+    private void enablePatientFields() {
+    	nameField.setEnabled(true);
+    	addressArea.setEnabled(true);
+    	phoneField.setEnabled(true);
+    	planNameArea.setEnabled(true);
+    	amountOwedList.setEnabled(true);
+    	receiptButton.setEnabled(true);
+    }
+    
     // Loads the detail of the amount owed by the patient
     private void updatePatientOwedDetail() {
     	DefaultListModel<String> model = new DefaultListModel<>();
-    	
     }
     
     /**
@@ -442,6 +475,10 @@ public class FindPatient extends JFrame {
             }
         });
     }
+    
+    // Our constants
+    public static final int AMOUNT_TEXT_AREA_ROWS = 4;
+    public static final int AMOUNT_TEXT_AREA_COLUMNS = 30;
 
     // System variables
     private ArrayList<Patient> patients;
