@@ -46,8 +46,9 @@ public class FindPatient extends JFrame {
 
     public FindPatient() {
 		try(Connection connection = DBConnect.getConnection(false)){
-			this.patients = Patient.getPatients(connection, "");
-			this.selectedPatient = null;
+			patients = Patient.getPatients(connection, "");
+			//healthcarePlans = HealthcarePlan.getAll(connection);
+			selectedPatient = null;
 		}
 		catch(SQLException e){
 			DBConnect.printSQLError(e);
@@ -91,6 +92,7 @@ public class FindPatient extends JFrame {
         		if(selectedIndex != -1) {
         			selectedPatient = searchResultsList.getSelectedValue();
         			loadSelectedPatientDetails();
+        			setSubscribeButtonText();
         		}
         	}
         });
@@ -127,12 +129,20 @@ public class FindPatient extends JFrame {
         planNameArea.setEnabled(false);
         
         subscribeButton = new JButton();
-        subscribeButton.setText("Subscribe"); // #TODO button action
+        subscribeButton.setText("Subscribe");
         subscribeButton.setVisible(false);
+        subscribeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changePlan.setVisible(true);
+			}
+		});
 
         changePlan = new JDialog();
         planComboBox = new JComboBox<>();
-        planComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        planComboBox.setRenderer(new HealthcarePlanListRenderer());
+        
+        // Loads the plans in the combo box 
+        // updateHealthcarePlanList();
         
         updatePlan = new JButton();
         updatePlan.setText("Update Plan");
@@ -170,6 +180,15 @@ public class FindPatient extends JFrame {
         
         deleteButton = new JButton(); // #TODO button action
         deleteButton.setText("Delete Patient");
+        
+        addAppointmentButton = new JButton();
+        addAppointmentButton.setText("Add appointment");
+        addAppointmentButton.setEnabled(false);
+        addAppointmentButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent evt) {
+        		new NewAppointment(selectedPatient);
+        	}
+        });
 
         //What/where are these?? #TODO
         jScrollPane1 = new JScrollPane();
@@ -305,6 +324,7 @@ public class FindPatient extends JFrame {
         			.addContainerGap()
         			.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
         				.addComponent(deleteButton, GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+        				.addComponent(addAppointmentButton, GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
         				.addGroup(patientDetailsLayout.createSequentialGroup()
         					.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
         						.addGroup(patientDetailsLayout.createSequentialGroup()
@@ -352,6 +372,7 @@ public class FindPatient extends JFrame {
         				.addComponent(owedPanel, GroupLayout.PREFERRED_SIZE, 102, Short.MAX_VALUE))
         			.addGap(18)
         			.addComponent(deleteButton)
+        			.addComponent(addAppointmentButton)
         			.addContainerGap())
         );
         patientDetails.setLayout(patientDetailsLayout);
@@ -388,6 +409,7 @@ public class FindPatient extends JFrame {
         getContentPane().setLayout(layout);
 
         pack();
+        setVisible(true);
     }
 
     // Our methods
@@ -395,9 +417,17 @@ public class FindPatient extends JFrame {
     // Loads the list of patients
     private void updatePatientList() {
     	DefaultListModel<Patient> model = new DefaultListModel<>();
-    	for(Patient patient: this.patients)
+    	for(Patient patient: patients)
     		model.addElement(patient);
-    	this.searchResultsList.setModel(model);
+    	searchResultsList.setModel(model);
+    }
+    
+    // Loads the list of HealthcarePlans
+    private void updateHealthcarePlanList() {
+    	DefaultComboBoxModel<HealthcarePlan> model = new DefaultComboBoxModel<>();
+    	for(HealthcarePlan plan: healthcarePlans)
+    		model.addElement(plan);
+    	planComboBox.setModel(model);
     }
     
     // Loads the details of the selected patient
@@ -431,15 +461,21 @@ public class FindPatient extends JFrame {
     	
     	for(String amountOwed: amountOwedDetails)
     		amountOwedList.append(amountOwed);	
+    	
+    	// Add appointment button enabled
+    	addAppointmentButton.setEnabled(true);
+    	
     }
     
-    // Activates the subscribe/unsubscribe button depending on whether the patient has a plan or not
-    private void subscribeOptions() {
-    	if(selectedPatient != null)
-    		
+    // Activates the subscribe button depending on whether the patient has a plan or not
+    private void setSubscribeButtonText() {
+    	if(selectedPatient != null) {
+    		subscribeButton.setVisible(true);
+    		if(selectedPatient.hasHealthCarePlan())
+        		subscribeButton.setText("Unsubscribe");
+    	}
     }
-    
-    
+     
     /**
      * @param args the command line arguments
      */
@@ -481,7 +517,7 @@ public class FindPatient extends JFrame {
 
     // System variables
     private ArrayList<Patient> patients;
-    private String enteredName;
+    private ArrayList<HealthcarePlan> healthcarePlans;
     private Patient selectedPatient;
     
     // GUI Variables
@@ -497,14 +533,13 @@ public class FindPatient extends JFrame {
     private JPanel healthcarePanel;
     private JLabel healthcareLabel;
     private JPanel owedPanel;
-    private JTextField owedField;
     private JLabel owedLabel;
     private JTextField nameField;
     private JLabel nameLabel;
     private JTextField phoneField;
     private JLabel phoneLabel;
     private JButton planClosebutton;
-    private JComboBox<String> planComboBox;
+    private JComboBox<HealthcarePlan> planComboBox;
     private JTextField planNameArea;
     private JButton subscribeButton;
     private JDialog changePlan;
@@ -513,6 +548,7 @@ public class FindPatient extends JFrame {
     private JButton printRecieptCloseButton;
     private JButton printRecieptPayButton;
     private JButton receiptButton;
+    private JButton addAppointmentButton;
     private JScrollPane jScrollPane1;
     private JTextArea jTextArea1;
     private JTextArea amountOwedList;

@@ -8,15 +8,15 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 @SuppressWarnings("serial")
-public class PatientListRenderer extends JLabel implements ListCellRenderer<Patient> {
+public class HealthcarePlanListRenderer extends JLabel implements ListCellRenderer<HealthcarePlan> {
 	
-	public PatientListRenderer() {
+	public HealthcarePlanListRenderer() {
 		setOpaque(true);
 	}
 	
-	public Component getListCellRendererComponent(JList<? extends Patient> list, Patient patient, int index, 
+	public Component getListCellRendererComponent(JList<? extends HealthcarePlan> list, HealthcarePlan plan, int index, 
 																			boolean isSelected, boolean cellHasFocus) {
-		setText(patient.getForename() + " " + patient.getSurname());
+		setText(plan.getName());
         Color background;
         Color foreground;
 
