@@ -23,8 +23,8 @@ public class Partner {
 	public ArrayList<Appointment> getWeekAppointments(Connection connection, int week) {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "SELECT * FROM Appointment WHERE partner = " + name
-												+ " AND date BETWEEN "+ DateUtilities.startWeek(week) 
+			String sql = "SELECT * FROM Appointment WHERE partner = '" + name
+												+ "' AND date BETWEEN "+ DateUtilities.startWeek(week) 
 												+ " AND " + DateUtilities.endWeek(week)+ " AND finish = FALSE;";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next()) {

@@ -19,7 +19,7 @@ public class AppointmentListRenderer extends JLabel implements ListCellRenderer<
 																			boolean isSelected, boolean cellHasFocus){
 		
 		
-		setText(appointment.getPatient().getForename() + " " + appointment.getPatient().getSurname() + " " + appointment.getStartTime());
+		setText("" +appointment.getDate() + " " + appointment.getPatient().getForename() + " " + appointment.getPatient().getSurname() + " " + appointment.getStartTime());
         Color background;
         Color foreground;
 
