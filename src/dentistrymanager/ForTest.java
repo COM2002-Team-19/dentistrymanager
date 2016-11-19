@@ -1,6 +1,7 @@
 package dentistrymanager;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class ForTest {
 
@@ -72,7 +73,9 @@ public class ForTest {
 		} 	
 		*/
 		try (Connection con = DBConnect.getConnection(false)){
-			
+			ArrayList<HealthcarePlan> plans = HealthcarePlan.getAll(con);
+			for(HealthcarePlan p: plans)
+				System.out.println(p);
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
 		} 

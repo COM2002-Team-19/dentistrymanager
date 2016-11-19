@@ -47,7 +47,7 @@ public class FindPatient extends JFrame {
     public FindPatient() {
 		try(Connection connection = DBConnect.getConnection(false)){
 			patients = Patient.getPatients(connection, "");
-			//healthcarePlans = HealthcarePlan.getAll(connection);
+			healthcarePlans = HealthcarePlan.getAll(connection);
 			selectedPatient = null;
 		}
 		catch(SQLException e){
@@ -142,7 +142,7 @@ public class FindPatient extends JFrame {
         planComboBox.setRenderer(new HealthcarePlanListRenderer());
         
         // Loads the plans in the combo box 
-        // updateHealthcarePlanList();
+        updateHealthcarePlanList();
         
         updatePlan = new JButton();
         updatePlan.setText("Update Plan");

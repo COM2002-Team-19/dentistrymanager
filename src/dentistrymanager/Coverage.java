@@ -42,7 +42,7 @@ public class Coverage {
 	public static ArrayList<Coverage> getCoverageByPlan(Connection connection, String plan) {
 		ArrayList<Coverage> planCoverage = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "SELECT * FROM Coverage WHERE plan = " + plan +";";
+			String sql = "SELECT * FROM Coverage WHERE plan = '" + plan +"';";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next())
 				planCoverage.add(new Coverage(res.getString("plan"), res.getString("typeOfTreatment"), 

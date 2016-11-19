@@ -48,11 +48,12 @@ public class HealthcarePlan {
 		try(Statement stmt = connection.createStatement()) {
 			String query = "SELECT * FROM HealthcarePlan;";
 			ResultSet res = stmt.executeQuery(query);
-			while(res != null) {
+			while(res.next()) {
 				String plan = res.getString("name");
 				
 				// Get the plan coverage
 				ArrayList<Coverage> planCoverage = Coverage.getCoverageByPlan(connection, plan);
+				
 				plans.add(new HealthcarePlan(plan, res.getDouble("monthlyPayment"), planCoverage));
 			}
 		} catch (SQLException e) {
