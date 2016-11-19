@@ -59,7 +59,7 @@ public class SecretaryCalendar extends JFrame {
         hygienistAddAppButton = new JButton();
         hygienistDeleteAppButton = new JButton();
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         dentistCalendarList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         dentistCalendarList.setCellRenderer(new AppointmentListRenderer());

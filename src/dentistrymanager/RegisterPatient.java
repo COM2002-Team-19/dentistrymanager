@@ -102,7 +102,7 @@ public class RegisterPatient extends JFrame {
         submitButton = new JButton();
         cancelButton = new JButton();
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         // Title section
         Title[] titles =  Title.values();
