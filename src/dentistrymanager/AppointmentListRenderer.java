@@ -16,13 +16,10 @@ public class AppointmentListRenderer extends JLabel implements ListCellRenderer<
 	}
 	
 	public Component getListCellRendererComponent(JList<? extends Appointment> list, Appointment appointment, int index, 
-																			boolean isSelected, boolean cellHasFocus) {
-		try(Connection connection = DBConnect.getConnection(false)){
-			Patient patient = Patient.getPatientByID(connection, appointment.getPatientID());
-		}
+																			boolean isSelected, boolean cellHasFocus){
 		
 		
-		setText(patient.getForename() + " " + patient.getSurname() + " " + appointment.getStartTime());
+		setText(appointment.getPatient().getForename() + " " + appointment.getPatient().getSurname() + " " + appointment.getStartTime());
         Color background;
         Color foreground;
 

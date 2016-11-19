@@ -1,3 +1,5 @@
+package dentistrymanager;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
@@ -16,25 +18,24 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
-public class DentistryCalendar extends JFrame {
+public class PartnerCalendar extends JFrame {
 
 	private JPanel contentPane;
 	private ArrayList<Partner> partners;
 	private ArrayList<Appointment> nextPatients;
-	private Partner dentist;
+	private Partner p;
 
 	public static void main(String[] args) {
-		
-		new DentistryCalendar();
+		new PartnerCalendar(0);
  	}
  
-	public DentistryCalendar() {
+	public PartnerCalendar(int i) {
 		
 		try(Connection connection = DBConnect.getConnection(false)){
 			this.partners = Partner.getAll(connection);
-    		this.dentist = partners.get(0);
-    		this.nextPatients = dentist.getDaysAppointments(connection);   		
-    	}
+			this.p = partners.get(i);
+			this.nextPatients = p.getDaysAppointments(connection);   		
+		}
     	catch(SQLException e){
     		DBConnect.printSQLError(e);
     	}
@@ -64,7 +65,9 @@ public class DentistryCalendar extends JFrame {
 		JPanel nextAppointment = new JPanel();
 		nextAppointment.setLayout(new BorderLayout());
 		JLabel nextAppTitle = new JLabel("Next Appointments:");
-		// NOT FINISHED
+		
+		// Insert JList
+		
 		JScrollPane scrollPaneNext = new JScrollPane(nextAppDisplay);
 		nextAppointment.add(nextAppTitle, BorderLayout.NORTH);
 		nextAppointment.add(scrollPaneNext, BorderLayout.CENTER);
