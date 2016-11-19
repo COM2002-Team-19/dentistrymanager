@@ -134,11 +134,17 @@ public class RegisterPatient extends JFrame {
         
 		//Create arrays of date values
 		String[] days = new String[31];
-		for (int i=1; i<=31; i++)
+		for (int i=1; i<10; i++)
+			days[i-1] = "0" + String.valueOf(i);
+		for (int i=10; i<=31; i++)
 			days[i-1] = String.valueOf(i);
+		
 		String[] months = new String[12];
-		for (int i=1; i<=12; i++)
+		for (int i=1; i<10; i++)
+			months[i-1] = "0" + String.valueOf(i);
+		for(int i=10; i<=12; i++)
 			months[i-1] = String.valueOf(i);
+		
 		ArrayList<String> years = new ArrayList<String>();
 		Calendar now = Calendar.getInstance();
 		for (int i=1900; i<=now.get(Calendar.YEAR); i++)
@@ -158,9 +164,8 @@ public class RegisterPatient extends JFrame {
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (formFilled()) {
-					updateDB();
-					JOptionPane.showMessageDialog(new JFrame(), "Registration Success");
-					// #TODO check for actual success!!
+					if (updateDB())
+						JOptionPane.showMessageDialog(new JFrame(), "Registration Success");
 					dispose();
 				}
 				else
