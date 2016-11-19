@@ -161,6 +161,9 @@ public class RegisterPatient extends JFrame {
 				if (formFilled()) {
 					if (updateDB())
 						JOptionPane.showMessageDialog(new JFrame(), "Registration Success");
+					else
+					    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in registering this patient." 
+					    		+"Please check your connection and try again.", "Submission Error", JOptionPane.ERROR_MESSAGE);
 					dispose();
 				}
 				else
@@ -356,9 +359,10 @@ public class RegisterPatient extends JFrame {
     private JPanel addressPanel;
     private JButton cancelButton;
     private JLabel dateOfBirthLabel;
-    private JComboBox<String> dayCombo;
     private JLabel firstNameLabel;
+    private JComboBox<String> dayCombo;
     private JComboBox<String> monthCombo;
+    private JComboBox<String> yearCombo;
     private JTextField forenameField;
     private JLabel phoneLabel;
     private JTextField phoneField;
@@ -367,7 +371,6 @@ public class RegisterPatient extends JFrame {
     private JLabel surnameLabel;
     private JComboBox<String> titleCombo;
     private JLabel titleLabel;
-    private JComboBox<String> yearCombo;
     private JLabel houseNumberLabel;
     private JTextField houseNumberField;
     private JLabel streetLabel;
