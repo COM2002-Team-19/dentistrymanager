@@ -48,7 +48,7 @@ public class FindPatient extends JFrame {
 
     public FindPatient() {
 		try(Connection connection = DBConnect.getConnection(false)){
-			this.patients = Patient.getPatient(connection, "");
+			this.patients = Patient.getPatients(connection, "");
 			this.selectedPatient = null;
 		}
 		catch(SQLException e){
@@ -75,7 +75,7 @@ public class FindPatient extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String enteredName = searchField.getText();
 				try(Connection connection = DBConnect.getConnection(false)) {
-					patients = Patient.getPatient(connection, enteredName);
+					patients = Patient.getPatients(connection, enteredName);
 					updatePatientList();
 				} catch (SQLException ex) {
 					DBConnect.printSQLError(ex);
@@ -398,7 +398,6 @@ public class FindPatient extends JFrame {
     	DefaultListModel<Patient> model = new DefaultListModel<>();
     	for(Patient patient: this.patients)
     		model.addElement(patient);
-    	
     	this.searchResultsList.setModel(model);
     }
     
@@ -414,15 +413,13 @@ public class FindPatient extends JFrame {
     						selectedPatient.getAddress().getPostCode());
     	phoneField.setEnabled(true);
     	phoneField.setText(selectedPatient.getPhoneNo());
-    	
-    	// Obtains plan details
-    	//try(Connection connection = DBConnect.getConnection(false)) {
-    		
-    	//}
-    	
-    	
     	planNameArea.setEnabled(true);
     	
+    	// If patient has plan it fills in the plan details
+    	if(selectedPatient.hasHealthCarePlan())
+    		planNameArea.setText(selectedPatient.gethealthCarePlan().getPlan() + " start date: " +  
+    								selectedPatient.gethealthCarePlan().getStartDate() + " ends: " + 
+    								selectedPatient.gethealthCarePlan().getEndDate());
     	
     }
     

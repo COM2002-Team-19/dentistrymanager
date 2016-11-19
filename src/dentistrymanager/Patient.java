@@ -14,9 +14,10 @@ public class Patient {
 	private String phoneNo;
 	private double balance;
 	private Address address;
+	private PlanSubscription healthCarePlan;
 		
 	// Constructor
-	public Patient(int id, String t, String f, String s, long d, String p, double b, Address a){
+	public Patient(int id, String t, String f, String s, long d, String p, double b, Address a, PlanSubscription pl){
 		patientID = id;
 		title = Title.called(t);
 		forename = f.toUpperCase().substring(0, 1) + f.substring(1).toLowerCase(); // saves in form Xx...xx
@@ -25,15 +26,21 @@ public class Patient {
 		phoneNo = p;
 		balance = b;
 		address = a;
+		healthCarePlan = pl;
 	}
 	
 	// Chained constructor with default 0 values for ID and balance
+	public Patient(int id, String t, String f, String s, long d, String p, double b, Address a){
+		this(id, t, f, s, d, p, b, a, null);
+	}
+	
+	
 	public Patient(String t, String f, String s, long d, String p, Address a){
-		this(0, t, f, s, d, p, 0.00, a);
+		this(0, t, f, s, d, p, 0.00, a, null);
 	}
 	
 	public Patient() {
-		this(0, "", "", "", 0, "", 0, null);
+		this(0, "", "", "", 0, "", 0, null, null);
 	}
 	
 
@@ -46,7 +53,22 @@ public class Patient {
 	public String getPhoneNo() { return phoneNo;}
 	public double getBalance() { return balance;}
 	public Address getAddress() { return address;}
+	public PlanSubscription gethealthCarePlan() { return healthCarePlan;}
 	
+	// Other methods
+	public boolean hasHealthCarePlan() {
+		return healthCarePlan == null ? true : false;
+	}
+	
+	public String toString() {
+		String s = "";
+		if (title != null)
+			s += title + " ";
+		s += this.forename + " " + this.surname + "\nBorn: " + this.dateOfBirth + "\nContact number: " + this.phoneNo;
+		if (address != null)
+			s += "\n" + this.address;
+		return s;
+	}
 	
 	// Database Methods
 	
@@ -136,21 +158,51 @@ public class Patient {
 		}
 	}
 	
+	public ArrayList<String> getAmountOwed(Connection connection) {
+		ArrayList<String> amountOwedDetails = new ArrayList<>();
+		try(Statement stmt = connection.createStatement()) {
+			String sql = "SELECT tr.treatment, tr.coveredCost, tr.coveredCost "
+								+ "FROM Patient p "
+								+ "JOIN AppointmentsPerPatient ap ON ap.appointmentID = a.appointmentID "
+								+ "JOIN Appointments a ON ap.appointmentID = a.appointmentID "
+								+ "JOIN TreatmentRecord tr ON tr.appointmentID = a.appointmentID "
+								+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment acs ON acs.appointmentID = a.appointmentID "
+								+ "LEFT OUTER JOIN CourseOfTreatment ct ON ct.courseOfTreatment = acs.courseOfTreatment"
+								+ "WHERE a.finish = TRUE AND tr.outstandingCost > 0 "
+								+ "AND (acs.complete IS NULL OR acs.complete = TRUE);";
+			
+			ResultSet res = stmt.executeQuery(sql);
+			while(res.next()) {
+				
+			}
+			
+		} catch(SQLException e) {
+			
+		}
+	}
+	
 	// Static methods
 	// Returns all patients
-	public static ArrayList<Patient> getPatient(Connection connection, String patientSearch){
+	public static ArrayList<Patient> getPatients(Connection connection, String patientSearch){
 		ArrayList<Patient> patients = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()){
-			String sql = "SELECT p.*, a.street, a.district, a.city FROM Patient p "
+			String sql = "SELECT p.*, a.street, a.district, a.city, pp.plan, pp.startDate, pp.endDate FROM Patient p "
 							+ "JOIN Address a ON p.houseNumber=a.houseNumber AND p.postCode=a.postCode "
+							+ "LEFT OUTER JOIN PatientPlan pp ON pp.patientID=p.patienID "
 							+" WHERE forename LIKE '%" + patientSearch +"%' OR surname LIKE '%"+ patientSearch +"%';";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next()){
+				PlanSubscription subscribedPlan = null;
+				String plan = DBUtilities.nullToBlanks(res.getString("plan"));
+				if(!plan.equals(DBUtilities.NULL))
+					subscribedPlan = new PlanSubscription(res.getInt("patientID"), res.getString("plan"),
+																	res.getLong("startDate"), res.getLong("endDate"));
+				
 				patients.add(new Patient(res.getInt("patientID"), res.getString("title"), res.getString("forename"),
 								res.getString("surname"), res.getLong("dateOfBirth"), res.getString("phoneNo"),
 								res.getDouble("balance"), 
 								new Address(res.getInt("houseNumber"), res.getString("Street"), res.getString("district"),
-											res.getString("city"), res.getString("postCode"))
+											res.getString("city"), res.getString("postCode")),	subscribedPlan
 							));
 			}
 
@@ -164,31 +216,27 @@ public class Patient {
 	public static Patient getPatientByID(Connection connection, int patientID) {
 		Patient patient = new Patient();
 		try(Statement stmt = connection.createStatement()){
-			String sql = "SELECT * FROM Patient "
+			String sql = "SELECT p.*, a.street, a.district, a.city, pp.plan, pp.startDate, pp.endDate FROM Patient "
 							+ "JOIN Address a ON p.houseNumber=a.houseNumber AND p.postCode=a.postCode "
+							+ "LEFT OUTER JOIN PatientPlan pp ON pp.patientID=p.patienID "
 							+ "WHERE patientID = " + patientID +";";
 			ResultSet res = stmt.executeQuery(sql);
-			while(res.next()){
+			if(res.first()){
+				PlanSubscription subscribedPlan = null;
+				String plan = DBUtilities.nullToBlanks(res.getString("plan"));
+				if(!plan.equals(DBUtilities.NULL))
+					subscribedPlan = new PlanSubscription(res.getInt("patientID"), res.getString("plan"),
+																	res.getLong("startDate"), res.getLong("endDate"));
+				
 				patient = new Patient(res.getInt("patientID"), res.getString("title"), res.getString("forename"),
 										res.getString("surname"), res.getLong("dateOfBirth"), res.getString("phoneNo"),
 										res.getDouble("balance"), 
 										new Address(res.getInt("houseNumber"), res.getString("Street"), res.getString("district"),
-													res.getString("city"), res.getString("postCode")));
+													res.getString("city"), res.getString("postCode")), subscribedPlan);
 			}
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
 		}
 		return patient;
-	}
-	
-	// Other methods
-	public String toString() {
-		String s = "";
-		if (title != null)
-			s += title + " ";
-		s += this.forename + " " + this.surname + "\nBorn: " + this.dateOfBirth + "\nContact number: " + this.phoneNo;
-		if (address != null)
-			s += "\n" + this.address;
-		return s;
 	}
 }
