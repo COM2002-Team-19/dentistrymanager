@@ -177,8 +177,9 @@ public class Patient {
 			}
 			
 		} catch(SQLException e) {
-			
+			DBConnect.printSQLError(e);
 		}
+		return amountOwedDetails;
 	}
 	
 	// Static methods
