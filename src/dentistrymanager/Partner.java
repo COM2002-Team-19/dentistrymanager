@@ -48,8 +48,8 @@ public class Partner {
 	public ArrayList<Appointment> getDaysAppointments(Connection connection) {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "SELECT * FROM Appointment WHERE partner = " + name
-												+ " AND date = "+ DateUtilities.today() + " AND finish = FALSE;";
+			String sql = "SELECT * FROM Appointment WHERE partner = '" + name
+												+ "' AND date = "+ DateUtilities.today() + " AND finish = FALSE;";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next()) {
 				Patient patient = new Patient();
@@ -73,7 +73,7 @@ public class Partner {
 		Appointment nextAppointment = null;
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "SELECT * FROM Appointment WHERE appointmentID = "
-						+ "(SELECT MIN(appointmentID) FROM Appointment WHERE partner = " + name + "AND finish = FALSE;";
+						+ "(SELECT MIN(appointmentID) FROM Appointment WHERE partner = '" + name + "' AND finish = FALSE);";
 			ResultSet res = stmt.executeQuery(sql);
 			if(res.next()) {
 				Patient patient = new Patient();

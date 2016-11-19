@@ -51,13 +51,26 @@ public class PartnerCalendar extends JFrame {
 		currentAppointment.setLayout(new BorderLayout());
 		// Title at the top
 		JLabel currentAppTitle = new JLabel("Current Appointment:");
+		
 		// Text area
 		JTextArea currentAppDisplay = new JTextArea();
 		
 		String newline = "\n";
+		String dateLabel = Long.toString(nextAppointment.getDate());
 		String forenameLabel = nextAppointment.getPatient().getForename();
 		String surnameLabel = nextAppointment.getPatient().getSurname();
-		int startTimeLable = nextAppointment.getStartTime();
+		int startTimeLabel = nextAppointment.getStartTime();
+		int endTimeLabel = nextAppointment.getEndTime();
+		String typeOfTreatmentLabel = nextAppointment.getTypeOfTreatment();
+		String courseOfTreatment = "False";
+		if (nextAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
+		currentAppDisplay.append("Date : "+dateLabel+newline);
+		currentAppDisplay.append("First Name : "+forenameLabel+newline);
+		currentAppDisplay.append("Surname : "+surnameLabel+newline);
+		currentAppDisplay.append("Start time : "+startTimeLabel+newline);
+		currentAppDisplay.append("End time : "+endTimeLabel+newline);
+		currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+newline);
+		currentAppDisplay.append("Course of treatment : "+courseOfTreatment+newline);
 				
 		JScrollPane scrollPaneCurrent = new JScrollPane(currentAppDisplay);
 		
