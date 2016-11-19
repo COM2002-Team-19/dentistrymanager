@@ -20,7 +20,6 @@ import javax.swing.WindowConstants;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import dentistrymanager.*;
 
 public class SecretaryCalendar extends JFrame {
 
@@ -72,9 +71,12 @@ public class SecretaryCalendar extends JFrame {
         });
         dentistCalendarListPane.setViewportView(dentistCalendarList);
 
+        // Buttons
         dentistAddAppButton.setText("Add appointment");
-
         dentistDeleteAppButton.setText("Delete appointment");
+        
+        hygienistAddAppButton.setText("Add appointment");
+        hygienistDeleteAppButton.setText("Delete appointment");
 
         GroupLayout dentistTabPanelLayout = new GroupLayout(dentistTabPanel);
         dentistTabPanel.setLayout(dentistTabPanelLayout);
@@ -111,10 +113,6 @@ public class SecretaryCalendar extends JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         hygienistCalendarListPane.setViewportView(hygienistCalendarList);
-
-        hygienistAddAppButton.setText("Add appointment");
-
-        hygienistDeleteAppButton.setText("Delete appointment");
 
         GroupLayout hygienistTabPanelLayout = new GroupLayout(hygienistTabPanel);
         hygienistTabPanel.setLayout(hygienistTabPanelLayout);

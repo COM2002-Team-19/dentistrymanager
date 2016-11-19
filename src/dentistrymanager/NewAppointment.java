@@ -77,7 +77,7 @@ public class NewAppointment extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NewAppointment() {
+	public NewAppointment(Patient p) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 444, 270);
 		contentPane = new JPanel();
@@ -87,6 +87,7 @@ public class NewAppointment extends JFrame {
 		JLabel lblPatientName = new JLabel("Name:");
 		patientNameField = new JTextField();
 		patientNameField.setColumns(10);
+		patientNameField.setText(p.getForename()+" "+p.getSurname());
 		
 		lblDate = new JLabel("Date :");
 		//Create arrays of date values
