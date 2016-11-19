@@ -90,6 +90,7 @@ public class FindPatient extends JFrame {
         		int selectedIndex = searchResultsList.getSelectedIndex();
         		if(selectedIndex != -1) {
         			selectedPatient = searchResultsList.getSelectedValue();
+        			loadSelectedPatientDetails();
         		}
         	}
         });
@@ -404,6 +405,7 @@ public class FindPatient extends JFrame {
     	
     	nameField.setEnabled(true);
     	nameField.setText(selectedPatient.getForename() + " " + selectedPatient.getSurname());
+    	addressArea.setEnabled(true);
     	addressArea.setText(selectedPatient.getAddress().getHouseNumber() + "\n" +
     						selectedPatient.getAddress().getStreet() + "\n" +
     						selectedPatient.getAddress().getCity() + "\n" +
@@ -419,16 +421,17 @@ public class FindPatient extends JFrame {
     								selectedPatient.gethealthCarePlan().getStartDate() + " ends: " + 
     								selectedPatient.gethealthCarePlan().getEndDate());
     	
-    }
-    
-    // Enable patient fields 
-    private void enablePatientFields() {
-    	nameField.setEnabled(true);
-    	addressArea.setEnabled(true);
-    	phoneField.setEnabled(true);
-    	planNameArea.setEnabled(true);
-    	amountOwedList.setEnabled(true);
-    	receiptButton.setEnabled(true);
+    	// Fills in the amount owed details
+    	ArrayList<String> amountOwedDetails = new ArrayList<>();
+    	try(Connection connection = DBConnect.getConnection(false)) {
+    		amountOwedDetails = selectedPatient.getAmountOwed(connection);
+    	} catch (SQLException e) {
+    		DBConnect.printSQLError(e);
+    	}
+    	
+    	for(String amountOwed: amountOwedDetails)
+    		amountOwedList.append(amountOwed);
+    	
     }
     
     // Loads the detail of the amount owed by the patient

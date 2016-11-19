@@ -57,7 +57,7 @@ public class Patient {
 	
 	// Other methods
 	public boolean hasHealthCarePlan() {
-		return healthCarePlan == null ? true : false;
+		return healthCarePlan == null ? false : true;
 	}
 	
 	public String toString() {
@@ -161,24 +161,24 @@ public class Patient {
 	public ArrayList<String> getAmountOwed(Connection connection) {
 		ArrayList<String> amountOwedDetails = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "SELECT tr.treatment, tr.coveredCost, tr.coveredCost "
+			String sql = "SELECT tr.treatment, tr.outstandingCost, tr.coveredCost "
 								+ "FROM Patient p "
-								+ "JOIN AppointmentsPerPatient ap ON ap.appointmentID = a.appointmentID "
-								+ "JOIN Appointments a ON ap.appointmentID = a.appointmentID "
+								+ "JOIN AppointmentsPerPatient ap ON ap.patientID = p.patientID "
+								+ "JOIN Appointment a ON ap.appointmentID = a.appointmentID "
 								+ "JOIN TreatmentRecord tr ON tr.appointmentID = a.appointmentID "
 								+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment acs ON acs.appointmentID = a.appointmentID "
-								+ "LEFT OUTER JOIN CourseOfTreatment ct ON ct.courseOfTreatment = acs.courseOfTreatment"
+								+ "LEFT OUTER JOIN CourseOfTreatment ct ON ct.courseOfTreatment = acs.courseOfTreatment "
 								+ "WHERE a.finish = TRUE AND tr.outstandingCost > 0 "
-								+ "AND (acs.complete IS NULL OR acs.complete = TRUE);";
-			
+								+ "AND (ct.complete IS NULL OR ct.complete = TRUE);";
 			ResultSet res = stmt.executeQuery(sql);
-			while(res.next()) {
-				
-			}
+			while(res.next())
+				amountOwedDetails.add(res.getString("treatment") + " " + res.getDouble("outstandingCost")  + " " + 
+																						res.getDouble("coveredCost"));
 			
 		} catch(SQLException e) {
-			
+			DBConnect.printSQLError(e);
 		}
+		return amountOwedDetails;
 	}
 	
 	// Static methods
@@ -188,13 +188,13 @@ public class Patient {
 		try(Statement stmt = connection.createStatement()){
 			String sql = "SELECT p.*, a.street, a.district, a.city, pp.plan, pp.startDate, pp.endDate FROM Patient p "
 							+ "JOIN Address a ON p.houseNumber=a.houseNumber AND p.postCode=a.postCode "
-							+ "LEFT OUTER JOIN PatientPlan pp ON pp.patientID=p.patienID "
+							+ "LEFT OUTER JOIN PatientPlan pp ON pp.patientID=p.patientID "
 							+" WHERE forename LIKE '%" + patientSearch +"%' OR surname LIKE '%"+ patientSearch +"%';";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next()){
 				PlanSubscription subscribedPlan = null;
 				String plan = DBUtilities.nullToBlanks(res.getString("plan"));
-				if(!plan.equals(DBUtilities.NULL))
+				if(!plan.equals(DBUtilities.BLANKS))
 					subscribedPlan = new PlanSubscription(res.getInt("patientID"), res.getString("plan"),
 																	res.getLong("startDate"), res.getLong("endDate"));
 				
@@ -224,7 +224,7 @@ public class Patient {
 			if(res.first()){
 				PlanSubscription subscribedPlan = null;
 				String plan = DBUtilities.nullToBlanks(res.getString("plan"));
-				if(!plan.equals(DBUtilities.NULL))
+				if(!plan.equals(DBUtilities.BLANKS))
 					subscribedPlan = new PlanSubscription(res.getInt("patientID"), res.getString("plan"),
 																	res.getLong("startDate"), res.getLong("endDate"));
 				

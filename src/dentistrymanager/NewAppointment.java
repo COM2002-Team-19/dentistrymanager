@@ -58,15 +58,15 @@ public class NewAppointment extends JFrame {
 		try(Connection connection = DBConnect.getConnection(true)){
 			String pName = patientNameField.getText().trim();
 			long dob = Long.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString());
-			Appointment app = new Appointment();
-			
+			//Appointment app = new Appointment();
+			/*
 			boolean executeNext = false;
 			try{
 				executeNext = app.add(connection);
 			} catch (DuplicateKeyException e) {
 				
 			}
-
+			*/
 		} catch (SQLException e){
 			DBConnect.printSQLError(e);
 		}
