@@ -27,10 +27,6 @@ public class PartnerCalendar extends JFrame {
 	private ArrayList<Appointment> nextPatients;
 	private Partner p;
 	private Appointment nextAppointment;
-
-	public static void main(String[] args) {
-		new PartnerCalendar(0);
- 	}
  
 	public PartnerCalendar(int i) {
 		try(Connection connection = DBConnect.getConnection(false)){
