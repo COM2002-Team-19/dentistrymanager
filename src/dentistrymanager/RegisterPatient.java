@@ -1,4 +1,4 @@
-package dentistrymanager.gui;
+package dentistrymanager;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -27,11 +27,6 @@ import java.util.logging.Logger;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import dentistrymanager.Address;
-import dentistrymanager.DBConnect;
-import dentistrymanager.DuplicateKeyException;
-import dentistrymanager.Patient;
-import dentistrymanager.Title;
 import java.awt.Component;
 import java.awt.Dimension;
 

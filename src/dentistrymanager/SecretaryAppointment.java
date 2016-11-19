@@ -1,4 +1,4 @@
-package dentistrymanager.gui;
+package dentistrymanager;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

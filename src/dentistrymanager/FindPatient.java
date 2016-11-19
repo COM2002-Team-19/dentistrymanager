@@ -35,8 +35,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 
-import dentistrymanager.gui.RegisterPatient;
-
 import java.sql.*;
 
 @SuppressWarnings("serial")
