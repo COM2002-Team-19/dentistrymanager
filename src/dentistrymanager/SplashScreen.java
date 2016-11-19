@@ -64,6 +64,7 @@ public class SplashScreen extends JFrame {
 			}
 		});
 
+		// Generated code - do not modify
 		GroupLayout gl_buttonPanel = new GroupLayout(buttonPanel);
 		gl_buttonPanel.setHorizontalGroup(
 			gl_buttonPanel.createParallelGroup(Alignment.LEADING)
