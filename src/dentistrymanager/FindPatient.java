@@ -430,14 +430,15 @@ public class FindPatient extends JFrame {
     	}
     	
     	for(String amountOwed: amountOwedDetails)
-    		amountOwedList.append(amountOwed);
-    	
+    		amountOwedList.append(amountOwed);	
     }
     
-    // Loads the detail of the amount owed by the patient
-    private void updatePatientOwedDetail() {
-    	DefaultListModel<String> model = new DefaultListModel<>();
+    // Activates the subscribe/unsubscribe button depending on whether the patient has a plan or not
+    private void subscribeOptions() {
+    	if(selectedPatient != null)
+    		
     }
+    
     
     /**
      * @param args the command line arguments

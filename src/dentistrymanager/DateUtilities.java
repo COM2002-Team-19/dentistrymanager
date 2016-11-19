@@ -36,6 +36,12 @@ public class DateUtilities {
 		return DATE_FORMAT.format(cal.getTime());
 	}
 	
+	public static int thisWeek() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(cal.getTime());
+		return cal.get(Calendar.WEEK_OF_YEAR);
+	}
+	
 	public static void main(String[] args) {
 		
 		System.out.println(DateUtilities.startWeek(0));
