@@ -30,10 +30,8 @@ public class RecordTreatment extends JFrame {
 	private ArrayList<Treatment> treatments;
 	private JTextArea treatmentField;
 	private JTextArea costField;
+	private int appointmentID;
 	
-	public static void main(String[] args){
-		new RecordTreatment();
-	}
 	
     public boolean formFilled() {
     	if (treatmentField.getText().isEmpty())
@@ -52,8 +50,12 @@ public class RecordTreatment extends JFrame {
 //			String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
 //			int courseOfT = 0;//getCourseOfTreatment(); #TODO
 			
-			TreatmentRecord rec = new TreatmentRecord()
-			Appointment app = new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
+			String n = selectedTreatment.getName();
+			Double oc = selectedTreatment.getCost();
+			Double cc = 0.0;
+			
+			
+			TreatmentRecord rec = new TreatmentRecord(appointmentID,n,oc,cc);
 		} catch (SQLException e){
 			DBConnect.printSQLError(e);
 		}
@@ -61,8 +63,9 @@ public class RecordTreatment extends JFrame {
 		return success;
     }
 
-	public RecordTreatment() {
+	public RecordTreatment(Appointment appointment) {
 		
+		this.appointmentID = appointment.getAppointmentID();
 		try(Connection con = DBConnect.getConnection(false)){
 			this.treatments = Treatment.getAll(con);
 		} catch (SQLException e){
