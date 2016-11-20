@@ -81,21 +81,14 @@ public class PartnerCalendar extends JFrame {
 		
 		// Buttons at the bottom
 		currentButtons.setLayout(new GridLayout(1,0));
-		JButton addTreatment = new JButton("Add Treatment");
-		addTreatment.setPreferredSize(new Dimension(100, 100));
-		addTreatment.addActionListener(new ActionListener() {
+		JButton manageTreatment = new JButton("Manage Treatments");
+		manageTreatment.setPreferredSize(new Dimension(100, 100));
+		manageTreatment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//new RecordTreatment(nextAppointment);
+				new ManageTreatment(nextAppointment);
 			}
 		});
 		
-		JButton delTreatment = new JButton("Delete Treatment");
-		delTreatment.setPreferredSize(new Dimension(100, 100));
-		delTreatment.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
 		
 		JButton finishCurrent = new JButton("Finish Appointment");
 		finishCurrent.setPreferredSize(new Dimension(100, 100));
@@ -104,8 +97,7 @@ public class PartnerCalendar extends JFrame {
 			}
 		});
 		
-		currentButtons.add(addTreatment);
-		currentButtons.add(delTreatment);
+		currentButtons.add(manageTreatment);
 		currentButtons.add(finishCurrent);
 		currentAppointment.add(currentButtons, BorderLayout.SOUTH);
 		
