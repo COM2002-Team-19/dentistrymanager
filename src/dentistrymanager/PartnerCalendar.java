@@ -33,6 +33,7 @@ public class PartnerCalendar extends JFrame {
 	private ArrayList<Appointment> nextPatients;
 	private Partner p;
 	private Appointment nextAppointment;
+	private JList<Appointment> nextAppResultsList;
  
 	public PartnerCalendar(int i) {
 		try(Connection connection = DBConnect.getConnection(false)){
@@ -114,11 +115,8 @@ public class PartnerCalendar extends JFrame {
 		JLabel nextAppTitle = new JLabel("Next Appointments:");
 		
 		// Insert JList
-		JList<Appointment> nextAppResultsList = new JList<Appointment>();
-    	DefaultListModel<Appointment> model = new DefaultListModel<>();
-    	for(Appointment appointment: nextPatients)
-    		model.addElement(appointment);
-    	nextAppResultsList.setModel(model);
+		nextAppResultsList = new JList<Appointment>();
+		updateAppResulttList();
 		//nextAppResultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
 		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
@@ -141,4 +139,11 @@ public class PartnerCalendar extends JFrame {
 
  		setVisible(true);
  	}
+	
+	private void updateAppResulttList() {
+    	DefaultListModel<Appointment> model = new DefaultListModel<>();
+    	for(Appointment appointment: nextPatients)
+    		model.addElement(appointment);
+    	nextAppResultsList.setModel(model);
+    }
  }
