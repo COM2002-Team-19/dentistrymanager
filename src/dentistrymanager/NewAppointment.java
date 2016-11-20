@@ -56,6 +56,7 @@ public class NewAppointment extends JFrame {
 	 */
 	public NewAppointment(Patient p) {
 		patient = p;
+		System.out.println(p.toString());
 		selectedPartner = "";
 		
 		// Initialise Frame
@@ -308,13 +309,16 @@ public class NewAppointment extends JFrame {
 		Date date = DateTimeUtilities.stringToDate(yearCombo.getSelectedItem().toString(), 
 				monthCombo.getSelectedItem().toString() ,
 				dayCombo.getSelectedItem().toString());
-		String partner = typeOfTreatmentCombo.getSelectedItem().toString();
+		String partner = partnerCombo.getSelectedItem().toString();
 		Time startTime = DateTimeUtilities.stringToTime(startTimeCombo.getSelectedItem().toString());
 		Time endTime = DateTimeUtilities.stringToTime(endTimeCombo.getSelectedItem().toString());
-		String typeOfT = partnerCombo.getSelectedItem().toString();
+		String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
 		int courseOfT = 0;//getCourseOfTreatment(); #TODO
 		
-		return new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
+		Appointment newapp = new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
+		System.out.println(newapp);
+		
+		return newapp; //new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
 	}
 	
 	private void updatePartnerList() {
