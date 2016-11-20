@@ -139,7 +139,7 @@ public class NewAppointment extends JFrame {
 		endTimeField.setColumns(10);
 		
 		// Select partner section
-		lblPartner = new JLabel("Physician:");
+		lblPartner = new JLabel("Partner:");
 		partnerCombo = new JComboBox<String>();
 		partnerCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

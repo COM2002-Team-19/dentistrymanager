@@ -20,8 +20,8 @@ public class Patient {
 	public Patient(int id, String t, String f, String s, long d, String p, double b, Address a, PlanSubscription pl){
 		patientID = id;
 		title = Title.called(t);
-		forename = f.toUpperCase().substring(0, 1) + f.substring(2).toLowerCase(); // saves in form Xx...xx
-		surname = s.toUpperCase().substring(0, 1) + s.substring(2).toLowerCase();
+		forename = f.toUpperCase().substring(0, 1) + f.substring(1).toLowerCase(); // saves in form Xx...xx
+		surname = s.toUpperCase().substring(0, 1) + s.substring(1).toLowerCase();
 		dateOfBirth = d;
 		phoneNo = p;
 		balance = b;
