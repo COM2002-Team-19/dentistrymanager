@@ -17,21 +17,26 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class RegisterTreatment extends JFrame {
+public class RecordTreatment extends JFrame {
 
 	private JPanel contentPane;
-	private JComboBox<String> treatmentCombo;
+	private JComboBox<Treatment> treatmentCombo;
 	private String[] treatmentStr;
+	private Treatment selectedTreatment;
+	private ArrayList<Treatment> treatments;
+	private JTextArea treatmentField;
+	private JTextArea costField;
 	
 	public static void main(String[] args){
-		new RegisterTreatment();
+		new RecordTreatment();
 	}
 	
     public boolean formFilled() {
-    	if ()
+    	if (treatmentField.getText().isEmpty())
     		return false;
     	return true;
     }
@@ -40,12 +45,14 @@ public class RegisterTreatment extends JFrame {
 		boolean success = false;
 		
 		try(Connection connection = DBConnect.getConnection(true)){
-			long date = Long.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString());
-			String partner = partnerCombo.getSelectedItem().toString();
-			int startTime = Integer.valueOf(startTimeField.getText());
-			int endTime = Integer.valueOf(endTimeField.getText());
-			String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
-			int courseOfT = 0;//getCourseOfTreatment(); #TODO
+//			long date = Long.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString());
+//			String partner = partnerCombo.getSelectedItem().toString();
+//			int startTime = Integer.valueOf(startTimeField.getText());
+//			int endTime = Integer.valueOf(endTimeField.getText());
+//			String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
+//			int courseOfT = 0;//getCourseOfTreatment(); #TODO
+			
+			TreatmentRecord rec = new TreatmentRecord()
 			Appointment app = new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
 		} catch (SQLException e){
 			DBConnect.printSQLError(e);
@@ -54,36 +61,34 @@ public class RegisterTreatment extends JFrame {
 		return success;
     }
 
-	public RegisterTreatment() {
+	public RecordTreatment() {
 		
-		// Combo section
-//		JPanel comboPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		treatmentCombo = new JComboBox<String>();
 		try(Connection con = DBConnect.getConnection(false)){
-			ArrayList<Treatment> treatments = Treatment.getAll(con);
-			treatmentStr = new String[treatments.size()];
-			for (Treatment tr : treatments)
-				treatmentStr[treatments.indexOf(tr)] = (tr.toString());
+			this.treatments = Treatment.getAll(con);
 		} catch (SQLException e){
 			DBConnect.printSQLError(e);
 		}
-        treatmentCombo.setModel(new DefaultComboBoxModel<String>(treatmentStr));
-        
+		
         
         // Type of treatment section
         JPanel treatmentPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel treatmentLabel = new JLabel("Type of treatment : ");
-        JTextField treatmentField = new JTextField(10);
+        treatmentField = new JTextArea(1,10);
+
+        treatmentField.setEditable(false);
         treatmentPane.add(treatmentLabel);
         treatmentPane.add(treatmentField);
         
         // Cost section
         JPanel costPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel costlabel = new JLabel("Cost : ");
-        JTextField costField = new JTextField(10);
+        costField = new JTextArea(1,10);
+        costField.setEditable(false);
         costPane.add(costlabel);
         costPane.add(costField);
         
+        // Submit button
+        JPanel buttonPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -100,6 +105,21 @@ public class RegisterTreatment extends JFrame {
 				            JOptionPane.ERROR_MESSAGE);
 			}
 		});
+		buttonPane.add(btnSubmit);
+		
+		treatmentCombo = new JComboBox<Treatment>();
+		treatmentCombo.setRenderer(new TreatmentListRenderer());
+    	DefaultComboBoxModel<Treatment> model = new DefaultComboBoxModel<>();
+    	for(Treatment treatment: treatments)
+    		model.addElement(treatment);
+    	treatmentCombo.setModel(model);
+        treatmentCombo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selectedTreatment = (Treatment)treatmentCombo.getSelectedItem();
+		        treatmentField.setText(selectedTreatment.getTypeOfTreatment());
+		        costField.setText(Double.toString(selectedTreatment.getCost()));
+			}
+		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -113,6 +133,7 @@ public class RegisterTreatment extends JFrame {
 		contentPane.add(treatmentCombo);
 		contentPane.add(treatmentPane);
 		contentPane.add(costPane);
+		contentPane.add(buttonPane);
 		
 		setVisible(true);
 		pack();
