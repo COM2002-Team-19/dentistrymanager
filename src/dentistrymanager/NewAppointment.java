@@ -99,10 +99,18 @@ public class NewAppointment extends JFrame {
 			years.add(String.valueOf(i));
 		String[] y = new String[years.size()];
 		y = years.toArray(y);
+		
+		String todayStr = DateTimeUtilities.today();
+		String yearNow = todayStr.substring(0, 4);
+		String monthNow = todayStr.substring(4, 6);
+		String dayNow = todayStr.substring(6);
 
         dayCombo.setModel(new DefaultComboBoxModel<String>(days));
+        dayCombo.setSelectedItem(dayNow);
         monthCombo.setModel(new DefaultComboBoxModel<String>(months));
+        monthCombo.setSelectedItem(monthNow);
         yearCombo.setModel(new DefaultComboBoxModel<String>(y));
+        yearCombo.setSelectedItem(yearNow);
 		
         
         // Time section
