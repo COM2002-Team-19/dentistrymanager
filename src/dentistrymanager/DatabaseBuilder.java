@@ -76,7 +76,7 @@ public class DatabaseBuilder {
 						
 			// Appointment table
 			"CREATE TABLE Appointment ("
-							+ "appointmentID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
+							+ "appointmentID INT (10) NOT NULL PRIMARY KEY,"
 							+ "partner VARCHAR (30) NOT NULL,"
 							+ "date DATE NOT NULL,"
 							+ "startTime TIME NOT NULL,"

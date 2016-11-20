@@ -22,10 +22,7 @@ public class TreatmentRecord {
 	}
 	
 	public TreatmentRecord(int appointmentID, String treatment, double outstandingCost, double coveredCost) {
-		this.appointmentID = appointmentID;
-		this.treatment = treatment;
-		this.outstandingCost = outstandingCost;
-		this.coveredCost = coveredCost;
+		this(0, appointmentID, treatment, outstandingCost, coveredCost);
 	}
 	
 	// Accessors

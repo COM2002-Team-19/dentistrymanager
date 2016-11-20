@@ -99,23 +99,35 @@ public class Appointment {
 	// Add
 	public boolean add(Connection connection) throws DuplicateKeyException {
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "INSERT INTO Appointment (partner, date, startTime, endTime, typeOfTreatment) "
-											+ "VALUES ('" + partner + "','"  + date + "', '" + startTime + "','" + endTime + "','" + typeOfTreatment +"');";
-			stmt.executeUpdate(sql);
-			connection.commit();
-			int newId = this.getId();
 			
-			if(patient != null) {
-				sql = "INSERT INTO AppointmentsPerPatient VALUES (" + patient.getPatientID() + ", " + newId + ");";
-				stmt.executeUpdate(sql);
-			}
+			connection.setAutoCommit(true);
+			String sql = "SELECT MAX(appointmentID) AS id FROM Appointment";
+			ResultSet res = stmt.executeQuery(sql);
+			int newId = 0;
 			
-			if(courseOfTreatment > 0) {
-				sql = "INSERT INTO AppointmentsPerCourseOfTreatment VALUES ('" + courseOfTreatment + "', " + newId + ");";
+			connection.setAutoCommit(false);
+			if(res.first()) {
+				newId = res.getInt("id") + 1;
+				
+				sql = "INSERT INTO Appointment (appointmentID, partner, date, startTime, endTime, typeOfTreatment) "
+									+ "VALUES (" + newId + ", '" + partner + "','"  + date + "', '" 
+									+ startTime + "','" + endTime + "','" + typeOfTreatment +"');";
+				
 				stmt.executeUpdate(sql);
+				
+				if(patient != null) {
+					sql = "INSERT INTO AppointmentsPerPatient VALUES (" + patient.getPatientID() + ", " + newId + ");";
+					stmt.executeUpdate(sql);
+				}
+				
+				if(courseOfTreatment > 0) {
+					sql = "INSERT INTO AppointmentsPerCourseOfTreatment VALUES ('" + courseOfTreatment + "', " + newId + ");";
+					stmt.executeUpdate(sql);
+				}
+				connection.commit();
+				return true;
 			}
-			connection.commit();
-			return true;
+			return false;
 		} catch(SQLException e) {
 			DBConnect.rollback(connection);
 			if(e.getErrorCode() == 1062)
@@ -170,7 +182,7 @@ public class Appointment {
 		try(Connection connection = DBConnect.getConnection(true)) {
 			Statement stmt = connection.createStatement();
 			
-			String sql = "SELECT MAX(appointmentID) FROM Appointment "
+			String sql = "SELECT MAX(appointmentID) AS id FROM Appointment "
 								+ "WHERE partner = '" + partner + "' "
 								+ "AND date = '" + date + "' "
 								+ "AND startTime = '" + startTime + "' "
@@ -178,7 +190,7 @@ public class Appointment {
 								+ "AND typeOfTreatment = '" + typeOfTreatment +"'; ";
 			ResultSet res = stmt.executeQuery(sql);
 			if(res.first())
-				newId = res.getInt(appointmentID);
+				newId = res.getInt("id");
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
 			return 0;

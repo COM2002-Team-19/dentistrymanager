@@ -40,13 +40,13 @@ public class PlanSubscription {
 			String currentDate = DateTimeUtilities.today();
 			
 			String sql = "DELETE FROM CoveredTreatment WHERE patientID = "
-							+ "(SELECT patientID FROM PatientPlan WHERE endDate <= " + currentDate + ";";
+							+ "(SELECT patientID FROM PatientPlan WHERE endDate <= '" + currentDate + "');";
 			int numRowsDeleted = stmt.executeUpdate(sql);
 			
 			sql = "INSERT INTO CoveredTreatment "
 					+ "SELECT c.typeOfTreatment, pp.patientID, c.numOfTreatments "
 					+ "FROM Coverage c, PatientPlan pp "
-					+ "WHERE c.plan = pp.plan AND pp.endDate <= " + currentDate + ";";
+					+ "WHERE c.plan = pp.plan AND pp.endDate <= '" + currentDate + "';";
 			
 			int numRowsCreated = stmt.executeUpdate(sql);
 			if(numRowsDeleted == numRowsCreated)
