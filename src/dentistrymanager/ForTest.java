@@ -73,12 +73,20 @@ public class ForTest {
 		} 	
 		*/
 		try (Connection con = DBConnect.getConnection(false)){
+			/*
 			ArrayList<HealthcarePlan> plans = HealthcarePlan.getAll(con);
 			for(HealthcarePlan p: plans)
 				System.out.println(p);
+			*/
+			Partner partner = Partner.getAll(con).get(0);
+			ArrayList<Appointment> appointments = partner.getWeekAppointments(con, DateUtilities.thisWeek());
+			for(Appointment ap: appointments)
+				System.out.println(ap.toString());
+			
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
 		} 
+		
 		
 	}
 }

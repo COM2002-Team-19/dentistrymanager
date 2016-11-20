@@ -15,7 +15,7 @@ public class DBUtilities {
 	public static int nullToZero(String value) {
 		try {
 			return Integer.parseInt(value);
-		} catch(NullPointerException e) {
+		} catch(NumberFormatException e) {
 			return 0;
 		}
 	}

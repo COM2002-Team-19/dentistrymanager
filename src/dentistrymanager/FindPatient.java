@@ -133,7 +133,16 @@ public class FindPatient extends JFrame {
         subscribeButton.setVisible(false);
         subscribeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				changePlan.setVisible(true);
+				if(!selectedPatient.hasHealthCarePlan())
+					changePlan.setVisible(true);
+				else
+					try(Connection connection = DBConnect.getConnection(true)) {
+						selectedPatient.unsubscribe(connection);
+					} catch (SQLException ex) {
+						DBConnect.printSQLError(ex);
+					} catch (DeleteForeignKeyException ex) {
+						System.out.println(ex.getTable());
+					}
 			}
 		});
 
@@ -146,9 +155,18 @@ public class FindPatient extends JFrame {
         
         updatePlan = new JButton();
         updatePlan.setText("Update Plan");
-        
-        planClosebutton = new JButton(); 
-        planClosebutton.setText("Close");
+        updatePlan.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		HealthcarePlan selectedPlan = (HealthcarePlan)planComboBox.getSelectedItem();
+        		try(Connection connection = DBConnect.getConnection(true)) {
+        			selectedPatient.subscribe(connection, selectedPlan);
+        		} catch(SQLException ex) {
+        			DBConnect.printSQLError(ex);
+        		} catch(DuplicateKeyException ex) {
+        			System.out.println(ex.getTable());
+        		}
+        	}
+        });
         
         owedPanel = new JPanel();
         

@@ -216,10 +216,10 @@ public class Patient {
 	public static Patient getPatientByID(Connection connection, int patientID) {
 		Patient patient = new Patient();
 		try(Statement stmt = connection.createStatement()){
-			String sql = "SELECT p.*, a.street, a.district, a.city, pp.plan, pp.startDate, pp.endDate FROM Patient "
-							+ "JOIN Address a ON p.houseNumber=a.houseNumber AND p.postCode=a.postCode "
-							+ "LEFT OUTER JOIN PatientPlan pp ON pp.patientID=p.patienID "
-							+ "WHERE patientID = " + patientID +";";
+			String sql = "SELECT p.*, a.street, a.district, a.city, pp.plan, pp.startDate, pp.endDate FROM Patient p "
+							+ "JOIN Address a ON p.houseNumber = a.houseNumber AND p.postCode = a.postCode "
+							+ "LEFT OUTER JOIN PatientPlan pp ON pp.patientID = p.patientID "
+							+ "WHERE p.patientID = " + patientID +";";
 			ResultSet res = stmt.executeQuery(sql);
 			if(res.first()){
 				PlanSubscription subscribedPlan = null;

@@ -28,23 +28,24 @@ public class Partner {
 	public ArrayList<Appointment> getWeekAppointments(Connection connection, int week) {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "SELECT a.*, ap.patientID FROM Appointment a " 
+			String sql = "SELECT a.*, ap.patientID, ac.courseOfTreatment FROM Appointment a " 
 									+ "LEFT OUTER JOIN AppointmentsPerPatient ap ON a.appointmentID = ap.appointmentID "
-									+ "WHERE partner = '" + name + "' AND date BETWEEN "+ DateUtilities.startWeek(week) 
-									+ " AND " + DateUtilities.endWeek(week)+ " AND finish = FALSE;";
+									+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment ac ON a.appointmentID = ac.appointmentID "
+									+ "WHERE partner = '" + name + "' AND date BETWEEN " + DateUtilities.startWeek(week) 
+									+ " AND " + DateUtilities.endWeek(week) + " AND finish = FALSE;";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next()) {
 				Patient patient = new Patient();
 				int patientID = DBUtilities.nullToZero(res.getString("patientID"));
-				if(patientID != 0) {
+				if(patientID != 0)
 					patient = Patient.getPatientByID(connection, patientID);
-				}
+				
 				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
-                        						 res.getLong("date"), res.getInt("startTime"), res.getInt("endTime"), 
-                        						 res.getBoolean("finish"), patient, res.getString("typeOfTreatment"),
-                        						 DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
+												res.getLong("date"), res.getInt("startTime"), res.getInt("endTime"), 
+												res.getBoolean("finish"), patient, res.getString("typeOfTreatment"),
+												DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
 			}
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
 		}
 		return appointments;
@@ -54,8 +55,9 @@ public class Partner {
 	public ArrayList<Appointment> getDaysAppointments(Connection connection) {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "SELECT a.*, ap.patientID FROM Appointment a " 
+			String sql = "SELECT a.*, ap.patientID, ac.courseOfTreatment FROM Appointment a " 
 						+ "LEFT OUTER JOIN AppointmentsPerPatient ap ON a.appointmentID = ap.appointmentID "
+						+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment ac ON a.appointmentID = ac.appointmentID "
 						+ "WHERE partner = '" + name + "' AND date = "+ DateUtilities.today() + " AND finish = FALSE;";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next()) {
@@ -79,8 +81,9 @@ public class Partner {
 	public Appointment getNextAppointment(Connection connection) {
 		Appointment nextAppointment = null;
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "SELECT a.*, ap.patientID FROM Appointment a " 
+			String sql = "SELECT a.*, ap.patientID, ac.courseOfTreatment FROM Appointment a " 
 							+ "LEFT OUTER JOIN AppointmentsPerPatient ap ON a.appointmentID = ap.appointmentID "	
+							+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment ac ON a.appointmentID = ac.appointmentID "
 							+ "WHERE appointmentID = "
 							+ "(SELECT MIN(appointmentID) FROM Appointment WHERE partner = '" + name + "' AND finish = FALSE);";
 			ResultSet res = stmt.executeQuery(sql);
