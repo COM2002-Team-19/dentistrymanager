@@ -20,8 +20,8 @@ public class Patient {
 	public Patient(int id, String t, String f, String s, long d, String p, double b, Address a, PlanSubscription pl){
 		patientID = id;
 		title = Title.called(t);
-		forename = f.toUpperCase().substring(0, 1) + f.substring(2).toLowerCase(); // saves in form Xx...xx
-		surname = s.toUpperCase().substring(0, 1) + s.substring(2).toLowerCase();
+		forename = f.toUpperCase().substring(0, 1) + f.substring(1).toLowerCase(); // saves in form Xx...xx
+		surname = s.toUpperCase().substring(0, 1) + s.substring(1).toLowerCase();
 		dateOfBirth = d;
 		phoneNo = p;
 		balance = b;
@@ -196,7 +196,7 @@ public class Patient {
 				String plan = DBUtilities.nullToBlanks(res.getString("plan"));
 				if(!plan.equals(DBUtilities.BLANKS))
 					subscribedPlan = new PlanSubscription(res.getInt("patientID"), res.getString("plan"),
-																	res.getLong("startDate"), res.getLong("endDate"));
+																	DBUtilities.dateToLong(res.getDate("startDate")), DBUtilities.dateToLong(res.getDate("endDate")));
 				
 				patients.add(new Patient(res.getInt("patientID"), res.getString("title"), res.getString("forename"),
 								res.getString("surname"), res.getLong("dateOfBirth"), res.getString("phoneNo"),

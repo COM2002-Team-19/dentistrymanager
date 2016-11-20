@@ -1,5 +1,8 @@
 package dentistrymanager;
 
+import java.sql.*;
+import java.lang.Number;
+
 public class DBUtilities {
 	
 	public static final String BLANKS = "";
@@ -19,4 +22,12 @@ public class DBUtilities {
 			return 0;
 		}
 	}
+	//takes date makes it into accepted Long format
+	public static Long dateToLong (Date d) {
+		String dStr = d.toString();
+		dStr = dStr.replace("-", "");
+		Long dLong = new Long(dStr);
+		return dLong;
+	}	
+	
 }
