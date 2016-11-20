@@ -97,8 +97,8 @@ public class PartnerCalendar extends JFrame {
 				try(Connection connection = DBConnect.getConnection(false)){
 					nextAppointment.finish(connection);
 				}
-		    	catch(SQLException e){
-		    		DBConnect.printSQLError(e);
+		    	catch(SQLException ex){
+		    		DBConnect.printSQLError(ex);
 		    	}
 				
 			}
@@ -114,7 +114,7 @@ public class PartnerCalendar extends JFrame {
 		JLabel nextAppTitle = new JLabel("Next Appointments:");
 		
 		// Insert JList
-		JList nextAppResultsList = new JList<Appointment>();
+		JList<Appointment> nextAppResultsList = new JList<Appointment>();
     	DefaultListModel<Appointment> model = new DefaultListModel<>();
     	for(Appointment appointment: nextPatients)
     		model.addElement(appointment);
@@ -130,7 +130,7 @@ public class PartnerCalendar extends JFrame {
 		JPanel nextButtons = new JPanel();
 		nextButtons.setLayout(new GridLayout(1,0));
 		
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1100, 300);
 		contentPane = new JPanel();
    		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

@@ -34,7 +34,7 @@ public class SecretaryMenu extends JFrame {
         registerButton = new JButton();
         findPatientButton = new JButton();
 
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         calendarButton.setText("Calendars");
         registerButton.setText("Register Patient");
