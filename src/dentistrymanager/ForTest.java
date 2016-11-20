@@ -79,7 +79,7 @@ public class ForTest {
 				System.out.println(p);
 			*/
 			Partner partner = Partner.getAll(con).get(0);
-			ArrayList<Appointment> appointments = partner.getWeekAppointments(con, DateTimeUtilities.thisWeek());
+			ArrayList<Appointment> appointments = partner.getDaysAppointments(con);
 			for(Appointment ap: appointments)
 				System.out.println(ap.toString());
 			

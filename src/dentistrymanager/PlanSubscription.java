@@ -31,4 +31,35 @@ public class PlanSubscription {
 	public Date getEndDate() {
 		return endDate;
 	}
+	
+	// Database methods
+	
+	// Static methods
+	public static boolean reset(Connection connection) {
+		try(Statement stmt = connection.createStatement()) {
+			String currentDate = DateTimeUtilities.today();
+			
+			String sql = "DELETE FROM CoveredTreatment WHERE patientID = "
+							+ "(SELECT patientID FROM PatientPlan WHERE endDate <= " + currentDate + ";";
+			int numRowsDeleted = stmt.executeUpdate(sql);
+			
+			sql = "INSERT INTO CoveredTreatment "
+					+ "SELECT c.typeOfTreatment, pp.patientID, c.numOfTreatments "
+					+ "FROM Coverage c, PatientPlan pp "
+					+ "WHERE c.plan = pp.plan AND pp.endDate <= " + currentDate + ";";
+			
+			int numRowsCreated = stmt.executeUpdate(sql);
+			if(numRowsDeleted == numRowsCreated)
+				return true;
+			else {
+				DBConnect.rollback(connection);
+				return false;
+			}
+		} catch (SQLException e) {
+			DBConnect.rollback(connection);
+			DBConnect.printSQLError(e);
+			return false;
+		}
+	}
+	
 }
