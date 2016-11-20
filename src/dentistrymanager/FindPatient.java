@@ -203,7 +203,16 @@ public class FindPatient extends JFrame {
         		new NewAppointment(selectedPatient);
         	}
         });
-
+        
+        findAppointment = new JButton();
+        findAppointment.setText("Find free appointment slots");
+        findAppointment.setEnabled(false);
+        findAppointment.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent evt) {
+        		new FindAppointment(selectedPatient);
+        	}
+        });
+        
         jScrollPane1 = new JScrollPane();
 
         // Generated code - do not modify
@@ -322,6 +331,10 @@ public class FindPatient extends JFrame {
                 .addComponent(receiptButton)
                 .addContainerGap(18, Short.MAX_VALUE))
         );
+        //basically a .pack() but for JPanels
+        owedPanel.setPreferredSize(owedPanel.getPreferredSize());
+        owedPanel.validate();
+        
 
         GroupLayout patientDetailsLayout = new GroupLayout(patientDetails);
         patientDetailsLayout.setHorizontalGroup(
@@ -329,8 +342,6 @@ public class FindPatient extends JFrame {
         		.addGroup(patientDetailsLayout.createSequentialGroup()
         			.addContainerGap()
         			.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(deleteButton, GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
-        				.addComponent(addAppointmentButton, GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
         				.addGroup(patientDetailsLayout.createSequentialGroup()
         					.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
         						.addGroup(patientDetailsLayout.createSequentialGroup()
@@ -349,8 +360,11 @@ public class FindPatient extends JFrame {
         						.addComponent(owedLabel))
         					.addPreferredGap(ComponentPlacement.RELATED)
         					.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(owedPanel, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-        						.addComponent(healthcarePanel, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))))
+        						.addComponent(owedPanel, GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
+        						.addComponent(healthcarePanel, GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)))
+        				.addComponent(findAppointment, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+        				.addComponent(deleteButton, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+        				.addComponent(addAppointmentButton, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
         			.addContainerGap())
         );
         patientDetailsLayout.setVerticalGroup(
@@ -375,10 +389,13 @@ public class FindPatient extends JFrame {
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
         				.addComponent(owedLabel)
-        				.addComponent(owedPanel, GroupLayout.PREFERRED_SIZE, 102, Short.MAX_VALUE))
-        			.addGap(18)
+        				.addComponent(owedPanel, GroupLayout.PREFERRED_SIZE, 132, Short.MAX_VALUE))
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
         			.addComponent(deleteButton)
+        			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(addAppointmentButton)
+        			.addGap(5)
+        			.addComponent(findAppointment)
         			.addContainerGap())
         );
         patientDetails.setLayout(patientDetailsLayout);
@@ -409,7 +426,7 @@ public class FindPatient extends JFrame {
         			.addPreferredGap(ComponentPlacement.UNRELATED)
         			.addGroup(layout.createParallelGroup(Alignment.LEADING)
         				.addComponent(searchResults, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(patientDetails, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
+        				.addComponent(patientDetails, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         			.addContainerGap())
         );
         getContentPane().setLayout(layout);
@@ -456,6 +473,7 @@ public class FindPatient extends JFrame {
     	planNameArea.setText("");
     	subscribeButton.setEnabled(false);
     	addAppointmentButton.setEnabled(false);
+    	findAppointment.setEnabled(false);
     	deleteButton.setEnabled(false);
     }
     
@@ -495,6 +513,7 @@ public class FindPatient extends JFrame {
     	// Add appointment button enabled
     	addAppointmentButton.setEnabled(true);
     	deleteButton.setEnabled(true);	
+    	findAppointment.setEnabled(true);
     }
     
     // Activates the subscribe button depending on whether the patient has a plan or not
@@ -545,6 +564,7 @@ public class FindPatient extends JFrame {
     private JButton printRecieptPayButton;
     private JButton receiptButton;
     private JButton addAppointmentButton;
+    private JButton findAppointment;
     private JScrollPane jScrollPane1;
     private JTextArea amountOwedList;
 }
