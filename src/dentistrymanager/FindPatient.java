@@ -145,13 +145,13 @@ public class FindPatient extends JFrame {
         owedField = new JTextField();
         owedField.setEditable(false);
         owedField.setColumns(10);
+        // #TODO Add patient balance to text field
         
         receiptButton = new JButton("Receipt"); 
         receiptButton.setEnabled(false);
         receiptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	//new PrintReceipt();
-            	// #TODO
+            	new PrintReceipt(selectedPatient);
             }
         });
         
