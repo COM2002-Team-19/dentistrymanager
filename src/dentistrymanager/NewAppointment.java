@@ -63,7 +63,9 @@ public class NewAppointment extends JFrame {
 		boolean success = false;
 		
 		try(Connection connection = DBConnect.getConnection(true)){
-			Date date = Date.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString());
+			Date date = DateTimeUtilities.stringToDate(yearCombo.getSelectedItem().toString(), 
+														monthCombo.getSelectedItem().toString() ,
+														dayCombo.getSelectedItem().toString());
 			String partner = typeOfTreatmentCombo.getSelectedItem().toString();
 			Time startTime = DateTimeUtilities.stringToTime(startTimeField.getText());
 			Time endTime = DateTimeUtilities.stringToTime(endTimeField.getText());
