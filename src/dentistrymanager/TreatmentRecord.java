@@ -6,13 +6,15 @@ import java.util.ArrayList;
 public class TreatmentRecord {
 	
 	// Instance variables
+	public int treatmentRecordID;
 	public int appointmentID;
 	public String treatment;
 	public double outstandingCost;
 	public double coveredCost;
 	
 	// Constructor
-	public TreatmentRecord(int appointmentID, String treatment, double outstandingCost, double coveredCost) {
+	public TreatmentRecord(int treatmentRecordID, int appointmentID, String treatment, double outstandingCost, double coveredCost) {
+		this.treatmentRecordID = treatmentRecordID;
 		this.appointmentID = appointmentID;
 		this.treatment = treatment;
 		this.outstandingCost = outstandingCost;
@@ -38,8 +40,8 @@ public class TreatmentRecord {
 	// Add treatment record to database
 	public boolean add(Connection connection) throws DuplicateKeyException {
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "INSERT INTO TreatmentRecord VALUES (" + appointmentID + ", '" + treatment + "', "
-																+ outstandingCost + ", " + coveredCost + ");";
+			String sql = "INSERT INTO TreatmentRecord (appointmentID, treatment, outstandingCost, coveredCost) "
+						+ "VALUES (" + appointmentID + ", '" + treatment + "', " + outstandingCost + ", " + coveredCost + ");";
 			stmt.executeUpdate(sql);
 			connection.commit();
 			return true;
@@ -77,7 +79,8 @@ public class TreatmentRecord {
 			String sql = "SELECT * FROM TreatmentRecord WHERE appointmentID = " + appointmentID + ";";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next())
-				treatmentsPerformed.add(new TreatmentRecord(res.getInt("appointmentID"), res.getString("treatment"), 
+				treatmentsPerformed.add(new TreatmentRecord(res.getInt("treatmentRecordID"), 
+															res.getInt("appointmentID"), res.getString("treatment"), 
 															res.getDouble("outstandingCost"), res.getDouble("coveredCost"))); 
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);

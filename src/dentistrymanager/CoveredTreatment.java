@@ -43,7 +43,7 @@ public class CoveredTreatment {
 	}
 	
 	// Static methods
-	public double getCoveredCost(Connection connection, int patientID, String coveredTreatment) {
+	public double getCoveredCost(Connection connection, int patientID, String typeOfTreatment) {
 		double costCovered = 0;
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "SELECT c.costCovered "
@@ -51,7 +51,7 @@ public class CoveredTreatment {
 						+ "WHERE ct.patientID = p.patientID "
 						+ "AND pp.patientID = p.patientID "
 						+ "AND c.plan = pp.plan AND "
-						+ "AND ct.typeOfTreatment = '" + coveredTreatment + "' "
+						+ "AND ct.typeOfTreatment = '" + typeOfTreatment + "' "
 						+ "AND ct.coveredTreatmentsLeft > 0 ";
 			ResultSet res = stmt.executeQuery(sql);
 			if(res.first())

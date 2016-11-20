@@ -88,11 +88,11 @@ public class DatabaseBuilder {
 								
 			// TreatmentRecord table
 			"CREATE TABLE TreatmentRecord ("
+							+ "treatmentRecordID INT (10) NOT NULL PRIMARY KEY AUTO_INCREMENT,"
 							+ "appointmentID INT (10) NOT NULL,"
 							+ "treatment VARCHAR (30) NOT NULL,"
 							+ "outstandingCost REAL NOT NULL,"
 							+ "coveredCost REAL NOT NULL,"
-							+ "PRIMARY KEY (appointmentID, treatment),"
 							+ "FOREIGN KEY (appointmentID) REFERENCES Appointment (appointmentID),"
 							+ "FOREIGN KEY (treatment) REFERENCES Treatment (name));",	
 										
