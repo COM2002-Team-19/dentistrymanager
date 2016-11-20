@@ -249,7 +249,7 @@ public class NewAppointment extends JFrame {
     public boolean updateDB() {
 		boolean success = false;
 		Appointment app = createAppFromForm();
-		if (validateSlot(app)) {
+		if (validateSlot(app) && checkSlot(app)) {
 			try(Connection connection = DBConnect.getConnection(true)){
 				success = app.add(connection);
 			} catch (SQLException e){
@@ -267,6 +267,16 @@ public class NewAppointment extends JFrame {
 					JOptionPane.ERROR_MESSAGE);
 		
 		return success;
+    }
+    
+    private boolean checkSlot(Appointment a) {
+    	boolean b = false;
+		try(Connection con = DBConnect.getConnection(false)){
+			b = a.checkAvailability(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
     }
 	
 	// Ensures entered date and time values are reasonable
