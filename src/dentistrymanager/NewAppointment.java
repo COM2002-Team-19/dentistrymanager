@@ -56,8 +56,6 @@ public class NewAppointment extends JFrame {
 	 */
 	public NewAppointment(Patient p) {
 		patient = p;
-		System.out.println(p.toString());
-		selectedPartner = "";
 		
 		// Initialise Frame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

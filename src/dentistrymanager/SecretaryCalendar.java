@@ -119,7 +119,6 @@ public class SecretaryCalendar extends JFrame {
 		    		DBConnect.printSQLError(ex);
 		    	}catch(DeleteForeignKeyException ex){
 		    		System.err.println(ex.getTable());
-
 		    	}
 			}
 		});
