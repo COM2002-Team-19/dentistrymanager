@@ -55,6 +55,7 @@ public class SplashScreen extends JFrame {
 		secretaryButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new SecretaryMenu();
+				dispose();
 			}
 		});
 		
@@ -63,6 +64,7 @@ public class SplashScreen extends JFrame {
 		dentistButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new DentistCalendar();
+				dispose();
 			}
 		});
 		
@@ -71,6 +73,7 @@ public class SplashScreen extends JFrame {
 		hygienistButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new HygienistCalendar();
+				dispose();
 			}
 		});
 
