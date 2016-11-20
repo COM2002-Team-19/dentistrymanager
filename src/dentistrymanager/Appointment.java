@@ -102,7 +102,7 @@ public class Appointment {
 	public boolean add(Connection connection) throws DuplicateKeyException {
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "INSERT INTO Appointment (partner, date, startTime, endTime, typeOfTreatment) "
-											+ "VALUES ('" + partner + "',"  + date + ", " + startTime + "," + endTime + "," + typeOfTreatment +");";
+											+ "VALUES ('" + partner + "',"  + date + ", " + startTime + "," + endTime + ",'" + typeOfTreatment +"');";
 			stmt.executeUpdate(sql);
 			if(patient != null) {
 				sql = "INSERT INTO ApointmentsPerPatient VALUES (" + patient.getPatientID() + ", " + appointmentID + ");";

@@ -185,11 +185,22 @@ public class FindPatient extends JFrame {
             	 // #TODO button action
             }
         });
-        printRecieptCloseButton = new JButton(); // #TODO button action
+        printRecieptCloseButton = new JButton();
         printRecieptCloseButton.setText("Close");
         
-        deleteButton = new JButton(); // #TODO button action
+        deleteButton = new JButton();
         deleteButton.setText("Delete Patient");
+        deleteButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent evt) {
+        		try(Connection connection = DBConnect.getConnection(true)) {
+        			selectedPatient.delete(connection);
+        		} catch (SQLException ex) {
+        			DBConnect.printSQLError(ex);
+        		} catch (DeleteForeignKeyException ex) {
+        			System.out.println(ex);
+        		}	
+        	}
+        });
         
         addAppointmentButton = new JButton();
         addAppointmentButton.setText("Add appointment");
