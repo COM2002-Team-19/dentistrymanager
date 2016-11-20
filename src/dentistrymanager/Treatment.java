@@ -28,6 +28,11 @@ public class Treatment {
 		return typeOfTreatment;
 	}
 	
+	// Other methods
+	public String toString() {
+		return name + " | " + cost + " | " + typeOfTreatment;
+	}
+	
 	// Static methods
 	
 	// Returns list of treatments of a given type

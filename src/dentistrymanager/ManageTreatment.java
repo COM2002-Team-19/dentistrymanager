@@ -53,7 +53,7 @@ public class ManageTreatment extends JFrame {
     public boolean updateDB(int mode) {
 		boolean success = false;
 		
-		String n = treatmentCombo.getName();
+		String n = selectedTreatment.getName();
 		Double oc = selectedTreatment.getCost();
 		Double cc = 0.0;
 
@@ -67,6 +67,7 @@ public class ManageTreatment extends JFrame {
 			
 			if(mode==1){
 				TreatmentRecord rec = new TreatmentRecord(appointmentID,n,oc,cc);
+				System.out.println(rec.toString());
 				rec.add(connection);
 			}
 			if(mode==-1){

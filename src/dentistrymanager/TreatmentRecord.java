@@ -39,6 +39,11 @@ public class TreatmentRecord {
 		return coveredCost;
 	}
 	
+	// Other methods
+	public String toString() {
+		return appointmentID + " | " + treatment + " | " + outstandingCost + " | " + coveredCost;
+	}
+	
 	// Database methods
 	
 	// Add treatment record to database

@@ -50,9 +50,9 @@ public class CoveredTreatment {
 						+ "FROM Patient p, PatientPlan pp, Coverage c, CoveredTreatment ct "
 						+ "WHERE ct.patientID = p.patientID "
 						+ "AND pp.patientID = p.patientID "
-						+ "AND c.plan = pp.plan AND "
+						+ "AND c.plan = pp.plan "
 						+ "AND ct.typeOfTreatment = '" + typeOfTreatment + "' "
-						+ "AND ct.coveredTreatmentsLeft > 0 ";
+						+ "AND ct.coveredTreatmentsLeft > 0 ;";
 			ResultSet res = stmt.executeQuery(sql);
 			if(res.first())
 				costCovered = (double)DBUtilities.nullToZero(res.getString("costCovered"));

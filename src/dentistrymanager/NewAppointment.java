@@ -56,6 +56,7 @@ public class NewAppointment extends JFrame {
 	 */
 	public NewAppointment(Patient p) {
 		patient = p;
+		selectedPartner = "";
 		
 		// Initialise Frame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -321,10 +322,7 @@ public class NewAppointment extends JFrame {
 		String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
 		int courseOfT = 0;//getCourseOfTreatment(); #TODO
 		
-		Appointment newapp = new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
-		System.out.println(newapp);
-		
-		return newapp; //new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
+		return new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
 	}
 	
 	private void updatePartnerList() {
