@@ -19,7 +19,7 @@ public class AppointmentListRenderer extends JLabel implements ListCellRenderer<
 	public Component getListCellRendererComponent(JList<? extends Appointment> list, Appointment appointment, int index, 
 																			boolean isSelected, boolean cellHasFocus){
 		
-		Font font = new Font("Courier", Font.BOLD,17);
+		Font font = new Font("Courier", Font.BOLD,14);
 		setFont(font);
 		setText("Start Time :  " + appointment.getStartTime()+" | Date : " +appointment.getDate() + " | Patient Name : " + appointment.getPatient().getForename() + " " + appointment.getPatient().getSurname());
         Color background;
