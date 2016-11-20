@@ -53,5 +53,26 @@ public class TypeOfTreatment {
 			DBConnect.printSQLError(e);
 		} 
 		return typesOfTreatments;
-	}	
+	}
+	
+	public static ArrayList<TypeOfTreatment> getAllByPartner(Connection connection, String partner) {
+		ArrayList<TypeOfTreatment> typesOfTreatments = new ArrayList<>();
+		try(Statement stmt = connection.createStatement()) {
+			String sql = "SELECT tt.* FROM TypeOfTreatment tt "
+							+ "JOIN TypesOfTreatmentPerPartner tp ON tt.name = tp.typeOfTreatment "
+							+ "WHERE partner = '" + partner + "';";
+			ResultSet res = stmt.executeQuery(sql);
+			while(res.next()) {
+				String name = res.getString("name");
+				
+				// Returns the treatments associated with the type
+				ArrayList<Treatment> treatments = Treatment.getAllByType(connection, name);
+				
+				typesOfTreatments.add(new TypeOfTreatment(name, res.getInt("duration"), treatments));
+			}
+		} catch(SQLException e) {
+			DBConnect.printSQLError(e);
+		} 
+		return typesOfTreatments;
+	}
 }

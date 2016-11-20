@@ -42,6 +42,7 @@ public class NewAppointment extends JFrame {
     private Patient patient;
     private String[] typesStr;
     private String[] partnersStr;
+    private String selectedPartner;
 
     /*
      * Checks if any of the text fields are empty
@@ -78,7 +79,12 @@ public class NewAppointment extends JFrame {
 	 * Create the frame.
 	 */
 	public NewAppointment(Patient p) {
-		this.patient = p;
+		
+		// Initializes variables
+		patient = p;
+		selectedPartner = "";
+		
+		// Initialize Frame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 345, 250);
 		contentPane = new JPanel();
@@ -91,7 +97,6 @@ public class NewAppointment extends JFrame {
 		patientNameField.setColumns(10);
 		if (patient!=null)
 			patientNameField.setText(patient.getForename()+" "+patient.getSurname());
-		
 		
 		// Date section
 		lblDate = new JLabel("Date:");
@@ -136,29 +141,18 @@ public class NewAppointment extends JFrame {
 		// Select partner section
 		lblPartner = new JLabel("Physician:");
 		partnerCombo = new JComboBox<String>();
-		try(Connection con = DBConnect.getConnection(false)){
-			ArrayList<Partner> partners = Partner.getAll(con);
-			partnersStr = new String[partners.size()];
-			for (Partner pa : partners)
-				partnersStr[partners.indexOf(pa)] = (pa.toString());
-		} catch (SQLException e){
-			DBConnect.printSQLError(e);
-		}
-		partnerCombo.setModel(new DefaultComboBoxModel<String>(partnersStr));
+		partnerCombo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selectedPartner = (String)partnerCombo.getSelectedItem();
+				updateTreatmentList();
+			}
+		});
+		updatePartnerList();
 		
 		// Treatment section
 		JLabel lblTypeOfTreatment = new JLabel("Type of Treatment:");
 		typeOfTreatmentCombo = new JComboBox<String>();
-		try(Connection con = DBConnect.getConnection(false)){
-			ArrayList<TypeOfTreatment> types = TypeOfTreatment.getAll(con);
-			typesStr = new String[types.size()];
-			for (TypeOfTreatment tot : types)
-				typesStr[types.indexOf(tot)] = (tot.toString());
-
-		} catch (SQLException e){
-			DBConnect.printSQLError(e);
-		}
-        typeOfTreatmentCombo.setModel(new DefaultComboBoxModel<String>(typesStr));
+		updateTreatmentList();
 		
 		// Buttons
 		JButton btnSubmit = new JButton("Submit");
@@ -262,5 +256,30 @@ public class NewAppointment extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 		setVisible(true);
 		pack();
+	}
+	
+	private void updatePartnerList() {
+		try(Connection con = DBConnect.getConnection(false)){
+			ArrayList<Partner> partners = Partner.getAll(con);
+			partnersStr = new String[partners.size()];
+			for (Partner pa : partners)
+				partnersStr[partners.indexOf(pa)] = (pa.toString());
+		} catch (SQLException e){
+			DBConnect.printSQLError(e);
+		}
+		partnerCombo.setModel(new DefaultComboBoxModel<String>(partnersStr));
+	}
+	
+	private void updateTreatmentList() {
+		try(Connection con = DBConnect.getConnection(false)){
+			ArrayList<TypeOfTreatment> types = TypeOfTreatment.getAllByPartner(con, selectedPartner);
+			typesStr = new String[types.size()];
+			for (TypeOfTreatment tot : types)
+				typesStr[types.indexOf(tot)] = (tot.toString());
+
+		} catch (SQLException e){
+			DBConnect.printSQLError(e);
+		}
+        typeOfTreatmentCombo.setModel(new DefaultComboBoxModel<String>(typesStr));
 	}
 }

@@ -130,6 +130,7 @@ public class FindPatient extends JFrame {
 				else
 					try(Connection connection = DBConnect.getConnection(true)) {
 						selectedPatient.unsubscribe(connection);
+						loadSelectedPatientDetails();
 					} catch (SQLException ex) {
 						DBConnect.printSQLError(ex);
 					} catch (DeleteForeignKeyException ex) {
@@ -152,6 +153,7 @@ public class FindPatient extends JFrame {
         		HealthcarePlan selectedPlan = (HealthcarePlan)planComboBox.getSelectedItem();
         		try(Connection connection = DBConnect.getConnection(true)) {
         			selectedPatient.subscribe(connection, selectedPlan);
+        			loadSelectedPatientDetails();
         		} catch(SQLException ex) {
         			DBConnect.printSQLError(ex);
         		} catch(DuplicateKeyException ex) {
@@ -194,6 +196,7 @@ public class FindPatient extends JFrame {
         	public void actionPerformed(ActionEvent evt) {
         		try(Connection connection = DBConnect.getConnection(true)) {
         			selectedPatient.delete(connection);
+        			selectedPatient = null;
         		} catch (SQLException ex) {
         			DBConnect.printSQLError(ex);
         		} catch (DeleteForeignKeyException ex) {
