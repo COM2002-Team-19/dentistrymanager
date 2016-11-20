@@ -116,7 +116,7 @@ public class Appointment {
 		} catch(SQLException e) {
 			DBConnect.rollback(connection);
 			if(e.getErrorCode() == 1062)
-				throw new DuplicateKeyException("Appointment"); // replace by plan.toString()
+				throw new DuplicateKeyException("Appointment"); // #TODO ? replace by plan.toString()
 			DBConnect.printSQLError(e);
 			return false;
 		}

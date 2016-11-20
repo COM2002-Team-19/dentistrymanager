@@ -43,7 +43,7 @@ public class CoveredTreatment {
 	}
 	
 	// Static methods
-	public double getCoveredCost(Connection connection, int patientID, String typeOfTreatment) {
+	public static double getCoveredCost(Connection connection, int patientID, String typeOfTreatment) {
 		double costCovered = 0;
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "SELECT c.costCovered "
