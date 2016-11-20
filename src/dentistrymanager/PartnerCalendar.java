@@ -97,8 +97,8 @@ public class PartnerCalendar extends JFrame {
 				try(Connection connection = DBConnect.getConnection(false)){
 					nextAppointment.finish(connection);
 				}
-		    	catch(SQLException e){
-		    		DBConnect.printSQLError(e);
+		    	catch(SQLException ex){
+		    		DBConnect.printSQLError(ex);
 		    	}
 				
 			}

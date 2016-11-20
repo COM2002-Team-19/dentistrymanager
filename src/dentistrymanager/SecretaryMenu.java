@@ -12,6 +12,7 @@ import javax.swing.WindowConstants;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+@SuppressWarnings("serial")
 public class SecretaryMenu extends JFrame {
 
     /**
@@ -25,7 +26,7 @@ public class SecretaryMenu extends JFrame {
     /**
      * This method is called from within the constructor to initialise the form.
      */
-    @SuppressWarnings("unchecked")
+
     // initialise Components
     private void initComponents() {
 

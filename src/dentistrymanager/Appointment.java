@@ -100,15 +100,18 @@ public class Appointment {
 	public boolean add(Connection connection) throws DuplicateKeyException {
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "INSERT INTO Appointment (partner, date, startTime, endTime, typeOfTreatment) "
-											+ "VALUES ('" + partner + "',"  + date + ", '" + startTime + "','" + endTime + "','" + typeOfTreatment +"');";
+											+ "VALUES ('" + partner + "','"  + date + "', '" + startTime + "','" + endTime + "','" + typeOfTreatment +"');";
 			stmt.executeUpdate(sql);
+			connection.commit();
+			int newId = this.getId();
+			
 			if(patient != null) {
-				sql = "INSERT INTO ApointmentsPerPatient VALUES (" + patient.getPatientID() + ", " + appointmentID + ");";
+				sql = "INSERT INTO AppointmentsPerPatient VALUES (" + patient.getPatientID() + ", " + newId + ");";
 				stmt.executeUpdate(sql);
 			}
 			
 			if(courseOfTreatment > 0) {
-				sql = "INSERT INTO AppointmentsPerCourseOfTreatment VALUES ('" + courseOfTreatment + "', " + appointmentID + ");";
+				sql = "INSERT INTO AppointmentsPerCourseOfTreatment VALUES ('" + courseOfTreatment + "', " + newId + ");";
 				stmt.executeUpdate(sql);
 			}
 			connection.commit();
@@ -146,10 +149,10 @@ public class Appointment {
 	// Check availability
 	public boolean checkAvailability(Connection connection) {
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "SELECT * FROM Appointment WHERE partner = '" + partner + "' AND date = " + date 
-							+ " AND ((startTime <= " + startTime + " AND endTime >= " + endTime + ") "
-								+ " OR (startTime <= " + startTime + " AND endTime <= " + endTime + ") "
-								+ " OR (startTime >= " + startTime + " AND endTime >= " + endTime + "));";
+			String sql = "SELECT * FROM Appointment WHERE partner = '" + partner + "' AND date = '" + date 
+							+ "' AND ((startTime <= '" + startTime + "' AND endTime >= '" + endTime + "') "
+								+ " OR (startTime <= '" + startTime + "' AND endTime <= '" + endTime + "') "
+								+ " OR (startTime >= '" + startTime + "' AND endTime >= '" + endTime + "'));";
 			ResultSet res = stmt.executeQuery(sql);
 			int numConflicts = 0;
 			while(res.next())
@@ -159,6 +162,28 @@ public class Appointment {
 			DBConnect.printSQLError(e);
 			return false;
 		}
+	}
+	
+	// Private methods
+	private int getId() {
+		int newId = 0;
+		try(Connection connection = DBConnect.getConnection(true)) {
+			Statement stmt = connection.createStatement();
+			
+			String sql = "SELECT MAX(appointmentID) FROM Appointment "
+								+ "WHERE partner = '" + partner + "' "
+								+ "AND date = '" + date + "' "
+								+ "AND startTime = '" + startTime + "' "
+								+ "AND endTime = '" + endTime + "' "
+								+ "AND typeOfTreatment = '" + typeOfTreatment +"'; ";
+			ResultSet res = stmt.executeQuery(sql);
+			if(res.first())
+				newId = res.getInt(appointmentID);
+		} catch(SQLException e) {
+			DBConnect.printSQLError(e);
+			return 0;
+		}
+		return newId;
 	}
 	
 	// Static methods
