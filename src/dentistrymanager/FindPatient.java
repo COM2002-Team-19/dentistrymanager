@@ -240,9 +240,7 @@ public class FindPatient extends JFrame {
                     .addComponent(planComboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(changePlanLayout.createSequentialGroup()
                         .addGap(0, 232, Short.MAX_VALUE)
-                        .addComponent(updatePlan)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(planClosebutton)))
+                        .addComponent(updatePlan)))
                 .addContainerGap())
         );
         changePlanLayout.setVerticalGroup(
@@ -252,8 +250,7 @@ public class FindPatient extends JFrame {
                 .addComponent(planComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(changePlanLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(updatePlan)
-                    .addComponent(planClosebutton))
+                    .addComponent(updatePlan))
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
