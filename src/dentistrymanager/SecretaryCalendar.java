@@ -52,13 +52,15 @@ public class SecretaryCalendar extends JFrame {
         dentistTabPanel = new JPanel();
         dentistCalendarListPane = new JScrollPane();
         dentistCalendarList = new JList<>();
-        dentistAddAppButton = new JButton();
-        dentistDeleteAppButton = new JButton();
+        dentistAddAppButton = new JButton("Add Appointment");
+        dentistDeleteAppButton = new JButton("Delete Appointment");
         hygienistTabPanel = new JPanel();
         hygienistCalendarListPane = new JScrollPane();
         hygienistCalendarList = new JList<>();
-        hygienistAddAppButton = new JButton();
-        hygienistDeleteAppButton = new JButton();
+        hygienistAddAppButton = new JButton("Add Appointment");
+        hygienistDeleteAppButton = new JButton("Delete Appointment");
+        dentistUnavailableButton = new JButton("Mark Unavailability");
+        hygienistUnavailableButton = new JButton("Mark Unavailability");
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -77,14 +79,13 @@ public class SecretaryCalendar extends JFrame {
         dentistCalendarListPane.setViewportView(dentistCalendarList);
 
         // Buttons
-        dentistAddAppButton.setText("Add appointment");
         dentistAddAppButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new FindPatient();
+				// redirects to FindPatient where they can choose patient the appointment is for
 			}
 		});
         
-        dentistDeleteAppButton.setText("Delete appointment");
         dentistDeleteAppButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try(Connection connection = DBConnect.getConnection(true)){
@@ -96,9 +97,14 @@ public class SecretaryCalendar extends JFrame {
 		    	}
 			}
 		});
+        
+        dentistUnavailableButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new NewAppointment();
+			}
+		});
 
         
-        hygienistAddAppButton.setText("Add appointment");
         hygienistAddAppButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new FindPatient();
@@ -106,7 +112,6 @@ public class SecretaryCalendar extends JFrame {
 			}
 		});
         
-        hygienistDeleteAppButton.setText("Delete appointment");
         hygienistDeleteAppButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try(Connection connection = DBConnect.getConnection(true)){
@@ -119,7 +124,11 @@ public class SecretaryCalendar extends JFrame {
 			}
 		});
         
-        JButton dentistUnavailableButton = new JButton("Mark Unavailability");
+        hygienistUnavailableButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new NewAppointment();
+			}
+		});
 
         // Generated code - do not modify
         GroupLayout dentistTabPanelLayout = new GroupLayout(dentistTabPanel);
@@ -165,8 +174,6 @@ public class SecretaryCalendar extends JFrame {
         	}
         });
         hygienistCalendarListPane.setViewportView(hygienistCalendarList);
-        
-        hygienistUnavailableButton = new JButton("Mark Unavailability");
 
         GroupLayout hygienistTabPanelLayout = new GroupLayout(hygienistTabPanel);
         hygienistTabPanelLayout.setHorizontalGroup(
@@ -256,4 +263,5 @@ public class SecretaryCalendar extends JFrame {
     private JPanel hygienistTabPanel;
     private JTabbedPane secretaryCalendarTabPane;
     private JButton hygienistUnavailableButton;
+    private JButton dentistUnavailableButton;
 }
