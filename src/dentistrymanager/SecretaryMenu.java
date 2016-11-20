@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class SecretaryMenu extends JFrame {
 
@@ -58,30 +59,25 @@ public class SecretaryMenu extends JFrame {
         // Generated code - do not modify
         GroupLayout gl_buttonPanel = new GroupLayout(buttonPanel);
         gl_buttonPanel.setHorizontalGroup(
-        	gl_buttonPanel.createParallelGroup(Alignment.LEADING)
-        		.addGroup(gl_buttonPanel.createSequentialGroup()
-        			.addGroup(gl_buttonPanel.createParallelGroup(Alignment.LEADING)
-        				.addGroup(gl_buttonPanel.createSequentialGroup()
-        					.addContainerGap()
-        					.addComponent(registerButton))
-        				.addGroup(gl_buttonPanel.createSequentialGroup()
-        					.addGap(20)
-        					.addComponent(findPatientButton))
-        				.addGroup(gl_buttonPanel.createSequentialGroup()
-        					.addGap(23)
-        					.addComponent(calendarButton)))
-        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	gl_buttonPanel.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(Alignment.LEADING, gl_buttonPanel.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(calendarButton, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+        			.addGap(16)
+        			.addComponent(findPatientButton, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+        			.addGap(18)
+        			.addComponent(registerButton)
+        			.addGap(12))
         );
         gl_buttonPanel.setVerticalGroup(
         	gl_buttonPanel.createParallelGroup(Alignment.LEADING)
         		.addGroup(gl_buttonPanel.createSequentialGroup()
-        			.addGap(70)
-        			.addComponent(calendarButton)
-        			.addGap(18)
-        			.addComponent(registerButton)
-        			.addGap(18)
-        			.addComponent(findPatientButton)
-        			.addContainerGap(84, Short.MAX_VALUE))
+        			.addGap(54)
+        			.addGroup(gl_buttonPanel.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(findPatientButton)
+        				.addComponent(registerButton)
+        				.addComponent(calendarButton))
+        			.addContainerGap(41, Short.MAX_VALUE))
         );
         buttonPanel.setLayout(gl_buttonPanel);
 
@@ -89,16 +85,16 @@ public class SecretaryMenu extends JFrame {
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addGap(150)
-        			.addComponent(buttonPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(143, Short.MAX_VALUE))
+        			.addContainerGap()
+        			.addComponent(buttonPanel, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+        			.addContainerGap())
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
-        			.addContainerGap()
-        			.addComponent(buttonPanel, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
-        			.addContainerGap())
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(66)
+        			.addComponent(buttonPanel, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(97, Short.MAX_VALUE))
         );
         getContentPane().setLayout(layout);
 

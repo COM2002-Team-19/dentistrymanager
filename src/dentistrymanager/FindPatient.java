@@ -39,14 +39,7 @@ public class FindPatient extends JFrame {
      * Creates new form FindPatient
      */
     public FindPatient() {
-		try(Connection connection = DBConnect.getConnection(false)){
-			patients = Patient.getPatients(connection, "");
-			healthcarePlans = HealthcarePlan.getAll(connection);
-			selectedPatient = null;
-		}
-		catch(SQLException e){
-			DBConnect.printSQLError(e);
-		}
+    	getData();
 		initComponents();
     }
 
@@ -148,8 +141,11 @@ public class FindPatient extends JFrame {
         			selectedPatient.subscribe(connection, selectedPlan);
         			loadSelectedPatientDetails();
         			changePlan.dispose();
-        			dispose();
-        			new FindPatient();
+        			//getData();
+        			//loadSelectedPatientDetails();
+        			
+        			//dispose();
+        			//new FindPatient();
         		} catch(SQLException ex) {
         			DBConnect.printSQLError(ex);
         		} catch(DuplicateKeyException ex) {
@@ -159,7 +155,6 @@ public class FindPatient extends JFrame {
         });
         
         owedPanel = new JPanel();
-        
         owedLabel = new JLabel();
         owedLabel.setText("Owed:");
         amountOwedList = new JTextArea(AMOUNT_TEXT_AREA_ROWS, AMOUNT_TEXT_AREA_COLUMNS);
@@ -429,6 +424,18 @@ public class FindPatient extends JFrame {
     }
 
     // Instance methods
+    
+    // Connects to database and gets relevant data
+    private void getData() {
+    	try(Connection connection = DBConnect.getConnection(false)){
+    		patients = Patient.getPatients(connection, "");
+    		healthcarePlans = HealthcarePlan.getAll(connection);
+    		selectedPatient = null;
+    	}
+    	catch(SQLException e){
+    		DBConnect.printSQLError(e);
+    	}
+    }
     
     // Loads the list of patients
     private void updatePatientList() {
