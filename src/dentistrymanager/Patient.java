@@ -29,12 +29,12 @@ public class Patient {
 		healthCarePlan = pl;
 	}
 	
-	// Chained constructor with default 0 values for ID and balance
+	// Chained constructor without plan
 	public Patient(int id, String t, String f, String s, long d, String p, double b, Address a){
 		this(id, t, f, s, d, p, b, a, null);
 	}
 	
-	
+	// Chained constructor with default 0 values for ID and balance
 	public Patient(String t, String f, String s, long d, String p, Address a){
 		this(0, t, f, s, d, p, 0.00, a, null);
 	}

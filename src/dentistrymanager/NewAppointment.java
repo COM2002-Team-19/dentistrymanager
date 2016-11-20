@@ -89,7 +89,8 @@ public class NewAppointment extends JFrame {
 		patientNameField = new JTextField();
 		patientNameField.setEditable(false);
 		patientNameField.setColumns(10);
-		patientNameField.setText(patient.getForename()+" "+patient.getSurname());
+		if (patient!=null)
+			patientNameField.setText(patient.getForename()+" "+patient.getSurname());
 		
 		
 		// Date section
