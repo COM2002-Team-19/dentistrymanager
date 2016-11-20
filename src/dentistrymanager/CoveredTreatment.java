@@ -41,4 +41,24 @@ public class CoveredTreatment {
 			return false;
 		}
 	}
+	
+	// Static methods
+	public double getCoveredCost(Connection connection, int patientID, String coveredTreatment) {
+		double costCovered = 0;
+		try(Statement stmt = connection.createStatement()) {
+			String sql = "SELECT c.costCovered "
+						+ "FROM Patient p, PatientPlan pp, Coverage c, CoveredTreatment ct "
+						+ "WHERE ct.patientID = p.patientID "
+						+ "AND pp.patientID = p.patientID "
+						+ "AND c.plan = pp.plan AND "
+						+ "AND ct.typeOfTreatment = '" + coveredTreatment + "' "
+						+ "AND ct.coveredTreatmentsLeft > 0 ";
+			ResultSet res = stmt.executeQuery(sql);
+			if(res.first())
+				costCovered = (double)DBUtilities.nullToZero(res.getString("costCovered"));
+		} catch(SQLException e) {
+			DBConnect.printSQLError(e);
+		}
+		return costCovered;
+	}
 }

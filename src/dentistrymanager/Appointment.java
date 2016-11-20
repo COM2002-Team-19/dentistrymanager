@@ -143,6 +143,9 @@ public class Appointment {
 		}
 	}
 	
+	// Check availability
+	
+	
 	// Static methods
 	public static ArrayList<Appointment>findByPartnerPatient(Connection connection, String patientSearchTerm, 
 																							String partnerSearchTerm) {
