@@ -77,17 +77,17 @@ public class ForTest {
 			ArrayList<HealthcarePlan> plans = HealthcarePlan.getAll(con);
 			for(HealthcarePlan p: plans)
 				System.out.println(p);
-			
+			*/
 			Partner partner = Partner.getAll(con).get(0);
-			ArrayList<Appointment> appointments = partner.getWeekAppointments(con, DateUtilities.thisWeek());
+			ArrayList<Appointment> appointments = partner.getWeekAppointments(con, DateTimeUtilities.thisWeek());
 			for(Appointment ap: appointments)
 				System.out.println(ap.toString());
-			*/
 			
+			/*
 			ArrayList<TypeOfTreatment> types = TypeOfTreatment.getAllByPartner(con, "DENTIST");
 			for(TypeOfTreatment t: types)
 				System.out.println(t.getName());
-			
+			*/
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
 		} 

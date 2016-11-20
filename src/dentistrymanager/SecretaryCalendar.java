@@ -31,8 +31,8 @@ public class SecretaryCalendar extends JFrame {
     		this.partners = Partner.getAll(connection);
     		this.dentist = partners.get(0);
     		this.hygienist = partners.get(1);
-    		this.dentistAppointments = dentist.getWeekAppointments(connection, DateUtilities.thisWeek());
-    		this.hygienistAppointments = hygienist.getWeekAppointments(connection, DateUtilities.thisWeek());
+    		this.dentistAppointments = dentist.getWeekAppointments(connection, DateTimeUtilities.thisWeek());
+    		this.hygienistAppointments = hygienist.getWeekAppointments(connection, DateTimeUtilities.thisWeek());
     	} catch(SQLException e){
     		DBConnect.printSQLError(e);
     	}

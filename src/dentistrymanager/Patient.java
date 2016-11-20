@@ -10,14 +10,14 @@ public class Patient {
 	private Title title;
 	private String forename;
 	private String surname;
-	private long dateOfBirth; // date of birth in format YYYYMMDD
+	private Date dateOfBirth; // date of birth in format YYYYMMDD
 	private String phoneNo;
 	private double balance;
 	private Address address;
 	private PlanSubscription healthCarePlan;
 		
 	// Constructor
-	public Patient(int id, String t, String f, String s, long d, String p, double b, Address a, PlanSubscription pl){
+	public Patient(int id, String t, String f, String s, Date d, String p, double b, Address a, PlanSubscription pl){
 		patientID = id;
 		title = Title.called(t);
 		forename = f.toUpperCase().substring(0, 1) + f.substring(1).toLowerCase(); // saves in form Xx...xx
@@ -30,17 +30,17 @@ public class Patient {
 	}
 	
 	// Chained constructor without plan
-	public Patient(int id, String t, String f, String s, long d, String p, double b, Address a){
+	public Patient(int id, String t, String f, String s, Date d, String p, double b, Address a){
 		this(id, t, f, s, d, p, b, a, null);
 	}
 	
 	// Chained constructor with default 0 values for ID and balance
-	public Patient(String t, String f, String s, long d, String p, Address a){
+	public Patient(String t, String f, String s, Date d, String p, Address a){
 		this(0, t, f, s, d, p, 0.00, a, null);
 	}
 	
 	public Patient() {
-		this(0, "", "asdf", "qwerty", 0, "", 0, null, null);
+		this(0, "", "test", "test", null, "", 0, null, null);
 	}
 	
 
@@ -49,7 +49,7 @@ public class Patient {
 	public Title getTitle() { return title;	}
 	public String getForename() { return forename;}
 	public String getSurname() { return surname;}
-	public long getDateOfBirth() { return dateOfBirth;}
+	public Date getDateOfBirth() { return dateOfBirth;}
 	public String getPhoneNo() { return phoneNo;}
 	public double getBalance() { return balance;}
 	public Address getAddress() { return address;}
@@ -117,7 +117,7 @@ public class Patient {
 	public boolean subscribe(Connection connection, HealthcarePlan plan) throws DuplicateKeyException {
 		try(Statement stmt = connection.createStatement()) {		
 			String sql = "INSERT INTO PatientPlan VALUES (" + patientID + ", '" + plan.getName() +"', "
-							        + DateUtilities.today() + ", " + DateUtilities.oneYearFromToday() +");";
+							        + DateTimeUtilities.today() + ", " + DateTimeUtilities.oneYearFromToday() +");";
 			stmt.addBatch(sql);
 			
 			// Get the plan coverage
@@ -199,7 +199,7 @@ public class Patient {
 																	  res.getDate("startDate"), res.getDate("endDate"));
 				
 				patients.add(new Patient(res.getInt("patientID"), res.getString("title"), res.getString("forename"),
-								res.getString("surname"), res.getLong("dateOfBirth"), res.getString("phoneNo"),
+								res.getString("surname"), res.getDate("dateOfBirth"), res.getString("phoneNo"),
 								res.getDouble("balance"), 
 								new Address(res.getInt("houseNumber"), res.getString("Street"), res.getString("district"),
 											res.getString("city"), res.getString("postCode")),	subscribedPlan
@@ -229,7 +229,7 @@ public class Patient {
 																	res.getDate("startDate"), res.getDate("endDate"));
 				
 				patient = new Patient(res.getInt("patientID"), res.getString("title"), res.getString("forename"),
-										res.getString("surname"), res.getLong("dateOfBirth"), res.getString("phoneNo"),
+										res.getString("surname"), res.getDate("dateOfBirth"), res.getString("phoneNo"),
 										res.getDouble("balance"), 
 										new Address(res.getInt("houseNumber"), res.getString("Street"), res.getString("district"),
 													res.getString("city"), res.getString("postCode")), subscribedPlan);

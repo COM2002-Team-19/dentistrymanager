@@ -10,15 +10,15 @@ public class Appointment {
 	private int appointmentID;
 	private String partner;
 	private Date date;
-	private int startTime;
-	private int endTime;
+	private Time startTime;
+	private Time endTime;
 	private boolean finish;
 	private String typeOfTreatment;
 	private int courseOfTreatment;
 	private Patient patient;
 	
 	// Constructor for taking existing appointment from database
-	public Appointment(int appointmentID, String partner, Date date, int startTime, int endTime, 
+	public Appointment(int appointmentID, String partner, Date date, Time startTime, Time endTime, 
 			boolean finish, Patient patient, String typeOfTreatment, int courseOfTreatment) {
 		this.appointmentID = appointmentID;
 		this.partner = partner; 
@@ -31,7 +31,7 @@ public class Appointment {
 		this.courseOfTreatment = courseOfTreatment;
 	}
 	// Constructor w/out ID i.e. wholly new appointment
-	public Appointment(String partner, Date date, int startTime, int endTime, 
+	public Appointment(String partner, Date date, Time startTime, Time endTime, 
 			Patient patient, String typeOfTreatment, int courseOfTreatment) {
 		this.appointmentID = 0;
 		this.partner = partner; 
@@ -54,10 +54,10 @@ public class Appointment {
 	public Date getDate() {
 		return date;
 	}
-	public int getStartTime() {
+	public Time getStartTime() {
 		return startTime;
 	}
-	public int getEndTime() {
+	public Time getEndTime() {
 		return endTime;
 	}
 	public boolean isFinished() {
@@ -162,7 +162,7 @@ public class Appointment {
 					patient = Patient.getPatientByID(connection, patientID);
 				}
 				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), res.getDate("Date"), 
-												 res.getInt("startTime"), res.getInt("endTime"), res.getBoolean("finish"),
+												 res.getTime("startTime"), res.getTime("endTime"), res.getBoolean("finish"),
 												 patient, res.getString("typeOfTreatment"),
 												 DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
 			}

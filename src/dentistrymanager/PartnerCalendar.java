@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -57,8 +58,8 @@ public class PartnerCalendar extends JFrame {
 			String dateLabel = nextAppointment.getDate().toString();
 			String forenameLabel = nextAppointment.getPatient().getForename();
 			String surnameLabel = nextAppointment.getPatient().getSurname();
-			int startTimeLabel = nextAppointment.getStartTime();
-			int endTimeLabel = nextAppointment.getEndTime();
+			Time startTimeLabel = nextAppointment.getStartTime();
+			Time endTimeLabel = nextAppointment.getEndTime();
 			String typeOfTreatmentLabel = nextAppointment.getTypeOfTreatment();
 			String courseOfTreatment = "False";
 			if (nextAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
@@ -84,7 +85,7 @@ public class PartnerCalendar extends JFrame {
 		addTreatment.setPreferredSize(new Dimension(100, 100));
 		addTreatment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new RecordTreatment(nextAppointment);
+				//new RecordTreatment(nextAppointment);
 			}
 		});
 		

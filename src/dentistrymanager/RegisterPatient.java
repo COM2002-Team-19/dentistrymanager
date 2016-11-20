@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -19,6 +20,7 @@ import javax.swing.WindowConstants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -42,7 +44,10 @@ public class RegisterPatient extends JFrame {
 			String t = titleCombo.getSelectedItem().toString();
 			String fName = forenameField.getText().trim();
 			String sName = surnameField.getText().trim();
-			long dob = Long.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString());
+			Date dob = DateTimeUtilities.stringToDate(yearCombo.getSelectedItem().toString(), 
+						monthCombo.getSelectedItem().toString(), 
+						dayCombo.getSelectedItem().toString());
+			
 			String phoneNo = phoneField.getText().trim();
 			Address a = new Address(Integer.valueOf(houseNumberField.getText()),streetField.getText().trim(),
 									cityField.getText().trim(),districtField.getText().trim(),postcodeField.getText().trim()); 
