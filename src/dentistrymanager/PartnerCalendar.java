@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -107,7 +109,11 @@ public class PartnerCalendar extends JFrame {
 		
 		// Insert JList
 		JList nextAppResultsList = new JList<Appointment>();
-		nextAppResultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    	DefaultListModel<Appointment> model = new DefaultListModel<>();
+    	for(Appointment appointment: nextPatients)
+    		model.addElement(appointment);
+    	nextAppResultsList.setModel(model);
+		//nextAppResultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
 		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
 
