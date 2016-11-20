@@ -134,7 +134,7 @@ public class NewAppointment extends JFrame {
 		endTimeField.setColumns(10);
 		
 		// Select partner section
-		lblPartner = new JLabel("Physician:");
+		lblPartner = new JLabel("Partner:");
 		partnerCombo = new JComboBox<String>();
 		try(Connection con = DBConnect.getConnection(false)){
 			ArrayList<Partner> partners = Partner.getAll(con);
