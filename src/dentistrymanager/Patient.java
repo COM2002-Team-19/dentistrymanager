@@ -196,7 +196,7 @@ public class Patient {
 				String plan = DBUtilities.nullToBlanks(res.getString("plan"));
 				if(!plan.equals(DBUtilities.BLANKS))
 					subscribedPlan = new PlanSubscription(res.getInt("patientID"), res.getString("plan"),
-																	DBUtilities.dateToLong(res.getDate("startDate")), DBUtilities.dateToLong(res.getDate("endDate")));
+																	  res.getDate("startDate"), res.getDate("endDate"));
 				
 				patients.add(new Patient(res.getInt("patientID"), res.getString("title"), res.getString("forename"),
 								res.getString("surname"), res.getLong("dateOfBirth"), res.getString("phoneNo"),
@@ -226,7 +226,7 @@ public class Patient {
 				String plan = DBUtilities.nullToBlanks(res.getString("plan"));
 				if(!plan.equals(DBUtilities.BLANKS))
 					subscribedPlan = new PlanSubscription(res.getInt("patientID"), res.getString("plan"),
-																	res.getLong("startDate"), res.getLong("endDate"));
+																	res.getDate("startDate"), res.getDate("endDate"));
 				
 				patient = new Patient(res.getInt("patientID"), res.getString("title"), res.getString("forename"),
 										res.getString("surname"), res.getLong("dateOfBirth"), res.getString("phoneNo"),

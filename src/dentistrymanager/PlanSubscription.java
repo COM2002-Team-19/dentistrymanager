@@ -1,15 +1,17 @@
 package dentistrymanager;
 
+import java.sql.*;
+
 public class PlanSubscription {
 	
 	// Instance variables
 	private int patientID;
 	private String plan;
-	private long startDate;
-	private long endDate;
+	private Date startDate;
+	private Date endDate;
 	
 	// Constructor
-	public PlanSubscription(int patientID, String plan, long startDate, long endDate) {
+	public PlanSubscription(int patientID, String plan, Date startDate, Date endDate) {
 		this.patientID = patientID;
 		this.plan = plan;
 		this.startDate = startDate;
@@ -23,10 +25,10 @@ public class PlanSubscription {
 	public String getPlan() {
 		return plan;
 	}
-	public long getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
-	public long getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 }
