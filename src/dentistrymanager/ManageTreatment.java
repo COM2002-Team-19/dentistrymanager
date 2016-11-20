@@ -53,12 +53,19 @@ public class ManageTreatment extends JFrame {
     public boolean updateDB(int mode) {
 		boolean success = false;
 		
+		String n = treatmentCombo.getName();
+		Double oc = selectedTreatment.getCost();
+		Double cc = 0.0;
+
+		try(Connection connection = DBConnect.getConnection(false)){
+			cc = CoveredTreatment.getCoveredCost(connection, patientID, n);
+		} catch (SQLException e){
+			DBConnect.printSQLError(e);
+		}
+		
 		try(Connection connection = DBConnect.getConnection(true)){
 			
 			if(mode==1){
-				String n = selectedTreatment.getName();
-				Double oc = selectedTreatment.getCost();
-				Double cc = CoveredTreatment.getCoveredCost(connection, patientID, n);
 				TreatmentRecord rec = new TreatmentRecord(appointmentID,n,oc,cc);
 				rec.add(connection);
 			}
