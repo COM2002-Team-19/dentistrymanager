@@ -54,7 +54,7 @@ public class PartnerCalendar extends JFrame {
 		JTextArea currentAppDisplay = new JTextArea();
 		if (!this.nextPatients.isEmpty()){
 			String newline = "\n";
-			String dateLabel = Long.toString(nextAppointment.getDate());
+			String dateLabel = nextAppointment.getDate().toString();
 			String forenameLabel = nextAppointment.getPatient().getForename();
 			String surnameLabel = nextAppointment.getPatient().getSurname();
 			int startTimeLabel = nextAppointment.getStartTime();

@@ -42,7 +42,7 @@ public class Partner {
 					patient = Patient.getPatientByID(connection, patientID);
 				
 				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
-												res.getLong("date"), res.getInt("startTime"), res.getInt("endTime"), 
+												res.getDate("date"), res.getInt("startTime"), res.getInt("endTime"), 
 												res.getBoolean("finish"), patient, res.getString("typeOfTreatment"),
 												DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
 			}
@@ -69,7 +69,7 @@ public class Partner {
 					patient = Patient.getPatientByID(connection, patientID);
 				}
 				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
-                                                 res.getLong("Date"), res.getInt("startTime"), res.getInt("endTime"), 
+						                         res.getDate("Date"), res.getInt("startTime"), res.getInt("endTime"), 
                                                  res.getBoolean("finish"), patient, res.getString("typeOfTreatment"),
                                                  DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
 			}
@@ -96,7 +96,7 @@ public class Partner {
 					patient = Patient.getPatientByID(connection, patientID);
 				}
 				nextAppointment = new Appointment(res.getInt("appointmentID"), res.getString("partner"), 
-						                          res.getLong("Date"), res.getInt("startTime"), res.getInt("endTime"), 
+					                              res.getDate("Date"), res.getInt("startTime"), res.getInt("endTime"), 
 						                          res.getBoolean("finish"), patient, res.getString("typeOfTreatment"),
 	                                              DBUtilities.nullToZero(res.getString("courseOfTreatment")));
 			}

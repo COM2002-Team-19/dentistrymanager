@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,7 +62,7 @@ public class NewAppointment extends JFrame {
 		boolean success = false;
 		
 		try(Connection connection = DBConnect.getConnection(true)){
-			long date = Long.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString());
+			Date date = Date.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString());
 			String partner = typeOfTreatmentCombo.getSelectedItem().toString();
 			int startTime = Integer.valueOf(startTimeField.getText());
 			int endTime = Integer.valueOf(endTimeField.getText());

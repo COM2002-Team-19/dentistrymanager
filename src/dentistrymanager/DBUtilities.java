@@ -1,7 +1,6 @@
 package dentistrymanager;
 
 import java.sql.*;
-import java.lang.Number;
 
 public class DBUtilities {
 	
@@ -25,7 +24,9 @@ public class DBUtilities {
 	//takes date makes it into accepted Long format
 	public static Long dateToLong (Date d) {
 		String dStr = d.toString();
-		dStr = dStr.replace("-", "");
+		System.out.println(dStr);
+		dStr = dStr.replaceAll("-", "");
+		System.out.println(dStr);
 		Long dLong = new Long(dStr);
 		return dLong;
 	}	

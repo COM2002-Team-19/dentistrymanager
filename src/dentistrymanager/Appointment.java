@@ -1,9 +1,7 @@
 package dentistrymanager;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+
 import java.util.ArrayList;
 
 public class Appointment {
@@ -11,7 +9,7 @@ public class Appointment {
 	// Instance variables
 	private int appointmentID;
 	private String partner;
-	private long date;
+	private Date date;
 	private int startTime;
 	private int endTime;
 	private boolean finish;
@@ -20,7 +18,7 @@ public class Appointment {
 	private Patient patient;
 	
 	// Constructor for taking existing appointment from database
-	public Appointment(int appointmentID, String partner, long date, int startTime, int endTime, 
+	public Appointment(int appointmentID, String partner, Date date, int startTime, int endTime, 
 			boolean finish, Patient patient, String typeOfTreatment, int courseOfTreatment) {
 		this.appointmentID = appointmentID;
 		this.partner = partner; 
@@ -33,7 +31,7 @@ public class Appointment {
 		this.courseOfTreatment = courseOfTreatment;
 	}
 	// Constructor w/out ID i.e. wholly new appointment
-	public Appointment(String partner, long date, int startTime, int endTime, 
+	public Appointment(String partner, Date date, int startTime, int endTime, 
 			Patient patient, String typeOfTreatment, int courseOfTreatment) {
 		this.appointmentID = 0;
 		this.partner = partner; 
@@ -53,7 +51,7 @@ public class Appointment {
 	public String getPartner() {
 		return partner;
 	}
-	public long getDate() {
+	public Date getDate() {
 		return date;
 	}
 	public int getStartTime() {
@@ -163,7 +161,7 @@ public class Appointment {
 				if(patientID != 0) {
 					patient = Patient.getPatientByID(connection, patientID);
 				}
-				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), res.getLong("Date"), 
+				appointments.add(new Appointment(res.getInt("appointmentID"), res.getString("partner"), res.getDate("Date"), 
 												 res.getInt("startTime"), res.getInt("endTime"), res.getBoolean("finish"),
 												 patient, res.getString("typeOfTreatment"),
 												 DBUtilities.nullToZero(res.getString("courseOfTreatment"))));
