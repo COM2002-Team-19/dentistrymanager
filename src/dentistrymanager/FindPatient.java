@@ -113,9 +113,7 @@ public class FindPatient extends JFrame {
 				else
 					try(Connection connection = DBConnect.getConnection(true)) {
 						selectedPatient.unsubscribe(connection);
-	        			getData("");
-	        			updatePatientList();
-	        			resetPatientDetails();
+						refresh();
 					} catch (SQLException ex) {
 						DBConnect.printSQLError(ex);
 					} catch (DeleteForeignKeyException ex) {
@@ -184,14 +182,14 @@ public class FindPatient extends JFrame {
         	public void actionPerformed(ActionEvent evt) {
         		try(Connection connection = DBConnect.getConnection(true)) {
         			selectedPatient.delete(connection);
-        			selectedPatient = null;
+        			refresh();
         		} catch (SQLException ex) {
         			DBConnect.printSQLError(ex);
         		} catch (DeleteForeignKeyException ex) {
 				    JOptionPane.showMessageDialog(new JFrame(), "This Patient currently has appointments and so can't be deleted",
 				    		"Patient Delete Error", JOptionPane.ERROR_MESSAGE);
         			System.out.println(ex);
-        		}	
+        		}
         	}
         });
         
@@ -421,6 +419,13 @@ public class FindPatient extends JFrame {
 
     // Instance methods
     
+    // Refreshes frame with latest data
+    private void refresh() {
+    	getData("");
+		updatePatientList();
+		resetPatientDetails();
+    }
+    
     // Connects to database and gets relevant data
     private void getData(String searchedName) {
     	try(Connection connection = DBConnect.getConnection(false)){
@@ -450,6 +455,7 @@ public class FindPatient extends JFrame {
     
     // Clears/resets patient details panel
     private void resetPatientDetails() {
+    	selectedPatient = null;
     	nameField.setText("");
     	addressArea.setText("");
     	phoneField.setText("");
