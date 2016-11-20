@@ -195,6 +195,9 @@ public class DatabaseBuilder {
 														 new Treatment("WHITE COMPOSITE RESIN FILLING", 150, "REPAIR"),
 														 new Treatment("GOLD CROWN FITTING", 500, "REPAIR")};
 	
+	public static final String[][] PRESET_TYPES_TREATMENT_PER_PATIENT = {{"REPAIR", "DENTIST"}, {"CHECK-UP", "DENTIST"}, 
+																		{"HYGIENE","HYGIENIST"}};
+	
 	// Private variables
 	private Connection connection;
 	
@@ -255,7 +258,8 @@ public class DatabaseBuilder {
 			PreparedStatement insertPlan = connection.prepareStatement("INSERT INTO HealthcarePlan VALUES(?, ?);");
 			PreparedStatement insertCoverage = connection.prepareStatement("INSERT INTO Coverage VALUES(?, ?, ?, ?);");
 			PreparedStatement insertTypeTreatment = connection.prepareStatement("INSERT INTO TypeOfTreatment VALUES(?, ?);");
-			PreparedStatement insertTreatment = connection.prepareStatement("INSERT INTO Treatment VALUES(?, ?, ?);");	
+			PreparedStatement insertTreatment = connection.prepareStatement("INSERT INTO Treatment VALUES(?, ?, ?);");
+			PreparedStatement insertTypeTreatPerPartner = connection.prepareStatement("INSERT INTO TypesOfTreatmentPerPartner VALUES(?, ?);");
 			) {
 			
 			// Creates partners
@@ -299,8 +303,17 @@ public class DatabaseBuilder {
 				insertTreatment.setString(3, treatment.getTypeOfTreatment());
 				insertTreatment.addBatch();
 			}
-			insertTreatment.executeBatch();
+			insertTreatment.executeBatch();	
 			connection.commit();		
+			
+			// Creates types of treatment per patient
+			for(String[] record: PRESET_TYPES_TREATMENT_PER_PATIENT) {
+				insertTypeTreatPerPartner.setString(1, record[0]);
+				insertTypeTreatPerPartner.setString(2, record[1]);
+				insertTypeTreatPerPartner.addBatch();
+			}
+			insertTypeTreatPerPartner.executeBatch();
+			connection.commit();
 			
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);

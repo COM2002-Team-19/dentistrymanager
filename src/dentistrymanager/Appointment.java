@@ -102,7 +102,7 @@ public class Appointment {
 	public boolean add(Connection connection) throws DuplicateKeyException {
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "INSERT INTO Appointment (partner, date, startTime, endTime, typeOfTreatment) "
-											+ "VALUES ('" + partner + "',"  + date + ", " + startTime + "," + endTime + "," + typeOfTreatment +");";
+											+ "VALUES ('" + partner + "',"  + date + ", " + startTime + "," + endTime + ",'" + typeOfTreatment +"');";
 			stmt.executeUpdate(sql);
 			if(patient != null) {
 				sql = "INSERT INTO ApointmentsPerPatient VALUES (" + patient.getPatientID() + ", " + appointmentID + ");";
@@ -155,7 +155,7 @@ public class Appointment {
 							+ "LEFT JOIN Patient p ON ap.patientID = p.patientID"
 							+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment ac ON a.appointmentID = ac.appointmentID"
 							+ "WHERE a.partner = '%" + partnerSearchTerm + "%' AND (p.forename = '%" + patientSearchTerm +"%' "
-									+ "OR p.surname = '%" + patientSearchTerm +"%');";
+									+ "OR p.surname = '%" + patientSearchTerm +"%') ORDER BY a.date, a.startTime;";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next()) {
 				Patient patient = new Patient();

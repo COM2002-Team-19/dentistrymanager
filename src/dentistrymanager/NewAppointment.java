@@ -31,17 +31,18 @@ public class NewAppointment extends JFrame {
 	private JTextField startTimeField;
 	private JLabel lblEndTime;
 	private JTextField endTimeField;
-	private JLabel lblTypeOfTreatment;
+	private JLabel lblPartner;
     private JComboBox<String> dayCombo;
     private JComboBox<String> monthCombo;
     private JComboBox<String> yearCombo;
-    private JComboBox<String> partnerCombo;
     private JComboBox<String> typeOfTreatmentCombo;
+    private JComboBox<String> partnerCombo;
     
     // Other variables
     private Patient patient;
     private String[] typesStr;
     private String[] partnersStr;
+    private String selectedPartner;
 
     /*
      * Checks if any of the text fields are empty
@@ -61,10 +62,10 @@ public class NewAppointment extends JFrame {
 		
 		try(Connection connection = DBConnect.getConnection(true)){
 			long date = Long.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString());
-			String partner = partnerCombo.getSelectedItem().toString();
+			String partner = typeOfTreatmentCombo.getSelectedItem().toString();
 			int startTime = Integer.valueOf(startTimeField.getText());
 			int endTime = Integer.valueOf(endTimeField.getText());
-			String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
+			String typeOfT = partnerCombo.getSelectedItem().toString();
 			int courseOfT = 0;//getCourseOfTreatment(); #TODO
 			Appointment app = new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
 		} catch (SQLException e){
@@ -78,7 +79,12 @@ public class NewAppointment extends JFrame {
 	 * Create the frame.
 	 */
 	public NewAppointment(Patient p) {
-		this.patient = p;
+		
+		// Initializes variables
+		patient = p;
+		selectedPartner = "";
+		
+		// Initialize Frame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 345, 250);
 		contentPane = new JPanel();
@@ -91,7 +97,6 @@ public class NewAppointment extends JFrame {
 		patientNameField.setColumns(10);
 		if (patient!=null)
 			patientNameField.setText(patient.getForename()+" "+patient.getSurname());
-		
 		
 		// Date section
 		lblDate = new JLabel("Date:");
@@ -133,32 +138,21 @@ public class NewAppointment extends JFrame {
 		endTimeField = new JTextField();
 		endTimeField.setColumns(10);
 		
+		// Select partner section
+		lblPartner = new JLabel("Partner:");
+		partnerCombo = new JComboBox<String>();
+		partnerCombo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selectedPartner = (String)partnerCombo.getSelectedItem();
+				updateTreatmentList();
+			}
+		});
+		updatePartnerList();
 		
 		// Treatment section
-		lblTypeOfTreatment = new JLabel("Type of Treatment: ");
+		JLabel lblTypeOfTreatment = new JLabel("Type of Treatment:");
 		typeOfTreatmentCombo = new JComboBox<String>();
-		try(Connection con = DBConnect.getConnection(false)){
-			ArrayList<TypeOfTreatment> types = TypeOfTreatment.getAll(con);
-			typesStr = new String[types.size()];
-			for (TypeOfTreatment tot : types)
-				typesStr[types.indexOf(tot)] = (tot.toString());
-		} catch (SQLException e){
-			DBConnect.printSQLError(e);
-		}
-		typeOfTreatmentCombo.setModel(new DefaultComboBoxModel<String>(typesStr));
-		
-		// Select partner section
-		JLabel lblPartner = new JLabel("Physician:");
-		partnerCombo = new JComboBox<String>();
-		try(Connection con = DBConnect.getConnection(false)){
-			ArrayList<Partner> partners = Partner.getAll(con);
-			partnersStr = new String[partners.size()];
-			for (Partner pa : partners)
-				partnersStr[partners.indexOf(pa)] = (pa.toString());
-		} catch (SQLException e){
-			DBConnect.printSQLError(e);
-		}
-        partnerCombo.setModel(new DefaultComboBoxModel<String>(partnersStr));
+		updateTreatmentList();
 		
 		// Buttons
 		JButton btnSubmit = new JButton("Submit");
@@ -191,8 +185,8 @@ public class NewAppointment extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(btnCancel)
 							.addGap(18)
 							.addComponent(btnSubmit))
@@ -218,12 +212,12 @@ public class NewAppointment extends JFrame {
 									.addComponent(yearCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblTypeOfTreatment)
-								.addComponent(lblPartner))
+								.addComponent(lblPartner)
+								.addComponent(lblTypeOfTreatment))
 							.addGap(14)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addComponent(typeOfTreatmentCombo, 0, 233, Short.MAX_VALUE)
-								.addComponent(partnerCombo, Alignment.LEADING, 0, 233, Short.MAX_VALUE))))
+								.addComponent(partnerCombo, 0, 233, Short.MAX_VALUE)
+								.addComponent(typeOfTreatmentCombo, Alignment.LEADING, 0, 233, Short.MAX_VALUE))))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -247,12 +241,12 @@ public class NewAppointment extends JFrame {
 						.addComponent(lblEndTime))
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblTypeOfTreatment)
-						.addComponent(typeOfTreatmentCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblPartner)
+						.addComponent(partnerCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(partnerCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPartner))
+						.addComponent(typeOfTreatmentCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblTypeOfTreatment))
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnSubmit)
@@ -262,5 +256,30 @@ public class NewAppointment extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 		setVisible(true);
 		pack();
+	}
+	
+	private void updatePartnerList() {
+		try(Connection con = DBConnect.getConnection(false)){
+			ArrayList<Partner> partners = Partner.getAll(con);
+			partnersStr = new String[partners.size()];
+			for (Partner pa : partners)
+				partnersStr[partners.indexOf(pa)] = (pa.toString());
+		} catch (SQLException e){
+			DBConnect.printSQLError(e);
+		}
+		partnerCombo.setModel(new DefaultComboBoxModel<String>(partnersStr));
+	}
+	
+	private void updateTreatmentList() {
+		try(Connection con = DBConnect.getConnection(false)){
+			ArrayList<TypeOfTreatment> types = TypeOfTreatment.getAllByPartner(con, selectedPartner);
+			typesStr = new String[types.size()];
+			for (TypeOfTreatment tot : types)
+				typesStr[types.indexOf(tot)] = (tot.toString());
+
+		} catch (SQLException e){
+			DBConnect.printSQLError(e);
+		}
+        typeOfTreatmentCombo.setModel(new DefaultComboBoxModel<String>(typesStr));
 	}
 }

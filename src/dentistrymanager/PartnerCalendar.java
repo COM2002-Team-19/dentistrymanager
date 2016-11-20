@@ -1,6 +1,7 @@
 package dentistrymanager;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -9,6 +10,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -78,18 +81,23 @@ public class PartnerCalendar extends JFrame {
 		// Buttons at the bottom
 		currentButtons.setLayout(new GridLayout(1,0));
 		JButton addTreatment = new JButton("Add Treatment");
+		addTreatment.setPreferredSize(new Dimension(100, 100));
 		addTreatment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				new RecordTreatment(nextAppointment);
 			}
 		});
 		
 		JButton delTreatment = new JButton("Delete Treatment");
+		delTreatment.setPreferredSize(new Dimension(100, 100));
 		delTreatment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 		
 		JButton finishCurrent = new JButton("Finish Appointment");
+		finishCurrent.setPreferredSize(new Dimension(100, 100));
 		finishCurrent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -107,7 +115,11 @@ public class PartnerCalendar extends JFrame {
 		
 		// Insert JList
 		JList nextAppResultsList = new JList<Appointment>();
-		nextAppResultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    	DefaultListModel<Appointment> model = new DefaultListModel<>();
+    	for(Appointment appointment: nextPatients)
+    		model.addElement(appointment);
+    	nextAppResultsList.setModel(model);
+		//nextAppResultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
 		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
 

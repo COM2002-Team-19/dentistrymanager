@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
-
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -15,6 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -33,22 +33,13 @@ import javax.swing.ListSelectionModel;
 
 import java.sql.*;
 
-@SuppressWarnings("serial")
 public class FindPatient extends JFrame {
 
     /**
      * Creates new form FindPatient
      */
-
     public FindPatient() {
-		try(Connection connection = DBConnect.getConnection(false)){
-			patients = Patient.getPatients(connection, "");
-			healthcarePlans = HealthcarePlan.getAll(connection);
-			selectedPatient = null;
-		}
-		catch(SQLException e){
-			DBConnect.printSQLError(e);
-		}
+    	getData();
 		initComponents();
     }
 
@@ -84,7 +75,6 @@ public class FindPatient extends JFrame {
         		if(selectedIndex != -1) {
         			selectedPatient = searchResultsList.getSelectedValue();
         			loadSelectedPatientDetails();
-        			setSubscribeButtonText();
         		}
         	}
         });
@@ -98,27 +88,23 @@ public class FindPatient extends JFrame {
         nameLabel.setText("Name:");
         nameField = new JTextField();
         nameField.setEditable(false);
-        nameField.setEnabled(false);
         
         addressLabel = new JLabel();
         addressLabel.setText("Address:");
         addressField = new JScrollPane();
         addressArea = new JTextArea();
         addressArea.setEditable(false);
-        addressArea.setEnabled(false);
         
         phoneLabel = new JLabel();
         phoneLabel.setText("Phone number:");
         phoneField = new JTextField();
         phoneField.setEditable(false);
-        phoneField.setEnabled(false);
         
         healthcarePanel = new JPanel();
         healthcareLabel = new JLabel();
         healthcareLabel.setText("Healthcare plan:");
         planNameArea = new JTextField();
         planNameArea.setEditable(false);
-        planNameArea.setEnabled(false);
         
         subscribeButton = new JButton();
         subscribeButton.setText("Subscribe");
@@ -130,6 +116,7 @@ public class FindPatient extends JFrame {
 				else
 					try(Connection connection = DBConnect.getConnection(true)) {
 						selectedPatient.unsubscribe(connection);
+						loadSelectedPatientDetails();
 					} catch (SQLException ex) {
 						DBConnect.printSQLError(ex);
 					} catch (DeleteForeignKeyException ex) {
@@ -152,6 +139,13 @@ public class FindPatient extends JFrame {
         		HealthcarePlan selectedPlan = (HealthcarePlan)planComboBox.getSelectedItem();
         		try(Connection connection = DBConnect.getConnection(true)) {
         			selectedPatient.subscribe(connection, selectedPlan);
+        			loadSelectedPatientDetails();
+        			changePlan.dispose();
+        			//getData();
+        			//loadSelectedPatientDetails();
+        			
+        			//dispose();
+        			//new FindPatient();
         		} catch(SQLException ex) {
         			DBConnect.printSQLError(ex);
         		} catch(DuplicateKeyException ex) {
@@ -161,7 +155,6 @@ public class FindPatient extends JFrame {
         });
         
         owedPanel = new JPanel();
-        
         owedLabel = new JLabel();
         owedLabel.setText("Owed:");
         amountOwedList = new JTextArea(AMOUNT_TEXT_AREA_ROWS, AMOUNT_TEXT_AREA_COLUMNS);
@@ -185,11 +178,26 @@ public class FindPatient extends JFrame {
             	 // #TODO button action
             }
         });
-        printRecieptCloseButton = new JButton(); // #TODO button action
+        printRecieptCloseButton = new JButton();
         printRecieptCloseButton.setText("Close");
         
-        deleteButton = new JButton(); // #TODO button action
+        deleteButton = new JButton();
         deleteButton.setText("Delete Patient");
+        deleteButton.setEnabled(false);
+        deleteButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent evt) {
+        		try(Connection connection = DBConnect.getConnection(true)) {
+        			selectedPatient.delete(connection);
+        			selectedPatient = null;
+        		} catch (SQLException ex) {
+        			DBConnect.printSQLError(ex);
+        		} catch (DeleteForeignKeyException ex) {
+				    JOptionPane.showMessageDialog(new JFrame(), "This Patient currently has appointments and so can't be deleted",
+				    		"Patient Delete Error", JOptionPane.ERROR_MESSAGE);
+        			System.out.println(ex);
+        		}	
+        	}
+        });
         
         addAppointmentButton = new JButton();
         addAppointmentButton.setText("Add appointment");
@@ -255,7 +263,6 @@ public class FindPatient extends JFrame {
         );
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new Dimension(700, 500));
         setResizable(true);
 
         searchResults.setViewportView(searchResultsList);
@@ -411,11 +418,24 @@ public class FindPatient extends JFrame {
         );
         getContentPane().setLayout(layout);
 
+        changePlan.pack();
         pack();
         setVisible(true);
     }
 
     // Instance methods
+    
+    // Connects to database and gets relevant data
+    private void getData() {
+    	try(Connection connection = DBConnect.getConnection(false)){
+    		patients = Patient.getPatients(connection, "");
+    		healthcarePlans = HealthcarePlan.getAll(connection);
+    		selectedPatient = null;
+    	}
+    	catch(SQLException e){
+    		DBConnect.printSQLError(e);
+    	}
+    }
     
     // Loads the list of patients
     private void updatePatientList() {
@@ -436,7 +456,6 @@ public class FindPatient extends JFrame {
     // Loads the details of the selected patient
     private void loadSelectedPatientDetails() {
     	
-    	nameField.setEnabled(true);
     	nameField.setText(selectedPatient.getForename() + " " + selectedPatient.getSurname());
     	addressArea.setEnabled(true);
     	addressArea.setText(selectedPatient.getAddress().getHouseNumber() + "\n" +
@@ -444,15 +463,18 @@ public class FindPatient extends JFrame {
     						selectedPatient.getAddress().getCity() + "\n" +
     						selectedPatient.getAddress().getDistrict() + "\n" +
     						selectedPatient.getAddress().getPostCode());
-    	phoneField.setEnabled(true);
     	phoneField.setText(selectedPatient.getPhoneNo());
     	planNameArea.setEnabled(true);
     	
     	// If patient has plan it fills in the plan details
     	if(selectedPatient.hasHealthCarePlan())
-    		planNameArea.setText(selectedPatient.gethealthCarePlan().getPlan() + " start date: " +  
-    								selectedPatient.gethealthCarePlan().getStartDate() + " ends: " + 
+    		planNameArea.setText(selectedPatient.gethealthCarePlan().getPlan() + " - Started: " +  
+    								selectedPatient.gethealthCarePlan().getStartDate() + ", Ends: " + 
     								selectedPatient.gethealthCarePlan().getEndDate());
+    	else
+    		planNameArea.setText("");
+    	
+		setSubscribeButtonText();
     	
     	// Fills in the amount owed details
     	ArrayList<String> amountOwedDetails = new ArrayList<>();
@@ -467,6 +489,7 @@ public class FindPatient extends JFrame {
     	
     	// Add appointment button enabled
     	addAppointmentButton.setEnabled(true);
+    	deleteButton.setEnabled(true);
     	
     }
     
@@ -476,6 +499,8 @@ public class FindPatient extends JFrame {
     		subscribeButton.setVisible(true);
     		if(selectedPatient.hasHealthCarePlan())
         		subscribeButton.setText("Unsubscribe");
+    		else
+    			subscribeButton.setText("Subscribe");
     	}
     }
     
@@ -506,7 +531,6 @@ public class FindPatient extends JFrame {
     private JLabel nameLabel;
     private JTextField phoneField;
     private JLabel phoneLabel;
-    private JButton planClosebutton;
     private JComboBox<HealthcarePlan> planComboBox;
     private JTextField planNameArea;
     private JButton subscribeButton;

@@ -78,4 +78,29 @@ public class CourseOfTreatment {
 		}
 		return courseOfTreatment;
 	}
+	
+	public static CourseOfTreatment newCourseOfTreatment(Connection connection, int patientID) {
+		CourseOfTreatment courseOfTreatment = new CourseOfTreatment();
+		try(Statement stmt = connection.createStatement()) {
+			connection.setAutoCommit(false);
+			String sql = "INSERT INTO CourseOfTreatment (patientID) VALUES(" + patientID + ");";
+			int numRowsUpdated = stmt.executeUpdate(sql);
+			connection.commit();
+			
+			if(numRowsUpdated == 1) {
+				
+				// Return the new CourseOfTreatment
+				connection.setAutoCommit(true);
+				sql = "SELECT * FROM CourseOfTreatment WHERE complete = TRUE AND patientID = " + patientID +";";
+				
+				ResultSet res = stmt.executeQuery(sql);
+				if(res.first())
+					courseOfTreatment = new CourseOfTreatment(res.getInt("courseOfTreatment"), res.getInt("patientID"),
+							res.getBoolean("complete"));
+			}
+		} catch(SQLException e) {
+			DBConnect.printSQLError(e);
+		}
+		return courseOfTreatment;
+	}
 }

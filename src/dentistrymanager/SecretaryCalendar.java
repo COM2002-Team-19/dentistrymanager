@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,9 +32,8 @@ public class SecretaryCalendar extends JFrame {
     		this.dentist = partners.get(0);
     		this.hygienist = partners.get(1);
     		this.dentistAppointments = dentist.getWeekAppointments(connection, DateUtilities.thisWeek());
-    		this.hygienistAppointment = hygienist.getWeekAppointments(connection, DateUtilities.thisWeek());
-    	}
-    	catch(SQLException e){
+    		this.hygienistAppointments = hygienist.getWeekAppointments(connection, DateUtilities.thisWeek());
+    	} catch(SQLException e){
     		DBConnect.printSQLError(e);
     	}
 
@@ -63,11 +63,13 @@ public class SecretaryCalendar extends JFrame {
 
         dentistCalendarList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         dentistCalendarList.setCellRenderer(new AppointmentListRenderer());
+        updateDentistList();
         dentistCalendarList.addListSelectionListener(new ListSelectionListener() {
         	public void valueChanged(ListSelectionEvent event) {
         		int selectedIndex = dentistCalendarList.getSelectedIndex();
         		if(selectedIndex != -1) {
         			selectedAppointmentDentist = dentistCalendarList.getSelectedValue();
+        			
         		}
         	}
         });
@@ -148,6 +150,7 @@ public class SecretaryCalendar extends JFrame {
 
         hygienistCalendarList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         hygienistCalendarList.setCellRenderer(new AppointmentListRenderer());
+        updateHygienistList();
         hygienistCalendarList.addListSelectionListener(new ListSelectionListener() {
         	public void valueChanged(ListSelectionEvent event) {
         		int selectedIndex = hygienistCalendarList.getSelectedIndex();
@@ -208,12 +211,26 @@ public class SecretaryCalendar extends JFrame {
         setVisible(true);
     }
     
+    private void updateDentistList() {
+    	DefaultListModel<Appointment> model = new DefaultListModel<>();
+    	for(Appointment appointment: dentistAppointments)
+    		model.addElement(appointment);
+    	dentistCalendarList.setModel(model);
+    }
+    
+    private void updateHygienistList() {
+    	DefaultListModel<Appointment> model = new DefaultListModel<>();
+    	for(Appointment appointment: hygienistAppointments)
+    		model.addElement(appointment);
+    	hygienistCalendarList.setModel(model);
+    }
+    
     // System variables
     private ArrayList<Partner> partners;
     private Partner dentist;
     private Partner hygienist;
     private ArrayList<Appointment> dentistAppointments;
-    private ArrayList<Appointment> hygienistAppointment;
+    private ArrayList<Appointment> hygienistAppointments;
     private Appointment selectedAppointmentDentist;
     private Appointment selectedAppointmentHygienist;
 

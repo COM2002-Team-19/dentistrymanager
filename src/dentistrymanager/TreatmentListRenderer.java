@@ -2,26 +2,21 @@ package dentistrymanager;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-
 @SuppressWarnings("serial")
-public class AppointmentListRenderer extends JLabel implements ListCellRenderer<Appointment> {
+public class TreatmentListRenderer extends JLabel implements ListCellRenderer<Treatment> {
 	
-	public AppointmentListRenderer() {
+	public TreatmentListRenderer() {
 		setOpaque(true);
 	}
 	
-	public Component getListCellRendererComponent(JList<? extends Appointment> list, Appointment appointment, int index, 
-																			boolean isSelected, boolean cellHasFocus){
-		
-		Font font = new Font("Courier", Font.BOLD,17);
-		setFont(font);
-		setText("Start Time :  " + appointment.getStartTime()+" | Date : " +appointment.getDate() + " | Patient Name : " + appointment.getPatient().getForename() + " " + appointment.getPatient().getSurname());
+	public Component getListCellRendererComponent(JList<? extends Treatment> list, Treatment treatment, int index, 
+																			boolean isSelected, boolean cellHasFocus) {
+		setText(treatment.getName());
         Color background;
         Color foreground;
 

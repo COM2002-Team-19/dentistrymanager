@@ -32,7 +32,8 @@ public class Partner {
 									+ "LEFT OUTER JOIN AppointmentsPerPatient ap ON a.appointmentID = ap.appointmentID "
 									+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment ac ON a.appointmentID = ac.appointmentID "
 									+ "WHERE partner = '" + name + "' AND date BETWEEN " + DateUtilities.startWeek(week) 
-									+ " AND " + DateUtilities.endWeek(week) + " AND finish = FALSE;";
+									+ " AND " + DateUtilities.endWeek(week) + " AND finish = FALSE"
+									+ " ORDER BY a.date, a.startTime;";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next()) {
 				Patient patient = new Patient();
@@ -58,7 +59,8 @@ public class Partner {
 			String sql = "SELECT a.*, ap.patientID, ac.courseOfTreatment FROM Appointment a " 
 						+ "LEFT OUTER JOIN AppointmentsPerPatient ap ON a.appointmentID = ap.appointmentID "
 						+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment ac ON a.appointmentID = ac.appointmentID "
-						+ "WHERE partner = '" + name + "' AND date = "+ DateUtilities.today() + " AND finish = FALSE;";
+						+ "WHERE partner = '" + name + "' AND date = "+ DateUtilities.today() + " AND finish = FALSE "
+						+ "ORDER BY a.date, a.startTime;";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next()) {
 				Patient patient = new Patient();

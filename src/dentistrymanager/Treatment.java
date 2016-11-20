@@ -34,7 +34,7 @@ public class Treatment {
 	public static ArrayList<Treatment> getAllByType(Connection connection, String typeOfTreatment) {
 		ArrayList<Treatment> treatments = new ArrayList<Treatment>();
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "SELECT * FROM Treatment WHERE typeOfTreatment = " + typeOfTreatment + ";";
+			String sql = "SELECT * FROM Treatment WHERE typeOfTreatment = '" + typeOfTreatment + "';";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next())
 				treatments.add(new Treatment(res.getString("name"), 
