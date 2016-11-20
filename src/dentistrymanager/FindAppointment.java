@@ -10,14 +10,19 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 /*
  * For a given patient in FindPatient, be able to view the appointments they have booked, 
  * and the appointments a partner has got booked so you can find a time that is free for
@@ -29,12 +34,18 @@ public class FindAppointment extends JFrame {
 	//variables list
 	private JPanel contentPane;
 	private JComboBox<String> comboPartner = new JComboBox<String>();
-//  private String selectedPartner;
-//  private String[] typesStr;
+    private String selectedPartner;
     private String[] partnersStr;
-//    private JComboBox<String> typeOfTreatmentCombo;
     private JTextField patientNameField;
     private Patient patient;
+    private JList<Appointment> resultsList = new JList();
+    private JScrollPane resultsPane = new JScrollPane();
+    private ArrayList<Appointment> resultAppointments;
+    private ArrayList<Appointment> patientAppointments;
+    private Appointment selectedAppointmentResult;
+    private ArrayList<Partner> partners;
+    private Partner dentist;
+    private Partner hygienist;
 	
 	/**
 	 * Create the frame.
@@ -42,12 +53,20 @@ public class FindAppointment extends JFrame {
 	public FindAppointment(Patient p) {
 		setResizable(false);
 		
+		try(Connection connection = DBConnect.getConnection(false)){
+    		this.partners = Partner.getAll(connection);
+    		this.dentist = partners.get(0);
+    		this.hygienist = partners.get(1);
+    	} catch(SQLException e){
+    		DBConnect.printSQLError(e);
+    	}
+		
 		//initialise
-		//selectedPartner = "";
+		selectedPartner = "";
 		patient = p;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 290, 412);
+		setBounds(100, 100, 596, 412);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -56,15 +75,11 @@ public class FindAppointment extends JFrame {
 		JLabel lblPartner = new JLabel("Partner to see : ");
 		comboPartner.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				selectedPartner = (String)comboPartner.getSelectedItem();
+				selectedPartner = (String)comboPartner.getSelectedItem();
 //				updateTreatmentList();
 			}
 		});
 		updatePartnerList();
-		
-		//Auto-generated code
-		@SuppressWarnings("rawtypes")
-		JList list = new JList();
 		
 		JLabel lblPatientName = new JLabel("Patient name : ");
 		
@@ -74,23 +89,39 @@ public class FindAppointment extends JFrame {
 		if (patient!=null)
 			patientNameField.setText(patient.getForename()+" "+patient.getSurname());		
 		
+		//Results list window updating. 
+		resultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		resultsList.setCellRenderer(new AppointmentListRenderer());
+		updateResultsList();
+		resultsList.addListSelectionListener(new ListSelectionListener() {
+		public void valueChanged(ListSelectionEvent event) {
+		    int selectedIndex = resultsList.getSelectedIndex();
+		    	if(selectedIndex != -1) {
+					selectedAppointmentResult = resultsList.getSelectedValue();
+		 		}
+			}
+		});
+		resultsPane.setViewportView(resultsList);
+		
+		
+		//AUTO-GENERATED Code
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(list, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(resultsPane, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 							.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
 								.addComponent(lblPatientName)
 								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(patientNameField))
+								.addComponent(patientNameField, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE))
 							.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
 								.addComponent(lblPartner)
 								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(comboPartner, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(16, Short.MAX_VALUE))
+								.addComponent(comboPartner, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -103,16 +134,17 @@ public class FindAppointment extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblPatientName)
 						.addComponent(patientNameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-					.addComponent(list, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(resultsPane, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
 					.addContainerGap())
 		);
+		resultsPane.setViewportView(resultsList);
 		contentPane.setLayout(gl_contentPane);
 		setVisible(true);
 	}
 	
-	private void updatePartnerList() {
-	    		
+	//Gets the partners for the Combo Box
+	private void updatePartnerList() {	
 	    try(Connection con = DBConnect.getConnection(false)){
 			ArrayList<Partner> partners = Partner.getAll(con);
 			partnersStr = new String[partners.size()];
@@ -124,20 +156,13 @@ public class FindAppointment extends JFrame {
 		comboPartner.setModel(new DefaultComboBoxModel<String>(partnersStr));
 	}
 	
-//	code that listens to the other box
-//	private void updateTreatmentList() {
-//		try(Connection con = DBConnect.getConnection(false)){
-//			ArrayList<TypeOfTreatment> types = TypeOfTreatment.getAllByPartner(con, selectedPartner);
-//			typesStr = new String[types.size()];
-//			for (TypeOfTreatment tot : types)
-//				typesStr[types.indexOf(tot)] = (tot.toString());
-//
-//		} catch (SQLException e){
-//			DBConnect.printSQLError(e);
-//		}
-//		
-//		typeOfTreatmentCombo.setModel(new DefaultComboBoxModel<String>(typesStr));
-//	}
+	//Updates the ResultsList, the PartnerList(?)
+	private void updateResultsList() {
+    	DefaultListModel<Appointment> model = new DefaultListModel<>();
+    	for(Appointment appointment: resultAppointments)
+    		model.addElement(appointment);
+    	resultsList.setModel(model);
+    }
 	
 	/**
 	 * Launch the application.
