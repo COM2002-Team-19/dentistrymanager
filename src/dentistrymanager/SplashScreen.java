@@ -50,8 +50,7 @@ public class SplashScreen extends JFrame {
 		
 		JPanel buttonPanel = new JPanel();
 		
-		JButton secretaryButton = new JButton();
-		secretaryButton.setText("Secretary");
+		JButton secretaryButton = new JButton("Secretary");
 		secretaryButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new SecretaryMenu();
@@ -59,8 +58,7 @@ public class SplashScreen extends JFrame {
 			}
 		});
 		
-		JButton dentistButton = new JButton();
-		dentistButton.setText("Dentist");
+		JButton dentistButton = new JButton("Dentist");
 		dentistButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new DentistCalendar();
@@ -68,8 +66,7 @@ public class SplashScreen extends JFrame {
 			}
 		});
 		
-		JButton hygienistButton = new JButton();
-		hygienistButton.setText("Hygienist");
+		JButton hygienistButton = new JButton("Hygienist");
 		hygienistButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new HygienistCalendar();

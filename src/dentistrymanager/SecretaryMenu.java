@@ -8,9 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 @SuppressWarnings("serial")
 public class SecretaryMenu extends JFrame {
@@ -26,20 +24,14 @@ public class SecretaryMenu extends JFrame {
     /**
      * This method is called from within the constructor to initialise the form.
      */
-
     // initialise Components
     private void initComponents() {
-
         buttonPanel = new JPanel();
-        calendarButton = new JButton();
-        registerButton = new JButton();
-        findPatientButton = new JButton();
+        calendarButton = new JButton("Calendars");
+        registerButton = new JButton("Register Patient");
+        findPatientButton = new JButton("Find Patient");
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        calendarButton.setText("Calendars");
-        registerButton.setText("Register Patient");
-        findPatientButton.setText("Find Patient");
         
         calendarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

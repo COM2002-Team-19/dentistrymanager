@@ -33,6 +33,7 @@ import javax.swing.ListSelectionModel;
 
 import java.sql.*;
 
+@SuppressWarnings("serial")
 public class FindPatient extends JFrame {
 
     /**
@@ -47,7 +48,6 @@ public class FindPatient extends JFrame {
     /**
      * This method is called from within the constructor to initialise the form.
      */
-    @SuppressWarnings("unchecked")
     // initialise components
     private void initComponents() {
         
@@ -81,30 +81,25 @@ public class FindPatient extends JFrame {
         
         patientDetails = new JPanel();
         
-        nameLabel = new JLabel();
-        nameLabel.setText("Name:");
+        nameLabel = new JLabel("Name:");
         nameField = new JTextField();
         nameField.setEditable(false);
         
-        addressLabel = new JLabel();
-        addressLabel.setText("Address:");
+        addressLabel = new JLabel("Address:");
         addressField = new JScrollPane();
         addressArea = new JTextArea();
         addressArea.setEditable(false);
         
-        phoneLabel = new JLabel();
-        phoneLabel.setText("Phone number:");
+        phoneLabel = new JLabel("Phone number:");
         phoneField = new JTextField();
         phoneField.setEditable(false);
         
         healthcarePanel = new JPanel();
-        healthcareLabel = new JLabel();
-        healthcareLabel.setText("Healthcare plan:");
+        healthcareLabel = new JLabel("Healthcare plan:");
         planNameArea = new JTextField();
         planNameArea.setEditable(false);
         
-        subscribeButton = new JButton();
-        subscribeButton.setText("Subscribe");
+        subscribeButton = new JButton("Subscribe");
         subscribeButton.setEnabled(false);
         subscribeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -129,17 +124,14 @@ public class FindPatient extends JFrame {
         // Loads the plans in the combo box 
         updateHealthcarePlanList();
         
-        updatePlan = new JButton();
-        updatePlan.setText("Update Plan");
+        updatePlan = new JButton("Update Plan");
         updatePlan.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		HealthcarePlan selectedPlan = (HealthcarePlan)planComboBox.getSelectedItem();
         		try(Connection connection = DBConnect.getConnection(true)) {
         			selectedPatient.subscribe(connection, selectedPlan);
         			changePlan.dispose();
-        			getData("");
-        			updatePatientList();
-        			resetPatientDetails();
+        			refresh();
         		} catch(SQLException ex) {
         			DBConnect.printSQLError(ex);
         		} catch(DuplicateKeyException ex) {
@@ -149,34 +141,21 @@ public class FindPatient extends JFrame {
         });
         
         owedPanel = new JPanel();
-        owedLabel = new JLabel();
-        owedLabel.setText("Owed:");
-        amountOwedList = new JTextArea(AMOUNT_TEXT_AREA_ROWS, AMOUNT_TEXT_AREA_COLUMNS);
-        amountOwedList.setEnabled(false);
+        owedLabel = new JLabel("Owed:");
+        owedField = new JTextField();
+        owedField.setEditable(false);
+        owedField.setColumns(10);
         
-        receiptButton = new JButton(); 
-        receiptButton.setText("Receipt");
+        receiptButton = new JButton("Receipt"); 
         receiptButton.setEnabled(false);
         receiptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+            	//new PrintReceipt();
             	// #TODO
             }
         });
         
-        printReceipt = new JDialog();
-        printReceipt.setAlwaysOnTop(true);
-        printRecieptPayButton = new JButton();
-        printRecieptPayButton.setText("Pay All");
-        printRecieptPayButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-            	 // #TODO button action
-            }
-        });
-        printRecieptCloseButton = new JButton();
-        printRecieptCloseButton.setText("Close");
-        
-        deleteButton = new JButton();
-        deleteButton.setText("Delete Patient");
+        deleteButton = new JButton("Delete Patient");
         deleteButton.setEnabled(false);
         deleteButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent evt) {
@@ -193,8 +172,7 @@ public class FindPatient extends JFrame {
         	}
         });
         
-        addAppointmentButton = new JButton();
-        addAppointmentButton.setText("Add appointment");
+        addAppointmentButton = new JButton("Add appointment");
         addAppointmentButton.setEnabled(false);
         addAppointmentButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent evt) {
@@ -202,8 +180,7 @@ public class FindPatient extends JFrame {
         	}
         });
         
-        findAppointment = new JButton();
-        findAppointment.setText("Find free appointment slots");
+        findAppointment = new JButton("Find Available Appointment Slots");
         findAppointment.setEnabled(false);
         findAppointment.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent evt) {
@@ -214,33 +191,6 @@ public class FindPatient extends JFrame {
         jScrollPane1 = new JScrollPane();
 
         // Generated code - do not modify
-        GroupLayout printReceiptLayout = new GroupLayout(printReceipt.getContentPane());
-        printReceipt.getContentPane().setLayout(printReceiptLayout);
-        printReceiptLayout.setHorizontalGroup(
-            printReceiptLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(printReceiptLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(printReceiptLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
-                    .addGroup(printReceiptLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(printRecieptPayButton)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(printRecieptCloseButton)))
-                .addContainerGap())
-        );
-        printReceiptLayout.setVerticalGroup(
-            printReceiptLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(printReceiptLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 235, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(printReceiptLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(printRecieptPayButton)
-                    .addComponent(printRecieptCloseButton))
-                .addContainerGap(13, Short.MAX_VALUE))
-        );
-
         GroupLayout changePlanLayout = new GroupLayout(changePlan.getContentPane());
         changePlan.getContentPane().setLayout(changePlanLayout);
         changePlanLayout.setHorizontalGroup(
@@ -308,28 +258,26 @@ public class FindPatient extends JFrame {
         owedPanel.setBorder(BorderFactory.createEtchedBorder());
 
         GroupLayout owedPanelLayout = new GroupLayout(owedPanel);
-        owedPanel.setLayout(owedPanelLayout);
         owedPanelLayout.setHorizontalGroup(
-            owedPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(owedPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(owedPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(amountOwedList, GroupLayout.Alignment.TRAILING)
-                    .addGroup(GroupLayout.Alignment.TRAILING, owedPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(receiptButton)))
-                .addContainerGap())
+        	owedPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(owedPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(owedPanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(owedField, GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
+        				.addComponent(receiptButton, Alignment.TRAILING))
+        			.addContainerGap())
         );
         owedPanelLayout.setVerticalGroup(
-            owedPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(owedPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(amountOwedList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(receiptButton)
-                .addContainerGap(18, Short.MAX_VALUE))
+        	owedPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(owedPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(owedField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(receiptButton)
+        			.addContainerGap(63, Short.MAX_VALUE))
         );
-        //basically a .pack() but for JPanels
+        owedPanel.setLayout(owedPanelLayout);
+        //basically .pack() but for JPanels
         owedPanel.setPreferredSize(owedPanel.getPreferredSize());
         owedPanel.validate();
         
@@ -342,12 +290,10 @@ public class FindPatient extends JFrame {
         			.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
         				.addGroup(patientDetailsLayout.createSequentialGroup()
         					.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
-        						.addGroup(patientDetailsLayout.createSequentialGroup()
-        							.addComponent(phoneLabel)
-        							.addGap(18))
+        						.addComponent(phoneLabel)
         						.addComponent(addressLabel)
         						.addComponent(nameLabel))
-        					.addGap(50)
+        					.addGap(68)
         					.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
         						.addComponent(addressField, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         						.addComponent(nameField, 301, 301, 301)
@@ -358,11 +304,11 @@ public class FindPatient extends JFrame {
         						.addComponent(owedLabel))
         					.addPreferredGap(ComponentPlacement.RELATED)
         					.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(owedPanel, GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
-        						.addComponent(healthcarePanel, GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)))
-        				.addComponent(findAppointment, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
-        				.addComponent(deleteButton, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
-        				.addComponent(addAppointmentButton, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
+        						.addComponent(owedPanel, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+        						.addComponent(healthcarePanel, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)))
+        				.addComponent(findAppointment, GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+        				.addComponent(deleteButton, GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+        				.addComponent(addAppointmentButton, GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE))
         			.addContainerGap())
         );
         patientDetailsLayout.setVerticalGroup(
@@ -387,8 +333,8 @@ public class FindPatient extends JFrame {
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addGroup(patientDetailsLayout.createParallelGroup(Alignment.LEADING)
         				.addComponent(owedLabel)
-        				.addComponent(owedPanel, GroupLayout.PREFERRED_SIZE, 132, Short.MAX_VALUE))
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        				.addComponent(owedPanel, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
         			.addComponent(deleteButton)
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(addAppointmentButton)
@@ -478,6 +424,7 @@ public class FindPatient extends JFrame {
     	phoneField.setText("");
     	planNameArea.setText("");
     	subscribeButton.setEnabled(false);
+    	receiptButton.setEnabled(false);
     	addAppointmentButton.setEnabled(false);
     	findAppointment.setEnabled(false);
     	deleteButton.setEnabled(false);
@@ -504,19 +451,10 @@ public class FindPatient extends JFrame {
     		planNameArea.setText("");
     	
 		setSubscribeButtonText();
+    
+		//#TODO fill in owedField
+		receiptButton.setEnabled(true);
     	
-    	// Fills in the amount owed details
-    	ArrayList<String> amountOwedDetails = new ArrayList<>();
-    	try(Connection connection = DBConnect.getConnection(false)) {
-    		amountOwedDetails = selectedPatient.getAmountOwed(connection);
-    	} catch (SQLException e) {
-    		DBConnect.printSQLError(e);
-    	}
-    	
-    	for(String amountOwed: amountOwedDetails)
-    		amountOwedList.append(amountOwed);	
-    	
-    	// Add appointment button enabled
     	addAppointmentButton.setEnabled(true);
     	deleteButton.setEnabled(true);	
     	findAppointment.setEnabled(true);
@@ -572,5 +510,5 @@ public class FindPatient extends JFrame {
     private JButton addAppointmentButton;
     private JButton findAppointment;
     private JScrollPane jScrollPane1;
-    private JTextArea amountOwedList;
+    private JTextField owedField;
 }
