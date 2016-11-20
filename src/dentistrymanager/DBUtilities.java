@@ -24,9 +24,7 @@ public class DBUtilities {
 	//takes date makes it into accepted Long format
 	public static Long dateToLong (Date d) {
 		String dStr = d.toString();
-		System.out.println(dStr);
 		dStr = dStr.replaceAll("-", "");
-		System.out.println(dStr);
 		Long dLong = new Long(dStr);
 		return dLong;
 	}	
