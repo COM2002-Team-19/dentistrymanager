@@ -1,6 +1,7 @@
 package dentistrymanager;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -80,18 +81,23 @@ public class PartnerCalendar extends JFrame {
 		// Buttons at the bottom
 		currentButtons.setLayout(new GridLayout(1,0));
 		JButton addTreatment = new JButton("Add Treatment");
+		addTreatment.setPreferredSize(new Dimension(100, 100));
 		addTreatment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				new RecordTreatment(nextAppointment);
 			}
 		});
 		
 		JButton delTreatment = new JButton("Delete Treatment");
+		delTreatment.setPreferredSize(new Dimension(100, 100));
 		delTreatment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 		
 		JButton finishCurrent = new JButton("Finish Appointment");
+		finishCurrent.setPreferredSize(new Dimension(100, 100));
 		finishCurrent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}

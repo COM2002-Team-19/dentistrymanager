@@ -21,7 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class RecordTreatment extends JFrame {
+public class DeleteTreatment extends JFrame {
 
 	private JPanel contentPane;
 	private JComboBox<Treatment> treatmentCombo;
@@ -43,17 +43,10 @@ public class RecordTreatment extends JFrame {
 		boolean success = false;
 		
 		try(Connection connection = DBConnect.getConnection(true)){
-//			long date = Long.valueOf(yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString());
-//			String partner = partnerCombo.getSelectedItem().toString();
-//			int startTime = Integer.valueOf(startTimeField.getText());
-//			int endTime = Integer.valueOf(endTimeField.getText());
-//			String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
-//			int courseOfT = 0;//getCourseOfTreatment(); #TODO
 			
 			String n = selectedTreatment.getName();
 			Double oc = selectedTreatment.getCost();
 			Double cc = 0.0;
-			
 			
 			TreatmentRecord rec = new TreatmentRecord(appointmentID,n,oc,cc);
 		} catch (SQLException e){
@@ -63,7 +56,7 @@ public class RecordTreatment extends JFrame {
 		return success;
     }
 
-	public RecordTreatment(Appointment appointment) {
+	public DeleteTreatment(Appointment appointment) {
 		
 		this.appointmentID = appointment.getAppointmentID();
 		try(Connection con = DBConnect.getConnection(false)){
