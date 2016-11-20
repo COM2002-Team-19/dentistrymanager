@@ -39,7 +39,8 @@ public class FindPatient extends JFrame {
      * Creates new form FindPatient
      */
     public FindPatient() {
-    	getData();
+    	getData("");
+		selectedPatient = null;
 		initComponents();
     }
 
@@ -56,12 +57,8 @@ public class FindPatient extends JFrame {
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String enteredName = searchField.getText();
-				try(Connection connection = DBConnect.getConnection(false)) {
-					patients = Patient.getPatients(connection, enteredName);
-					updatePatientList();
-				} catch (SQLException ex) {
-					DBConnect.printSQLError(ex);
-				}
+				getData(enteredName);
+				updatePatientList();
 			}
 		});
         
@@ -108,7 +105,7 @@ public class FindPatient extends JFrame {
         
         subscribeButton = new JButton();
         subscribeButton.setText("Subscribe");
-        subscribeButton.setVisible(false);
+        subscribeButton.setEnabled(false);
         subscribeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!selectedPatient.hasHealthCarePlan())
@@ -116,7 +113,9 @@ public class FindPatient extends JFrame {
 				else
 					try(Connection connection = DBConnect.getConnection(true)) {
 						selectedPatient.unsubscribe(connection);
-						loadSelectedPatientDetails();
+	        			getData("");
+	        			updatePatientList();
+	        			resetPatientDetails();
 					} catch (SQLException ex) {
 						DBConnect.printSQLError(ex);
 					} catch (DeleteForeignKeyException ex) {
@@ -139,13 +138,10 @@ public class FindPatient extends JFrame {
         		HealthcarePlan selectedPlan = (HealthcarePlan)planComboBox.getSelectedItem();
         		try(Connection connection = DBConnect.getConnection(true)) {
         			selectedPatient.subscribe(connection, selectedPlan);
-        			loadSelectedPatientDetails();
         			changePlan.dispose();
-        			//getData();
-        			//loadSelectedPatientDetails();
-        			
-        			//dispose();
-        			//new FindPatient();
+        			getData("");
+        			updatePatientList();
+        			resetPatientDetails();
         		} catch(SQLException ex) {
         			DBConnect.printSQLError(ex);
         		} catch(DuplicateKeyException ex) {
@@ -426,11 +422,10 @@ public class FindPatient extends JFrame {
     // Instance methods
     
     // Connects to database and gets relevant data
-    private void getData() {
+    private void getData(String searchedName) {
     	try(Connection connection = DBConnect.getConnection(false)){
-    		patients = Patient.getPatients(connection, "");
+    		patients = Patient.getPatients(connection, searchedName);
     		healthcarePlans = HealthcarePlan.getAll(connection);
-    		selectedPatient = null;
     	}
     	catch(SQLException e){
     		DBConnect.printSQLError(e);
@@ -453,9 +448,19 @@ public class FindPatient extends JFrame {
     	planComboBox.setModel(model);
     }
     
+    // Clears/resets patient details panel
+    private void resetPatientDetails() {
+    	nameField.setText("");
+    	addressArea.setText("");
+    	phoneField.setText("");
+    	planNameArea.setText("");
+    	subscribeButton.setEnabled(false);
+    	addAppointmentButton.setEnabled(false);
+    	deleteButton.setEnabled(false);
+    }
+    
     // Loads the details of the selected patient
-    private void loadSelectedPatientDetails() {
-    	
+    private void loadSelectedPatientDetails() {	
     	nameField.setText(selectedPatient.getForename() + " " + selectedPatient.getSurname());
     	addressArea.setEnabled(true);
     	addressArea.setText(selectedPatient.getAddress().getHouseNumber() + "\n" +
@@ -489,19 +494,18 @@ public class FindPatient extends JFrame {
     	
     	// Add appointment button enabled
     	addAppointmentButton.setEnabled(true);
-    	deleteButton.setEnabled(true);
-    	
+    	deleteButton.setEnabled(true);	
     }
     
     // Activates the subscribe button depending on whether the patient has a plan or not
     private void setSubscribeButtonText() {
     	if(selectedPatient != null) {
-    		subscribeButton.setVisible(true);
     		if(selectedPatient.hasHealthCarePlan())
         		subscribeButton.setText("Unsubscribe");
     		else
     			subscribeButton.setText("Subscribe");
     	}
+    	subscribeButton.setEnabled(true);
     }
     
     // Constants
