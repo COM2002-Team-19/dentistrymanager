@@ -132,7 +132,7 @@ public class PartnerCalendar extends JFrame {
 		nextButtons.setLayout(new GridLayout(1,0));
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 800, 500);
+		setBounds(100, 100, 1100, 300);
 		contentPane = new JPanel();
    		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new GridLayout(0, 2));
