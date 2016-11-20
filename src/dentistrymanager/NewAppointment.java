@@ -45,30 +45,6 @@ public class NewAppointment extends JFrame {
     private String selectedPartner;
     private String[] typesStr;
     
-    /*
-     * Uploads new patient to servers
-     * @return boolean whether or not patient upload successful
-     */
-    public boolean updateDB() {
-		boolean success = false;
-		Appointment app = createAppFromForm();
-		//if (app.)
-		try(Connection connection = DBConnect.getConnection(true)){
-
-			success = app.add(connection);
-		} catch (SQLException e){
-			DBConnect.printSQLError(e);
-			success = false;
-		} catch (DuplicateKeyException e) {
-		    JOptionPane.showMessageDialog(new JFrame(), "There has been an error with the database, please see admin.", "Submission Error",
-		            JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
-			success = false;
-		}
-		
-		return success;
-    }
-    
 	/**
 	 * Create the frame.
 	 */
@@ -266,9 +242,48 @@ public class NewAppointment extends JFrame {
 		pack();
 	}
 	
+    /*
+     * Uploads new patient to servers
+     * @return boolean whether or not patient upload successful
+     */
+    public boolean updateDB() {
+		boolean success = false;
+		Appointment app = createAppFromForm();
+		if (validateSlot(app)) {
+			try(Connection connection = DBConnect.getConnection(true)){
+				success = app.add(connection);
+			} catch (SQLException e){
+				DBConnect.printSQLError(e);
+				success = false;
+			} catch (DuplicateKeyException e) {
+				JOptionPane.showMessageDialog(new JFrame(), "There has been an error with the database, please see admin.", "Submission Error",
+											  JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+				success = false;
+			}
+		}
+		else
+			JOptionPane.showMessageDialog(new JFrame(), "This slot is unavailable.", "Submission Error",
+					JOptionPane.ERROR_MESSAGE);
+		
+		return success;
+    }
+	
 	// Ensures entered date and time values are reasonable
-	private void validateSlot() {
-		//#TODO
+	private boolean validateSlot(Appointment a) {
+		Date date = DateTimeUtilities.stringToDate(yearCombo.getSelectedItem().toString(), 
+				monthCombo.getSelectedItem().toString() ,
+				dayCombo.getSelectedItem().toString());
+		String todayStr = DateTimeUtilities.today();
+		String year = todayStr.substring(0, 4);
+		String month = todayStr.substring(4, 6);
+		String day = todayStr.substring(6);
+		Date today = DateTimeUtilities.stringToDate(year, month, day);
+		int startTime = Integer.valueOf(startTimeCombo.getSelectedItem().toString());
+		int endTime = Integer.valueOf(endTimeCombo.getSelectedItem().toString());
+		boolean b = (startTime < endTime && !date.before(today));
+		
+		return b;
 	}
 	
 	// Extracts data from frame/form and returns an Appointment instance
