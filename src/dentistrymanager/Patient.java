@@ -62,6 +62,7 @@ public class Patient {
 	
 	public String toString() {
 		String s = "";
+		s += this.patientID + " ";
 		if (title != null)
 			s += title + " ";
 		s += this.forename + " " + this.surname + "\nBorn: " + this.dateOfBirth + "\nContact number: " + this.phoneNo;

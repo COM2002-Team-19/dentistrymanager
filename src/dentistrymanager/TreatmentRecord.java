@@ -21,6 +21,13 @@ public class TreatmentRecord {
 		this.coveredCost = coveredCost;
 	}
 	
+	public TreatmentRecord(int appointmentID, String treatment, double outstandingCost, double coveredCost) {
+		this.appointmentID = appointmentID;
+		this.treatment = treatment;
+		this.outstandingCost = outstandingCost;
+		this.coveredCost = coveredCost;
+	}
+	
 	// Accessors
 	public int getAppointmentID() {
 		return appointmentID;
