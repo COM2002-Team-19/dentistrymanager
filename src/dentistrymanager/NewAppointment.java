@@ -26,6 +26,7 @@ public class NewAppointment extends JFrame {
 
 	// UI variables
 	private JPanel contentPane;
+	private JLabel lblPatientName;
 	private JTextField patientNameField;
 	private JLabel lblDate;
 	private JLabel lblStartTime;
@@ -45,6 +46,11 @@ public class NewAppointment extends JFrame {
     private String selectedPartner;
     private String[] typesStr;
     
+    // Default constructor with no patient
+    public NewAppointment(){
+    	this(null);
+    }
+    
 	/**
 	 * Create the frame.
 	 */
@@ -59,12 +65,13 @@ public class NewAppointment extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JLabel lblPatientName = new JLabel("Name:");
-		patientNameField = new JTextField();
-		patientNameField.setEditable(false);
-		patientNameField.setColumns(10);
-		if (patient!=null)
+		if (patient!=null) {
+			lblPatientName = new JLabel("Name:");
+			patientNameField = new JTextField();
+			patientNameField.setEditable(false);
+			patientNameField.setColumns(10);
 			patientNameField.setText(patient.getForename()+" "+patient.getSurname());
+		}
 		
 		// Date section
 		lblDate = new JLabel("Date:");

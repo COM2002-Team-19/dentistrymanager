@@ -13,13 +13,14 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.LayoutStyle;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import java.util.ArrayList;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class SecretaryCalendar extends JFrame {
 
@@ -117,34 +118,38 @@ public class SecretaryCalendar extends JFrame {
 		    	}
 			}
 		});
+        
+        JButton dentistUnavailableButton = new JButton("Mark Unavailability");
 
         // Generated code - do not modify
         GroupLayout dentistTabPanelLayout = new GroupLayout(dentistTabPanel);
-        dentistTabPanel.setLayout(dentistTabPanelLayout);
         dentistTabPanelLayout.setHorizontalGroup(
-            dentistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(dentistTabPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(dentistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(dentistCalendarListPane)
-                    .addGroup(dentistTabPanelLayout.createSequentialGroup()
-                        .addComponent(dentistAddAppButton)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dentistDeleteAppButton)
-                        .addGap(0, 73, Short.MAX_VALUE)))
-                .addContainerGap())
+        	dentistTabPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(dentistTabPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(dentistTabPanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(dentistCalendarListPane, GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+        				.addGroup(dentistTabPanelLayout.createSequentialGroup()
+        					.addComponent(dentistAddAppButton)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(dentistDeleteAppButton)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(dentistUnavailableButton)))
+        			.addContainerGap())
         );
         dentistTabPanelLayout.setVerticalGroup(
-            dentistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(dentistTabPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(dentistCalendarListPane, GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(dentistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(dentistAddAppButton)
-                    .addComponent(dentistDeleteAppButton))
-                .addContainerGap())
+        	dentistTabPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(Alignment.TRAILING, dentistTabPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(dentistCalendarListPane, GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(dentistTabPanelLayout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(dentistAddAppButton)
+        				.addComponent(dentistDeleteAppButton)
+        				.addComponent(dentistUnavailableButton))
+        			.addContainerGap())
         );
+        dentistTabPanel.setLayout(dentistTabPanelLayout);
 
         secretaryCalendarTabPane.addTab("Dentist", dentistTabPanel);
 
@@ -160,33 +165,37 @@ public class SecretaryCalendar extends JFrame {
         	}
         });
         hygienistCalendarListPane.setViewportView(hygienistCalendarList);
+        
+        hygienistUnavailableButton = new JButton("Mark Unavailability");
 
         GroupLayout hygienistTabPanelLayout = new GroupLayout(hygienistTabPanel);
-        hygienistTabPanel.setLayout(hygienistTabPanelLayout);
         hygienistTabPanelLayout.setHorizontalGroup(
-            hygienistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(hygienistTabPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(hygienistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(hygienistCalendarListPane)
-                    .addGroup(hygienistTabPanelLayout.createSequentialGroup()
-                        .addComponent(hygienistAddAppButton)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(hygienistDeleteAppButton)
-                        .addGap(0, 73, Short.MAX_VALUE)))
-                .addContainerGap())
+        	hygienistTabPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(hygienistTabPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(hygienistTabPanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(hygienistCalendarListPane, GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+        				.addGroup(hygienistTabPanelLayout.createSequentialGroup()
+        					.addComponent(hygienistAddAppButton)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(hygienistDeleteAppButton)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(hygienistUnavailableButton)))
+        			.addContainerGap())
         );
         hygienistTabPanelLayout.setVerticalGroup(
-            hygienistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(hygienistTabPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(hygienistCalendarListPane, GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(hygienistTabPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(hygienistAddAppButton)
-                    .addComponent(hygienistDeleteAppButton))
-                .addContainerGap())
+        	hygienistTabPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(Alignment.TRAILING, hygienistTabPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(hygienistCalendarListPane, GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(hygienistTabPanelLayout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(hygienistAddAppButton)
+        				.addComponent(hygienistDeleteAppButton)
+        				.addComponent(hygienistUnavailableButton))
+        			.addContainerGap())
         );
+        hygienistTabPanel.setLayout(hygienistTabPanelLayout);
 
         secretaryCalendarTabPane.addTab("Hygienist", hygienistTabPanel);
 
@@ -246,4 +255,5 @@ public class SecretaryCalendar extends JFrame {
     private JButton hygienistDeleteAppButton;
     private JPanel hygienistTabPanel;
     private JTabbedPane secretaryCalendarTabPane;
+    private JButton hygienistUnavailableButton;
 }
