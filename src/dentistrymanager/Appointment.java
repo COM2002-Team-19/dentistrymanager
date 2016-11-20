@@ -144,10 +144,25 @@ public class Appointment {
 	}
 	
 	// Check availability
-	
+	public boolean checkAvailability(Connection connection) {
+		try(Statement stmt = connection.createStatement()) {
+			String sql = "SELECT * FROM Appointment WHERE partner = '" + partner + "' AND date = " + date 
+							+ " AND ((startTime <= " + startTime + " AND endTime >= " + endTime + ") "
+								+ " OR (startTime <= " + startTime + " AND endTime <= " + endTime + ") "
+								+ " OR (startTime >= " + startTime + " AND endTime >= " + endTime + "));";
+			ResultSet res = stmt.executeQuery(sql);
+			int numConflicts = 0;
+			while(res.next())
+				numConflicts++;
+			return numConflicts > 0 ? false : true;
+		} catch(SQLException e) {
+			DBConnect.printSQLError(e);
+			return false;
+		}
+	}
 	
 	// Static methods
-	public static ArrayList<Appointment>findByPartnerPatient(Connection connection, String patientSearchTerm, 
+	public static ArrayList<Appointment> findByPartnerPatient(Connection connection, String patientSearchTerm, 
 																							String partnerSearchTerm) {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {

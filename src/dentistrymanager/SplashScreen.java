@@ -11,7 +11,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
+@SuppressWarnings("serial")
 public class SplashScreen extends JFrame {
 
 	/**
@@ -34,6 +36,14 @@ public class SplashScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public SplashScreen() {
+		
+		// Checks if there are any covered treatments to be reset
+		try(Connection connection = DBConnect.getConnection(true)) {
+			PlanSubscription.reset(connection);
+		} catch(SQLException e) {
+			DBConnect.printSQLError(e);
+		}
+		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
