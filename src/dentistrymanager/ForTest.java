@@ -21,7 +21,7 @@ public class ForTest {
 			DBConnect.printSQLError(e);
 		}
 		*/
-		/*
+		
 		try (Connection con = DBConnect.getConnection(true)){
 			
 			DatabaseBuilder builder = new DatabaseBuilder(con);
@@ -36,6 +36,7 @@ public class ForTest {
 			DBConnect.printSQLError(e);
 		} 
 		
+		/*
 		// Store new Address and Patient
 		Address testAddress = new Address(34, "clementson rd.","south yorkshire","sheffield","s10 1gs");
 		Patient testPatient = new Patient("dr","Dan","PetERs",19960906,"0345678911", testAddress);
