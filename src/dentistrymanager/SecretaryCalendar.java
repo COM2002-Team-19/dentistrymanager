@@ -28,16 +28,7 @@ public class SecretaryCalendar extends JFrame {
      * Creates new form SecretaryCalendar
      */
     public SecretaryCalendar() {
-    	try(Connection connection = DBConnect.getConnection(false)){
-    		this.partners = Partner.getAll(connection);
-    		this.dentist = partners.get(0);
-    		this.hygienist = partners.get(1);
-    		this.dentistAppointments = dentist.getWeekAppointments(connection, DateTimeUtilities.thisWeek());
-    		this.hygienistAppointments = hygienist.getWeekAppointments(connection, DateTimeUtilities.thisWeek());
-    	} catch(SQLException e){
-    		DBConnect.printSQLError(e);
-    	}
-
+    	getData();
         initComponents();
     }
 
@@ -81,6 +72,8 @@ public class SecretaryCalendar extends JFrame {
         dentistAddAppButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new FindPatient();
+				updateDentistList();
+    			getData();
 			}
 		});
         
@@ -89,6 +82,8 @@ public class SecretaryCalendar extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try(Connection connection = DBConnect.getConnection(true)){
 					selectedAppointmentDentist.delete(connection);
+					updateDentistList();
+        			getData();
 				}catch(SQLException ex){
 		    		DBConnect.printSQLError(ex);
 		    	}catch(DeleteForeignKeyException ex){
@@ -102,6 +97,8 @@ public class SecretaryCalendar extends JFrame {
         hygienistAddAppButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new FindPatient();
+				updateHygienistList();
+				getData();
 				// redirects to FindPatient where they can choose patient the appointment is for
 			}
 		});
@@ -111,10 +108,13 @@ public class SecretaryCalendar extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try(Connection connection = DBConnect.getConnection(true)){
 					selectedAppointmentHygienist.delete(connection);
+					updateHygienistList();
+        			getData();
 				}catch(SQLException ex){
 		    		DBConnect.printSQLError(ex);
 		    	}catch(DeleteForeignKeyException ex){
 		    		System.err.println(ex.getTable());
+
 		    	}
 			}
 		});
@@ -161,6 +161,7 @@ public class SecretaryCalendar extends JFrame {
         		int selectedIndex = hygienistCalendarList.getSelectedIndex();
         		if(selectedIndex != -1) {
         			selectedAppointmentHygienist = hygienistCalendarList.getSelectedValue();
+
         		}
         	}
         });
@@ -232,6 +233,18 @@ public class SecretaryCalendar extends JFrame {
     	for(Appointment appointment: hygienistAppointments)
     		model.addElement(appointment);
     	hygienistCalendarList.setModel(model);
+    }
+    
+    public void getData(){
+    	try(Connection connection = DBConnect.getConnection(false)){
+    		this.partners = Partner.getAll(connection);
+    		this.dentist = partners.get(0);
+    		this.hygienist = partners.get(1);
+    		this.dentistAppointments = dentist.getWeekAppointments(connection, DateTimeUtilities.thisWeek());
+    		this.hygienistAppointments = hygienist.getWeekAppointments(connection, DateTimeUtilities.thisWeek());
+    	} catch(SQLException e){
+    		DBConnect.printSQLError(e);
+    	}
     }
     
     // System variables
