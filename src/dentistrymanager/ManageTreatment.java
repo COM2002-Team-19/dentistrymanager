@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -142,7 +142,6 @@ public class ManageTreatment extends JFrame {
 				if (updateDB(1)) {
 					getData();
 					updateTreatmentRecordList();
-					JOptionPane.showMessageDialog(new JFrame(), "Treatment Added");
 				}
 				else
 				    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in adding this treatment. Please try again.",
@@ -158,7 +157,6 @@ public class ManageTreatment extends JFrame {
 					updateTreatmentRecordList();
 					if (appointmentTreatments.isEmpty())
 						btnDelete.setEnabled(false);
-					JOptionPane.showMessageDialog(new JFrame(), "Treatment Deleted");
 				}
 				else
 				    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in deleting this treatment. Please try again.",
@@ -216,7 +214,8 @@ public class ManageTreatment extends JFrame {
 	private void updateTreatmentFields() {
 		selectedTreatment = (Treatment)treatmentCombo.getSelectedItem();
         treatmentField.setText(selectedTreatment.getTypeOfTreatment());
-        costField.setText(Double.toString(selectedTreatment.getCost()));
+		DecimalFormat twoDecimals = new DecimalFormat("#.00");
+        costField.setText(twoDecimals.format(selectedTreatment.getCost()));
 	}
 	
     private void updateTreatmentRecordList() {

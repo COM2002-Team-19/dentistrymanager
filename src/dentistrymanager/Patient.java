@@ -174,6 +174,15 @@ public class Patient {
 		}
 	}
 	
+	// Pay all function
+	/*
+	public boolean payAll(Connection connection) {
+		try(Statement stmt = connection.createStatement())) {
+			String sql = "UPDATE TreatmentRecord";
+		}
+	}
+	*/
+	
 	public ArrayList<String> getAmountOwed(Connection connection) {
 		ArrayList<String> amountOwedDetails = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
