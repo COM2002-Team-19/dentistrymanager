@@ -22,18 +22,13 @@ import javax.swing.border.EmptyBorder;
 public class PrintReceipt extends JFrame {
 
 	private JPanel contentPane;
-	private int id;
-	private double balance;
-	private double coveredCost;
 	private ArrayList<String> amountOwed;
 	
 
 	public PrintReceipt(Patient patient) {
 		this.setTitle("Print Receipt");
 		DecimalFormat moneyFormat = new DecimalFormat("#0.00");
-        
-		balance = patient.getBalance();
-		id = patient.getPatientID();
+
 		try(Connection connection = DBConnect.getConnection(false)){
 			this.amountOwed = patient.getAmountOwed(connection);
 		}catch (SQLException e){
@@ -57,27 +52,38 @@ public class PrintReceipt extends JFrame {
 		printoutArea.add(amountOwedField, BorderLayout.SOUTH);
 		
 		// Button
-		JButton payAll = new JButton("Pay All");
-		payAll.addActionListener(new ActionListener() {
+		JButton payAllButton = new JButton("Pay All");
+		payAllButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try(Connection connection = DBConnect.getConnection(true)){
 					patient.payAll(connection);
+					dispose();
+					new FindPatient();
 				} catch (SQLException ex) {
 					ex.printStackTrace();
 				}
 			}
 		});
 
-		JButton close = new JButton("Close");//#TODO
+		JButton closeButton = new JButton("Close");
+		closeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new FindPatient();
+			}
+		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 236, 189);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new GridLayout(0,1));
+		contentPane.setLayout(new BorderLayout());
 		setContentPane(contentPane);
-		contentPane.add(printoutArea);
-		contentPane.add(payAll);
+		contentPane.add(printoutArea, BorderLayout.CENTER);
+		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
+		contentPane.add(buttonPanel, BorderLayout.SOUTH);
+		buttonPanel.add(payAllButton);
+		buttonPanel.add(closeButton);
 		pack();
 		setVisible(true);	
 	}

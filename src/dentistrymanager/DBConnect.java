@@ -16,9 +16,7 @@ public class DBConnect {
 		if(manualCommit)
 			connection.setAutoCommit(false);
 		return connection;
-	}
-	
-	
+	}	
 	
 	public static void rollback(Connection connection) {
 		try {

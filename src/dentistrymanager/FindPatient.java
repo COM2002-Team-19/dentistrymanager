@@ -153,6 +153,7 @@ public class FindPatient extends JFrame {
         receiptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
             	new PrintReceipt(selectedPatient);
+            	dispose();
             }
         });
         
@@ -452,8 +453,8 @@ public class FindPatient extends JFrame {
     	
 		setSubscribeButtonText();
  
-		DecimalFormat twoDecimals = new DecimalFormat("#0.00");
-		owedField.setText(twoDecimals.format(selectedPatient.getBalance()));
+		DecimalFormat moneyFormat = new DecimalFormat("#0.00");
+		owedField.setText(moneyFormat.format(selectedPatient.getBalance()));
 		receiptButton.setEnabled(true);
     	
     	addAppointmentButton.setEnabled(true);

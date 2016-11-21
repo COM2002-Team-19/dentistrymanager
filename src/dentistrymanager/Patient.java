@@ -1,6 +1,7 @@
 package dentistrymanager;
 
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Patient {
@@ -210,9 +211,10 @@ public class Patient {
 								+ "WHERE a.finish = TRUE AND tr.outstandingCost > 0 AND p.patientID = '" + patientID + "' "
 								+ "AND (ct.complete IS NULL OR ct.complete = FALSE);";
 			ResultSet res = stmt.executeQuery(sql);
+			DecimalFormat moneyFormat = new DecimalFormat("#0.00");
 			while(res.next())
-				amountOwedDetails.add(res.getString("treatment") + " | Outstanding Cost : " + res.getDouble("outstandingCost")  + " | Covered Cost :  " + 
-																						res.getDouble("coveredCost"));
+				amountOwedDetails.add(res.getString("treatment") + " | Outstanding Cost : " + moneyFormat.format(res.getDouble("outstandingCost"))
+					+ " | Covered Cost :  " + moneyFormat.format(res.getDouble("coveredCost")));
 			
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);

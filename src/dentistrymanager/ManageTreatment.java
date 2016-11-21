@@ -1,7 +1,6 @@
 package dentistrymanager;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -164,7 +163,7 @@ public class ManageTreatment extends JFrame {
 				    		"Submission Error", JOptionPane.ERROR_MESSAGE);
 			}
 		});
-		Dimension d = new Dimension(200,100);
+
 		buttonPane.add(btnSubmit);
 		buttonPane.add(btnDelete);
 		
@@ -216,13 +215,13 @@ public class ManageTreatment extends JFrame {
 	private void updateTreatmentFields() {
 		selectedTreatment = (Treatment)treatmentCombo.getSelectedItem();
         treatmentField.setText(selectedTreatment.getTypeOfTreatment());
-		DecimalFormat twoDecimals = new DecimalFormat("#0.00");
-        costField.setText(twoDecimals.format(selectedTreatment.getCost()));
+		DecimalFormat moneyFormat = new DecimalFormat("#0.00");
+        costField.setText(moneyFormat.format(selectedTreatment.getCost()));
 	}
 	
     private void updateTreatmentRecordList() {
     	DefaultListModel<TreatmentRecord> model = new DefaultListModel<>();
-    	for(TreatmentRecord treatmentRecord: appointmentTreatments)
+    	for(TreatmentRecord treatmentRecord : appointmentTreatments)
     		model.addElement(treatmentRecord);
     	treatmentRecordList.setModel(model);
     }
