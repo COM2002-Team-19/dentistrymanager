@@ -168,8 +168,8 @@ public class PartnerCalendar extends JFrame {
 	
 	private void updateAppResultList() {
     	DefaultListModel<Appointment> model = new DefaultListModel<>();
-    	for(Appointment appointment: nextPatients)
-    		model.addElement(appointment);
+    	for(int i = 1; i<nextPatients.size();i++)
+    		model.addElement(nextPatients.get(i));
     	nextAppResultsList.setModel(model);
     }
  }
