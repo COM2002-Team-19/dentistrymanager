@@ -2,11 +2,12 @@ package dentistrymanager;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
-
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -29,6 +30,8 @@ public class PrintReceipt extends JFrame {
 
 	public PrintReceipt(Patient patient) {
 		this.setTitle("Print Receipt");
+		DecimalFormat moneyFormat = new DecimalFormat("#0.00");
+        
 		balance = patient.getBalance();
 		id = patient.getPatientID();
 		try(Connection connection = DBConnect.getConnection(false)){
@@ -40,42 +43,42 @@ public class PrintReceipt extends JFrame {
 		JPanel printoutArea = new JPanel(new BorderLayout());
 		JTextArea recieptTextArea = new JTextArea();
 		recieptTextArea.setEditable(false);
-		String newline = "\n";
-		recieptTextArea.append("Patient : "+patient.getForename()+" "+patient.getSurname()+newline);
+		recieptTextArea.append("Patient : "+patient.getForename()+" "+patient.getSurname()+"\n");
 		for(int i=0; i<amountOwed.size(); i++){
-			recieptTextArea.append(amountOwed.get(i)+newline);
+			recieptTextArea.append(amountOwed.get(i)+"\n");
 		}
 		Font font2 = new Font("courier", Font.BOLD, 20);
 		JTextField amountOwedField = new JTextField();
 		amountOwedField.setFont(font2);
 		amountOwedField.setHorizontalAlignment(JTextField.CENTER);
 		amountOwedField.setEditable(false);
-		amountOwedField.setText("Amount Owed : "+patient.getBalance());
+		amountOwedField.setText("Amount Owed : "+moneyFormat.format(patient.getBalance()));
 		printoutArea.add(recieptTextArea, BorderLayout.CENTER);
 		printoutArea.add(amountOwedField, BorderLayout.SOUTH);
 		
 		// Button
 		JButton payAll = new JButton("Pay All");
-		/*
 		payAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				try(Connection connection = DBConnect.getConnection(true)){
+					patient.payAll(connection);
+				} catch (SQLException ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
-		*/
-		JButton close = new JButton("Close");
+
+		JButton close = new JButton("Close");//#TODO
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 236, 189);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
+		contentPane.setLayout(new GridLayout(0,1));
 		setContentPane(contentPane);
-		contentPane.add(printoutArea, BorderLayout.CENTER);
-		contentPane.add(payAll, BorderLayout.SOUTH);
+		contentPane.add(printoutArea);
+		contentPane.add(payAll);
 		pack();
-		setVisible(true);
-		
+		setVisible(true);	
 	}
-
 }
