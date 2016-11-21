@@ -96,6 +96,27 @@ public class Appointment {
 		}
 	}
 	
+	// Get appointment total cost
+	public double getTotalCost(Connection connection) {
+		double totalCost = 0;
+		try(Statement stmt = connection.createStatement()) {
+			connection.setAutoCommit(true);
+			String sql = "SELECT SUM(outstandingCost - coveredCost) as total FROM TreatmentRecord WHERE appointmentID = '" + appointmentID + ";";
+			ResultSet res = stmt.executeQuery(sql);
+			if(res.first()) {
+				try {
+					totalCost = res.getDouble("total");
+				} catch(NumberFormatException e) {
+					totalCost = 0;
+				}
+			}				
+		} catch(SQLException e) {
+			DBConnect.printSQLError(e);
+			return totalCost = 0;
+		}
+		return totalCost;
+	}
+	
 	// Add
 	public boolean add(Connection connection) throws DuplicateKeyException {
 		try(Statement stmt = connection.createStatement()) {

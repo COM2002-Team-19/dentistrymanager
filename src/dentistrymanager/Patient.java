@@ -169,8 +169,8 @@ public class Patient {
 								+ "JOIN TreatmentRecord tr ON tr.appointmentID = a.appointmentID "
 								+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment acs ON acs.appointmentID = a.appointmentID "
 								+ "LEFT OUTER JOIN CourseOfTreatment ct ON ct.courseOfTreatment = acs.courseOfTreatment "
-								+ "WHERE a.finish = TRUE AND tr.outstandingCost > 0 "
-								+ "AND (ct.complete IS NULL OR ct.complete = TRUE);";
+								+ "WHERE a.finish = TRUE AND tr.outstandingCost > 0 AND p.patientID = '" + patientID + "' "
+								+ "AND (ct.complete IS NULL OR ct.complete = FALSE);";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next())
 				amountOwedDetails.add(res.getString("treatment") + " " + res.getDouble("outstandingCost")  + " " + 
