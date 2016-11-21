@@ -100,9 +100,11 @@ public class PartnerCalendar extends JFrame {
 		finishCurrent.setPreferredSize(new Dimension(100, 100));
 		finishCurrent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try(Connection connection = DBConnect.getConnection(false)){
-					if(nextAppointment != null)
+				try(Connection connection = DBConnect.getConnection(true)){
+					if(nextAppointment != null) {
 						nextAppointment.finish(connection);
+						updateAppResulttList();
+					}
 				}
 		    	catch(SQLException ex){
 		    		DBConnect.printSQLError(ex);
