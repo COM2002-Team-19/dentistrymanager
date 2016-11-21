@@ -38,6 +38,7 @@ public class PlanSubscription {
 	public static boolean reset(Connection connection) {
 		try(Statement stmt = connection.createStatement()) {
 			String currentDate = DateTimeUtilities.today();
+			String oneYearFromCurrentDate = DateTimeUtilities.oneYearFromToday();
 			
 			String sql = "DELETE FROM CoveredTreatment WHERE patientID = "
 							+ "(SELECT patientID FROM PatientPlan WHERE endDate <= '" + currentDate + "');";
@@ -49,6 +50,12 @@ public class PlanSubscription {
 					+ "WHERE c.plan = pp.plan AND pp.endDate <= '" + currentDate + "';";
 			
 			int numRowsCreated = stmt.executeUpdate(sql);
+			
+			sql = "UPDATE PatientPlan SET startDate = '" + currentDate + "', endDate = '" + oneYearFromCurrentDate + "' "
+					+ "WHERE endDate <= '" + currentDate + "';";
+			stmt.executeUpdate(sql);
+			
+			connection.commit();
 			if(numRowsDeleted == numRowsCreated)
 				return true;
 			else {

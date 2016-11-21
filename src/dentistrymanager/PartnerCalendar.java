@@ -27,7 +27,7 @@ public class PartnerCalendar extends JFrame {
 	private ArrayList<Partner> partners;
 	private ArrayList<Appointment> nextPatients;
 	private Partner p;
-	private Appointment nextAppointment;
+	private Appointment presentAppointment;
 	private JList<Appointment> nextAppResultsList;
 	private JTextArea currentAppDisplay;
  
@@ -37,7 +37,7 @@ public class PartnerCalendar extends JFrame {
 			this.partners = Partner.getAll(connection);
 			this.p = partners.get(i);
 			this.nextPatients = p.getDaysAppointments(connection);
-			this.nextAppointment = p.getNextAppointment(connection);
+			this.presentAppointment = p.getNextAppointment(connection);
 		}
     	catch(SQLException e){
     		DBConnect.printSQLError(e);
@@ -69,8 +69,8 @@ public class PartnerCalendar extends JFrame {
 		manageTreatment.setPreferredSize(new Dimension(100, 100));
 		manageTreatment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(nextAppointment != null)
-					new ManageTreatment(nextAppointment);
+				if(presentAppointment != null)
+					new ManageTreatment(presentAppointment);
 			}
 		});
 		
@@ -79,15 +79,16 @@ public class PartnerCalendar extends JFrame {
 		finishCurrent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try(Connection connection = DBConnect.getConnection(true)){
-					if(nextAppointment != null) {
-						nextAppointment.finish(connection);
-						System.out.println(nextAppointment.toString());
+					if(presentAppointment != null) {
+						presentAppointment.finish(connection);
+						System.out.println(presentAppointment.toString());
+						
 						// Get the cost of the appointment
-						double cost = nextAppointment.getTotalCost(connection);
-						nextAppointment.getPatient().updateBalance(connection, cost);
+						double cost = presentAppointment.getTotalCost(connection);
+						presentAppointment.getPatient().updateBalance(connection, cost);
 						System.out.println(cost);
 						System.out.println("BUMP");
-						nextAppointment = p.getNextAppointment(connection);
+						presentAppointment = p.getNextAppointment(connection);
 						updateAppResultList();
 						updateValues();
 					}
@@ -99,15 +100,6 @@ public class PartnerCalendar extends JFrame {
 			}
 		});
 		
-//		JButton btnBack = new JButton("Back");
-//		btnBack.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent evt) {
-//            	new SplashScreen();
-//            	dispose();
-//            }
-//        });
-//		
-//		currentButtons.add(btnBack);
 		currentButtons.add(manageTreatment);
 		currentButtons.add(finishCurrent);
 		currentAppointment.add(currentButtons, BorderLayout.SOUTH);
@@ -143,17 +135,17 @@ public class PartnerCalendar extends JFrame {
  	}
 	
 	private void updateValues(){
-		if (!this.nextPatients.isEmpty() ){
+		if (presentAppointment != null ){
 			String newline = "\n";
-			String dateLabel = nextAppointment.getDate().toString();
-			String forenameLabel = nextAppointment.getPatient().getForename();
-			String surnameLabel = nextAppointment.getPatient().getSurname();
-			Time startTimeLabel = nextAppointment.getStartTime();
-			Time endTimeLabel = nextAppointment.getEndTime();
-			String typeOfTreatmentLabel = nextAppointment.getTypeOfTreatment();
+			String dateLabel = presentAppointment.getDate().toString();
+			String forenameLabel = presentAppointment.getPatient().getForename();
+			String surnameLabel = presentAppointment.getPatient().getSurname();
+			Time startTimeLabel = presentAppointment.getStartTime();
+			Time endTimeLabel = presentAppointment.getEndTime();
+			String typeOfTreatmentLabel = presentAppointment.getTypeOfTreatment();
 			String courseOfTreatment = "False";
 			
-			if (nextAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
+			if (presentAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
 			
 			currentAppDisplay.setText("");
 			currentAppDisplay.append("Date : "+dateLabel+newline);
