@@ -51,6 +51,7 @@ public class CoveredTreatment {
 						+ "WHERE ct.patientID = p.patientID "
 						+ "AND pp.patientID = p.patientID "
 						+ "AND c.plan = pp.plan "
+						+ "AND p.patientID = '" + patientID + "' "
 						+ "AND ct.typeOfTreatment = '" + typeOfTreatment + "' "
 						+ "AND ct.coveredTreatmentsLeft > 0 ;";
 			ResultSet res = stmt.executeQuery(sql);
