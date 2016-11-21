@@ -185,7 +185,8 @@ public class Appointment {
 			String sql = "SELECT * FROM Appointment WHERE partner = '" + partner + "' AND date = '" + date 
 							+ "' AND ((startTime <= '" + startTime + "' AND endTime >= '" + endTime + "') "
 								+ " OR (startTime <= '" + startTime + "' AND endTime >= '" + startTime + "') "
-								+ " OR (startTime <= '" + endTime + "' AND endTime >= '" + endTime + "'));";
+								+ " OR (startTime <= '" + endTime + "' AND endTime >= '" + endTime + "'))"
+								+ " AND finish = FALSE;";
 			ResultSet res = stmt.executeQuery(sql);
 			int numConflicts = 0;
 			while(res.next())
