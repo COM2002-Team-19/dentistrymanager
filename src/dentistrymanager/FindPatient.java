@@ -146,7 +146,6 @@ public class FindPatient extends JFrame {
         owedField = new JTextField();
         owedField.setEditable(false);
         owedField.setColumns(10);
-        // #TODO Add patient balance to text field
         
         receiptButton = new JButton("Receipt"); 
         receiptButton.setEnabled(false);
@@ -423,6 +422,7 @@ public class FindPatient extends JFrame {
     	phoneField.setText("");
     	planNameArea.setText("");
     	subscribeButton.setEnabled(false);
+    	owedField.setText("");
     	receiptButton.setEnabled(false);
     	addAppointmentButton.setEnabled(false);
     	findAppointment.setEnabled(false);
@@ -450,8 +450,7 @@ public class FindPatient extends JFrame {
     		planNameArea.setText("");
     	
 		setSubscribeButtonText();
-    
-		//#TODO fill in owedField
+ 
 		owedField.setText(Double.toString(selectedPatient.getBalance()));
 		receiptButton.setEnabled(true);
     	
