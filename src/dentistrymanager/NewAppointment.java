@@ -170,8 +170,10 @@ public class NewAppointment extends JFrame {
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (updateDB())
+				if (updateDB()) {
 					JOptionPane.showMessageDialog(new JFrame(), "Appointment Added");
+					dispose();
+				}
 				else
 				    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in adding this appointment. Please try again.",
 				    		"Submission Error", JOptionPane.ERROR_MESSAGE);
