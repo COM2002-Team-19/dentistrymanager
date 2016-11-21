@@ -174,14 +174,28 @@ public class Patient {
 		}
 	}
 	
-	// Pay all function
-	/*
+	// Pay all method
 	public boolean payAll(Connection connection) {
-		try(Statement stmt = connection.createStatement())) {
-			String sql = "UPDATE TreatmentRecord";
+		try(Statement stmt = connection.createStatement()) {
+			String sql = "UPDATE TreatmentRecord SET coveredCost = outstandingCost WHERE appointmentID = "
+							+ "(SELECTED a.appointmentID FROM Appointment a "
+							+ "JOIN AppointmentsPerPatient ap ON a.appointmentID = ap.appointmentID "
+							+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment acs ON a.appointmentID = acs.appointmentID "
+							+ "LEFT OUTER JOIN CourseOfTreatment ct ON ct.courseOfTreatment = acs.courseOfTreatment "
+							+ "WHERE a.finish = TRUE AND (ct.complete IS NULL OR ct.complete = TRUE) "
+							+ "AND ap.patientID = " + patientID + ");";
+			stmt.addBatch(sql);
+			sql = "UPDATE Patient SET balance = 0 WHERE PatientID = " + patientID + ";";
+			stmt.addBatch(sql);
+			stmt.executeBatch();
+			connection.commit();
+			return true;
+		} catch(SQLException e) {
+			DBConnect.rollback(connection);
+			DBConnect.printSQLError(e);
+			return true;
 		}
 	}
-	*/
 	
 	public ArrayList<String> getAmountOwed(Connection connection) {
 		ArrayList<String> amountOwedDetails = new ArrayList<>();
