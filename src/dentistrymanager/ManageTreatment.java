@@ -27,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+@SuppressWarnings("serial")
 public class ManageTreatment extends JFrame {
 
 	private JPanel mainPane;
@@ -52,10 +53,16 @@ public class ManageTreatment extends JFrame {
     public boolean updateDB(int mode) {
 		boolean success = true;
 		
-		String n = selectedTreatment.getName();
-		Double oc = selectedTreatment.getCost();
+		String n = "";
+		Double oc = 0.0;
 		Double cc = 0.0;
-
+		
+		if(mode == 1) {
+			n = selectedTreatment.getName();
+			oc = selectedTreatment.getCost();
+			cc = 0.0;
+		}
+		
 		try(Connection connection = DBConnect.getConnection(false)){
 			cc = CoveredTreatment.getCoveredCost(connection, patientID, n);
 		} catch (SQLException e){
@@ -71,7 +78,6 @@ public class ManageTreatment extends JFrame {
 				rec.add(connection);
 			}
 			if(mode==-1){
-				System.out.println(selectedTreatmentRecord);
 				selectedTreatmentRecord.delete(connection);
 			}
 			
