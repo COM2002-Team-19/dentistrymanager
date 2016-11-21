@@ -33,15 +33,13 @@ public class FindAppointment extends JFrame {
 	
 	//variables list
 	private JPanel contentPane;
-	private JComboBox<String> comboPartner = new JComboBox<String>();
-    private String selectedPartner;
+	private JComboBox<Partner> comboPartner = new JComboBox<Partner>();
+    private Partner selectedPartner;
     private String[] partnersStr;
     private JTextField patientNameField;
-    private Patient patient;
-    private JList<Appointment> resultsList = new JList();
+    private JList<Appointment> resultsList;
     private JScrollPane resultsPane = new JScrollPane();
     private ArrayList<Appointment> resultAppointments;
-    private ArrayList<Appointment> patientAppointments;
     private Appointment selectedAppointmentResult;
     private ArrayList<Partner> partners;
     private Partner dentist;
@@ -57,13 +55,13 @@ public class FindAppointment extends JFrame {
     		this.partners = Partner.getAll(connection);
     		this.dentist = partners.get(0);
     		this.hygienist = partners.get(1);
+    		this.resultAppointments = Appointment.findByPartnerPatient(connection, p.getForename(), dentist.getName());
     	} catch(SQLException e){
     		DBConnect.printSQLError(e);
     	}
 		
 		//initialise
-		selectedPartner = "";
-		patient = p;
+		selectedPartner = partners.get(0);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 596, 412);
@@ -75,7 +73,13 @@ public class FindAppointment extends JFrame {
 		JLabel lblPartner = new JLabel("Partner to see : ");
 		comboPartner.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectedPartner = (String)comboPartner.getSelectedItem();
+				selectedPartner = (Partner)comboPartner.getSelectedItem();
+				try(Connection connection = DBConnect.getConnection(false)){
+					resultAppointments = Appointment.findByPartnerPatient(connection, p.getForename(), selectedPartner.getName());
+		    	} catch(SQLException e){
+		    		DBConnect.printSQLError(e);
+		    	}
+				
 //				updateTreatmentList();
 			}
 		});
@@ -86,10 +90,11 @@ public class FindAppointment extends JFrame {
 		patientNameField = new JTextField();
 		patientNameField.setEditable(false);
 		patientNameField.setColumns(10);
-		if (patient!=null)
-			patientNameField.setText(patient.getForename()+" "+patient.getSurname());		
+		if (p!=null)
+			patientNameField.setText(p.getForename()+" "+p.getSurname());		
 		
-		//Results list window updating. 
+		//Results list window updating.
+		resultsList = new JList<Appointment>();
 		resultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		resultsList.setCellRenderer(new AppointmentListRenderer());
 		updateResultsList();
@@ -153,8 +158,9 @@ public class FindAppointment extends JFrame {
 		} catch (SQLException e){
 			DBConnect.printSQLError(e);
 		}
-		comboPartner.setModel(new DefaultComboBoxModel<String>(partnersStr));
+		comboPartner.setModel(new DefaultComboBoxModel<Partner>());
 	}
+	
 	
 	//Updates the ResultsList, the PartnerList(?)
 	private void updateResultsList() {
@@ -163,20 +169,4 @@ public class FindAppointment extends JFrame {
     		model.addElement(appointment);
     	resultsList.setModel(model);
     }
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Patient patient = new Patient();
-					new FindAppointment(patient);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 }
