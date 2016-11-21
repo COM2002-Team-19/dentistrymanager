@@ -216,7 +216,7 @@ public class ManageTreatment extends JFrame {
 	private void updateTreatmentFields() {
 		selectedTreatment = (Treatment)treatmentCombo.getSelectedItem();
         treatmentField.setText(selectedTreatment.getTypeOfTreatment());
-		DecimalFormat twoDecimals = new DecimalFormat("#.00");
+		DecimalFormat twoDecimals = new DecimalFormat("#0.00");
         costField.setText(twoDecimals.format(selectedTreatment.getCost()));
 	}
 	
