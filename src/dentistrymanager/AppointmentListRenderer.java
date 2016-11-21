@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-
 @SuppressWarnings("serial")
 public class AppointmentListRenderer extends JLabel implements ListCellRenderer<Appointment> {
 	
@@ -49,5 +48,4 @@ public class AppointmentListRenderer extends JLabel implements ListCellRenderer<
         setForeground(foreground);
 		return this;
 	}
-
 }

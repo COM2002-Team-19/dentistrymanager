@@ -2,12 +2,10 @@ package dentistrymanager;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -19,13 +17,10 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 @SuppressWarnings("serial")
 public class PartnerCalendar extends JFrame {
@@ -100,7 +95,6 @@ public class PartnerCalendar extends JFrame {
 			}
 		});
 		
-		
 		JButton finishCurrent = new JButton("Finish Appointment");
 		finishCurrent.setPreferredSize(new Dimension(100, 100));
 		finishCurrent.addActionListener(new ActionListener() {
@@ -111,6 +105,7 @@ public class PartnerCalendar extends JFrame {
 						nextAppointment = p.getNextAppointment(connection);
 						updateAppResultList();
 						updateValues();
+						updateAppResultList();
 					}
 				}
 		    	catch(SQLException ex){

@@ -155,12 +155,14 @@ public class NewAppointment extends JFrame {
 		});
 		updatePartnerList();
 		
-		//if (patient != null) {
-			// Treatment section
-			lblTypeOfTreatment = new JLabel("Type of Treatment:");
-			typeOfTreatmentCombo = new JComboBox<String>();
-			updateTreatmentList();
-		//}#TODO
+		// Treatment section
+		lblTypeOfTreatment = new JLabel("Type of Treatment:");
+		typeOfTreatmentCombo = new JComboBox<String>();
+		updateTreatmentList();
+		if (patient == null) {
+			typeOfTreatmentCombo.setSelectedIndex(1);
+			typeOfTreatmentCombo.setEnabled(false);
+		}
 		
 		// Buttons
 		JButton btnSubmit = new JButton("Submit");
@@ -282,7 +284,6 @@ public class NewAppointment extends JFrame {
 		}
 		else {
 			JOptionPane.showMessageDialog(new JFrame(),"This slot is unavailable.","Submission Error",JOptionPane.ERROR_MESSAGE);
-			new NewAppointment();
 		}
 		return success;
     }
@@ -322,10 +323,10 @@ public class NewAppointment extends JFrame {
 		String partner = partnerCombo.getSelectedItem().toString();
 		Time startTime = DateTimeUtilities.stringToTime(startTimeCombo.getSelectedItem().toString());
 		Time endTime = DateTimeUtilities.stringToTime(endTimeCombo.getSelectedItem().toString());
+		String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
 		if (patient == null)
-			return new Appointment(partner, date, startTime, endTime, null, null, 0);
+			return new Appointment(partner, date, startTime, endTime, null, typeOfT, 0);
 		else {
-			String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
 			int courseOfT=0;
 			try(Connection con = DBConnect.getConnection(false)){
 				courseOfT = CourseOfTreatment.getCourseOfTreatment(con, patient.getPatientID()).getCourseOfTreatment();

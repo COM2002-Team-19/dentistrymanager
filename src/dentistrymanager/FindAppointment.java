@@ -1,10 +1,11 @@
 package dentistrymanager;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.sql.Connection;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -29,21 +30,20 @@ import javax.swing.JScrollPane;
  * the patient and the partner.
  */
 
+@SuppressWarnings("serial")
 public class FindAppointment extends JFrame {
 	
 	//variables list
 	private JPanel contentPane;
 	private JComboBox<Partner> comboPartner;
     private Partner selectedPartner;
-    private String[] partnersStr;
     private JTextField patientNameField;
     private JList<Appointment> resultsList;
     private JScrollPane resultsPane = new JScrollPane();
     private ArrayList<Appointment> resultAppointments;
     private Appointment selectedAppointmentResult;
     private ArrayList<Partner> partners;
-    private Partner dentist;
-    private Partner hygienist;
+    private Partner defaultPartner;
 	
 	/**
 	 * Create the frame.
@@ -53,9 +53,8 @@ public class FindAppointment extends JFrame {
 		
 		try(Connection connection = DBConnect.getConnection(false)){
     		this.partners = Partner.getAll(connection);
-    		this.dentist = partners.get(0);
-    		this.hygienist = partners.get(1);
-    		this.resultAppointments = Appointment.findByPartnerPatient(connection, p.getForename(), dentist.getName());
+    		this.defaultPartner = partners.get(0);
+    		this.resultAppointments = Appointment.findByPartnerPatient(connection, p.getForename(), defaultPartner.getName());
     	} catch(SQLException e){
     		DBConnect.printSQLError(e);
     	}
@@ -149,13 +148,12 @@ public class FindAppointment extends JFrame {
 					.addComponent(resultsPane, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
 					.addContainerGap())
 		);
-//		resultsPane.setViewportView(resultsList);
 		contentPane.setLayout(gl_contentPane);
 		setVisible(true);
 	}
 	
 	
-	//Updates the ResultsList, the PartnerList(?)
+	//Updates the list of appointments
 	private void updateResultsList() {
     	DefaultListModel<Appointment> model = new DefaultListModel<>();
     	for(Appointment appointment: resultAppointments)
