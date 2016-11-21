@@ -43,6 +43,7 @@ public class FindPatient extends JFrame {
     	getData("");
 		selectedPatient = null;
 		initComponents();
+		this.setTitle("Find Patient");
     }
 
     /**

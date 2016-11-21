@@ -24,6 +24,7 @@ import java.util.Calendar;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+@SuppressWarnings("serial")
 public class RegisterPatient extends JFrame {
 
     /**
@@ -88,7 +89,6 @@ public class RegisterPatient extends JFrame {
     /**
      * This method is called from within the constructor to initialise the form.
      */
-    @SuppressWarnings("unchecked")
     // initialise components
     private void initComponents() {
         titleLabel = new JLabel();

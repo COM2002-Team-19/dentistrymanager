@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
@@ -41,7 +39,6 @@ public class FindAppointment extends JFrame {
     private JList<Appointment> resultsList;
     private JScrollPane resultsPane = new JScrollPane();
     private ArrayList<Appointment> resultAppointments;
-    private Appointment selectedAppointmentResult;
     private ArrayList<Partner> partners;
     private Partner defaultPartner;
 	
@@ -50,6 +47,7 @@ public class FindAppointment extends JFrame {
 	 */
 	public FindAppointment(Patient p) {
 		setResizable(false);
+		this.setTitle("Find Appointments");
 		
 		try(Connection connection = DBConnect.getConnection(false)){
     		this.partners = Partner.getAll(connection);
@@ -78,7 +76,6 @@ public class FindAppointment extends JFrame {
     	comboPartner.setModel(model);
 		comboPartner.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("SELECT");
 				selectedPartner = (Partner)comboPartner.getSelectedItem();
 				try(Connection connection = DBConnect.getConnection(false)){
 					resultAppointments = Appointment.findByPartnerPatient(connection, p.getForename(), selectedPartner.getName());
@@ -91,7 +88,6 @@ public class FindAppointment extends JFrame {
 		
 		
 		JLabel lblPatientName = new JLabel("Patient name : ");
-		
 		patientNameField = new JTextField();
 		patientNameField.setEditable(false);
 		patientNameField.setColumns(10);
@@ -102,14 +98,6 @@ public class FindAppointment extends JFrame {
 		resultsList = new JList<Appointment>();
 		resultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		resultsList.setCellRenderer(new AppointmentListRenderer());
-		resultsList.addListSelectionListener(new ListSelectionListener() {
-		public void valueChanged(ListSelectionEvent event) {
-		    int selectedIndex = resultsList.getSelectedIndex();
-		    	if(selectedIndex != -1) {
-					selectedAppointmentResult = resultsList.getSelectedValue();
-		 		}
-			}
-		});
 		updateResultsList();
 		resultsPane.setViewportView(resultsList);
 		

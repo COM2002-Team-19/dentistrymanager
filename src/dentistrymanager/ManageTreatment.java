@@ -1,13 +1,14 @@
 package dentistrymanager;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.sql.Connection;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -21,7 +22,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -41,7 +41,6 @@ public class ManageTreatment extends JFrame {
 	private JTextArea costField;
 	private int appointmentID;
 	private int patientID;
-	private Patient patient;
 	private ArrayList<TreatmentRecord> appointmentTreatments;
 	
     public boolean formFilled() {
@@ -97,8 +96,6 @@ public class ManageTreatment extends JFrame {
     }
 
 	public ManageTreatment(Appointment appointment) {
-		
-		this.patient = appointment.getPatient();
 		this.patientID = appointment.getPatient().getPatientID();
 		this.appointmentID = appointment.getAppointmentID();
 		
@@ -190,7 +187,6 @@ public class ManageTreatment extends JFrame {
 		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		// setBounds(100, 100, 450, 300);
 		mainPane = new JPanel();
 		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.Y_AXIS));
@@ -218,5 +214,4 @@ public class ManageTreatment extends JFrame {
     		model.addElement(treatmentRecord);
     	treatmentRecordList.setModel(model);
     }
-
 }

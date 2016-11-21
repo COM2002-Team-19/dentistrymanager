@@ -173,12 +173,11 @@ public class NewAppointment extends JFrame {
 				else
 				    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in adding this appointment. Please try again.",
 				    		"Submission Error", JOptionPane.ERROR_MESSAGE);
-				dispose();
 			}
 		});
 		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
+		JButton btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
@@ -192,7 +191,7 @@ public class NewAppointment extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(btnCancel)
+							.addComponent(btnClose)
 							.addGap(18)
 							.addComponent(btnSubmit))
 						.addGroup(gl_contentPane.createSequentialGroup()
@@ -256,7 +255,7 @@ public class NewAppointment extends JFrame {
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnSubmit)
-						.addComponent(btnCancel))
+						.addComponent(btnClose))
 					.addContainerGap())
 		);
 		contentPane.setLayout(gl_contentPane);

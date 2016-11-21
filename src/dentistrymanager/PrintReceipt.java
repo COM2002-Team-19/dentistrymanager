@@ -1,10 +1,11 @@
 package dentistrymanager;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
+
 import java.sql.Connection;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 
+@SuppressWarnings("serial")
 public class PrintReceipt extends JFrame {
 
 	private JPanel contentPane;
