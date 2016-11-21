@@ -120,7 +120,8 @@ public class ForTest {
 		*/
 		try (Connection con = DBConnect.getConnection(false)){
 			
-			System.out.println(CoveredTreatment.getCoveredCost(con, 1, "CHECK-UP"));
+			
+			//System.out.println(CoveredTreatment.getCoveredCost(con, 1, "CHECK-UP"));
 			/*
 			Partner partner = new Partner("DENTIST");
 			Appointment ap = partner.getNextAppointment(con);

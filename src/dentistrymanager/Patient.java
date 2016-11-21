@@ -73,6 +73,21 @@ public class Patient {
 	
 	// Database Methods
 	
+	// Update balance
+	public boolean updateBalance(Connection connection, double amountToUpdate) {
+		try(Statement stmt = connection.createStatement()) {
+			connection.setAutoCommit(false);
+			String sql = "UPDATE Patient SET BALANCE = BALANCE + " + amountToUpdate + " WHERE patientID = " + patientID + ";";
+			int numRowsUpdated = stmt.executeUpdate(sql);
+			connection.commit();
+			connection.setAutoCommit(true);
+			return numRowsUpdated == 1 ? true : false;
+		} catch (SQLException e) {
+			DBConnect.printSQLError(e);
+			return false;
+		}
+	}
+	
 	// Add
 	public boolean add(Connection connection) {
 		try(Statement stmt = connection.createStatement()) {
