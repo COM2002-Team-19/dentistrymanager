@@ -11,7 +11,7 @@ public class Patient {
 	private Title title;
 	private String forename;
 	private String surname;
-	private Date dateOfBirth; // date of birth in format YYYYMMDD
+	private Date dateOfBirth; // date of birth in format YYYY-MM-DD
 	private String phoneNo;
 	private double balance;
 	private Address address;
