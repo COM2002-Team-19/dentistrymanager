@@ -33,7 +33,6 @@ public class ManageTreatment extends JFrame {
 	private JPanel contentPane;
 	private JComboBox<Treatment> treatmentCombo;
 	private JList<TreatmentRecord> treatmentRecordList;
-	private String[] treatmentStr;
 	private Treatment selectedTreatment;
 	private TreatmentRecord selectedTreatmentRecord;
 	private ArrayList<Treatment> allTreatments;
@@ -51,9 +50,9 @@ public class ManageTreatment extends JFrame {
     }
     
     public boolean updateDB(int mode) {
-		boolean success = false;
+		boolean success = true;
 		
-		String n = treatmentCombo.getName();
+		String n = selectedTreatment.getName();
 		Double oc = selectedTreatment.getCost();
 		Double cc = 0.0;
 
@@ -61,25 +60,31 @@ public class ManageTreatment extends JFrame {
 			cc = CoveredTreatment.getCoveredCost(connection, patientID, n);
 		} catch (SQLException e){
 			DBConnect.printSQLError(e);
+			success = false;
 		}
 		
 		try(Connection connection = DBConnect.getConnection(true)){
 			
 			if(mode==1){
 				TreatmentRecord rec = new TreatmentRecord(appointmentID,n,oc,cc);
+				System.out.println(rec.toString());
 				rec.add(connection);
 			}
 			if(mode==-1){
+				System.out.println(selectedTreatmentRecord);
 				selectedTreatmentRecord.delete(connection);
 			}
 			
 		} catch (SQLException e){
 			DBConnect.printSQLError(e);
+			success = false;
 		} catch(DuplicateKeyException e){
 			JOptionPane.showMessageDialog(new JFrame(), "Error", "Submission Error",
 		            JOptionPane.ERROR_MESSAGE);
+			success = false;
 		} catch(DeleteForeignKeyException e){
 			e.printStackTrace();
+			success = false;
 		}
 		
 		return success;
@@ -103,7 +108,6 @@ public class ManageTreatment extends JFrame {
 		treatmentRecordList = new JList<TreatmentRecord>();
 		treatmentRecordList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		treatmentRecordList.setCellRenderer(new TreatmentRecordListRenderer());
-		updateTreatmentRecordList();
 		treatmentRecordList.addListSelectionListener(new ListSelectionListener() {
         	public void valueChanged(ListSelectionEvent event) {
         		int selectedIndex = treatmentRecordList.getSelectedIndex();
@@ -112,6 +116,8 @@ public class ManageTreatment extends JFrame {
         		}
         	}
         });
+		updateTreatmentRecordList();
+		
 		treatmentRecordPanel.add(treatmentRecordList);
         
         // Type of treatment section
@@ -166,6 +172,7 @@ public class ManageTreatment extends JFrame {
 		treatmentCombo = new JComboBox<Treatment>();
 		treatmentCombo.setRenderer(new TreatmentListRenderer());
     	DefaultComboBoxModel<Treatment> model = new DefaultComboBoxModel<>();
+    	
     	for(Treatment treatment: allTreatments)
     		model.addElement(treatment);
     	treatmentCombo.setModel(model);
@@ -178,10 +185,11 @@ public class ManageTreatment extends JFrame {
 		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//		setBounds(100, 100, 450, 300);
+		// setBounds(100, 100, 450, 300);
 		mainPane = new JPanel();
 		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.Y_AXIS));
+		
 		// adding elements
 		mainPane.add(treatmentCombo);
 		mainPane.add(treatmentPane);

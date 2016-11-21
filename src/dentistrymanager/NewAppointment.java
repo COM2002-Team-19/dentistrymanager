@@ -22,6 +22,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 
+@SuppressWarnings("serial")
 public class NewAppointment extends JFrame {
 
 	// UI variables
@@ -32,6 +33,7 @@ public class NewAppointment extends JFrame {
 	private JLabel lblStartTime;
 	private JLabel lblEndTime;
 	private JLabel lblPartner;
+	private JLabel lblTypeOfTreatment;
     private JComboBox<String> dayCombo;
     private JComboBox<String> monthCombo;
     private JComboBox<String> yearCombo;
@@ -56,6 +58,7 @@ public class NewAppointment extends JFrame {
 	 */
 	public NewAppointment(Patient p) {
 		patient = p;
+		selectedPartner = "";
 		
 		// Initialise Frame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -151,10 +154,12 @@ public class NewAppointment extends JFrame {
 		});
 		updatePartnerList();
 		
-		// Treatment section
-		JLabel lblTypeOfTreatment = new JLabel("Type of Treatment:");
-		typeOfTreatmentCombo = new JComboBox<String>();
-		updateTreatmentList();
+		if (patient != null) {
+			// Treatment section
+			lblTypeOfTreatment = new JLabel("Type of Treatment:");
+			typeOfTreatmentCombo = new JComboBox<String>();
+			updateTreatmentList();
+		}
 		
 		// Buttons
 		JButton btnSubmit = new JButton("Submit");
@@ -321,10 +326,7 @@ public class NewAppointment extends JFrame {
 		String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
 		int courseOfT = 0;//getCourseOfTreatment(); #TODO
 		
-		Appointment newapp = new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
-		System.out.println(newapp);
-		
-		return newapp; //new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
+		return new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
 	}
 	
 	private void updatePartnerList() {
