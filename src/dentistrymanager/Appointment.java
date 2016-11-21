@@ -101,7 +101,7 @@ public class Appointment {
 		double totalCost = 0;
 		try(Statement stmt = connection.createStatement()) {
 			connection.setAutoCommit(true);
-			String sql = "SELECT SUM(outstandingCost - coveredCost) as total FROM TreatmentRecord WHERE appointmentID = '" + appointmentID + ";";
+			String sql = "SELECT SUM(outstandingCost - coveredCost) as total FROM TreatmentRecord WHERE appointmentID = " + appointmentID + ";";
 			ResultSet res = stmt.executeQuery(sql);
 			if(res.first()) {
 				try {

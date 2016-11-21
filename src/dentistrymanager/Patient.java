@@ -77,7 +77,7 @@ public class Patient {
 	public boolean updateBalance(Connection connection, double amountToUpdate) {
 		try(Statement stmt = connection.createStatement()) {
 			connection.setAutoCommit(false);
-			String sql = "UPDATE Patient SET BALANCE = BALANCE + " + amountToUpdate + " WHERE patientID = " + patientID + ";";
+			String sql = "UPDATE Patient SET balance = balance + " + amountToUpdate + " WHERE patientID = " + patientID + " ;";
 			int numRowsUpdated = stmt.executeUpdate(sql);
 			connection.commit();
 			connection.setAutoCommit(true);
