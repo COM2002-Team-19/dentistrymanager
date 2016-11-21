@@ -33,7 +33,7 @@ public class FindAppointment extends JFrame {
 	
 	//variables list
 	private JPanel contentPane;
-	private JComboBox<Partner> comboPartner = new JComboBox<Partner>();
+	private JComboBox<Partner> comboPartner;
     private Partner selectedPartner;
     private String[] partnersStr;
     private JTextField patientNameField;
@@ -71,19 +71,24 @@ public class FindAppointment extends JFrame {
 		
 		//Select Partner Combo
 		JLabel lblPartner = new JLabel("Partner to see : ");
+		comboPartner = new JComboBox<Partner>();
+		comboPartner.setRenderer(new PartnerListRenderer());
+		DefaultComboBoxModel<Partner> model = new DefaultComboBoxModel<>();    	
+    	for(Partner partner: partners)
+    		model.addElement(partner);
+    	comboPartner.setModel(model);
 		comboPartner.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedPartner = (Partner)comboPartner.getSelectedItem();
 				try(Connection connection = DBConnect.getConnection(false)){
 					resultAppointments = Appointment.findByPartnerPatient(connection, p.getForename(), selectedPartner.getName());
-		    	} catch(SQLException e){
-		    		DBConnect.printSQLError(e);
-		    	}
-				
-//				updateTreatmentList();
+					updateResultsList();
+		    	} catch(SQLException ex){
+		    		DBConnect.printSQLError(ex);
+		    	}				
 			}
 		});
-		updatePartnerList();
+		
 		
 		JLabel lblPatientName = new JLabel("Patient name : ");
 		
@@ -146,19 +151,6 @@ public class FindAppointment extends JFrame {
 		resultsPane.setViewportView(resultsList);
 		contentPane.setLayout(gl_contentPane);
 		setVisible(true);
-	}
-	
-	//Gets the partners for the Combo Box
-	private void updatePartnerList() {	
-	    try(Connection con = DBConnect.getConnection(false)){
-			ArrayList<Partner> partners = Partner.getAll(con);
-			partnersStr = new String[partners.size()];
-			for (Partner pa : partners)
-				partnersStr[partners.indexOf(pa)] = (pa.toString());
-		} catch (SQLException e){
-			DBConnect.printSQLError(e);
-		}
-		comboPartner.setModel(new DefaultComboBoxModel<Partner>());
 	}
 	
 	
