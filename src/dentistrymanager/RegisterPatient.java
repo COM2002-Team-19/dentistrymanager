@@ -32,6 +32,7 @@ public class RegisterPatient extends JFrame {
      */
     public RegisterPatient() {
         initComponents();
+        setTitle("Registration");
     }
     
     /*
