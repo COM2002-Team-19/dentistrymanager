@@ -182,9 +182,9 @@ public class Appointment {
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "SELECT a.*, ap.patientID, ac.courseOfTreatment FROM Appointment a "
-							+ "LEFT OUTER JOIN AppointmentsPerPatient ap ON a.appointmentID = ap.appointmentID"
-							+ "LEFT JOIN Patient p ON ap.patientID = p.patientID"
-							+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment ac ON a.appointmentID = ac.appointmentID"
+							+ "LEFT OUTER JOIN AppointmentsPerPatient ap ON a.appointmentID = ap.appointmentID "
+							+ "LEFT JOIN Patient p ON ap.patientID = p.patientID "
+							+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment ac ON a.appointmentID = ac.appointmentID "
 							+ "WHERE a.partner = '%" + partnerSearchTerm + "%' AND (p.forename = '%" + patientSearchTerm +"%' "
 									+ "OR p.surname = '%" + patientSearchTerm +"%') ORDER BY a.date, a.startTime;";
 			ResultSet res = stmt.executeQuery(sql);

@@ -79,6 +79,7 @@ public class FindAppointment extends JFrame {
     	comboPartner.setModel(model);
 		comboPartner.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("SELECT");
 				selectedPartner = (Partner)comboPartner.getSelectedItem();
 				try(Connection connection = DBConnect.getConnection(false)){
 					resultAppointments = Appointment.findByPartnerPatient(connection, p.getForename(), selectedPartner.getName());
@@ -102,7 +103,6 @@ public class FindAppointment extends JFrame {
 		resultsList = new JList<Appointment>();
 		resultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		resultsList.setCellRenderer(new AppointmentListRenderer());
-		updateResultsList();
 		resultsList.addListSelectionListener(new ListSelectionListener() {
 		public void valueChanged(ListSelectionEvent event) {
 		    int selectedIndex = resultsList.getSelectedIndex();
@@ -111,6 +111,7 @@ public class FindAppointment extends JFrame {
 		 		}
 			}
 		});
+		updateResultsList();
 		resultsPane.setViewportView(resultsList);
 		
 		
