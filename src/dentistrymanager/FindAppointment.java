@@ -149,7 +149,7 @@ public class FindAppointment extends JFrame {
 					.addComponent(resultsPane, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
 					.addContainerGap())
 		);
-		resultsPane.setViewportView(resultsList);
+//		resultsPane.setViewportView(resultsList);
 		contentPane.setLayout(gl_contentPane);
 		setVisible(true);
 	}

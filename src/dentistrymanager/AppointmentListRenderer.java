@@ -21,7 +21,7 @@ public class AppointmentListRenderer extends JLabel implements ListCellRenderer<
 		
 		Font font = new Font("Courier", Font.BOLD,14);
 		setFont(font);
-		setText(appointment.getStartTime()+" - "+appointment.getEndTime()+ " | Date : " +appointment.getDate() + " | Patient Name : " + appointment.getPatient().getForename() + " " + appointment.getPatient().getSurname());
+		setText(appointment.getDate() +" | "+ appointment.getStartTime()+" - "+appointment.getEndTime()+ " | " + appointment.getPatient().getForename() + " " + appointment.getPatient().getSurname());
         Color background;
         Color foreground;
 
