@@ -86,7 +86,8 @@ public class Partner {
 			String sql = "SELECT a.*, ap.patientID, ac.courseOfTreatment FROM Appointment a " 
 							+ "LEFT OUTER JOIN AppointmentsPerPatient ap ON a.appointmentID = ap.appointmentID "	
 							+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment ac ON a.appointmentID = ac.appointmentID "
-							+ "WHERE a.finish = FALSE ORDER BY a.date ASC, a.startTime ASC;";
+							+ "WHERE p.partner = '" + name + "' "
+							+ "AND a.finish = FALSE ORDER BY a.date ASC, a.startTime ASC;";
 							
 			ResultSet res = stmt.executeQuery(sql);
 			if(res.next()) {
