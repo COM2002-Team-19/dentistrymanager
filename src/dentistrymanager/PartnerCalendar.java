@@ -98,6 +98,15 @@ public class PartnerCalendar extends JFrame {
 			}
 		});
 		
+//		JButton btnBack = new JButton("Back");
+//		btnBack.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent evt) {
+//            	new SplashScreen();
+//            	dispose();
+//            }
+//        });
+//		
+//		currentButtons.add(btnBack);
 		currentButtons.add(manageTreatment);
 		currentButtons.add(finishCurrent);
 		currentAppointment.add(currentButtons, BorderLayout.SOUTH);
