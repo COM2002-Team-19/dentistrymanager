@@ -201,6 +201,13 @@ public class DatabaseBuilder {
 																		 {"EMPTY-DENTIST", "DENTIST"},{"HYGIENE","HYGIENIST"},
 																		 {"EMPTY-HYGIENIST","HYGIENIST"}};
 	
+	public static final String[][] PRESET_ADDRESSES = {{"52", "SE12 7LU", "Sunnyside Avenue", "Westshire", "London"},
+														{"2", "WS1 5FG", "London Road", "Essex", "Halfthorne"},
+														 {"3", "S10 3AQ", "Rosa Road", "South Yorkshire", "Sheffield"},
+														  {"12", "BR6 0AX", "Summit way", "Hebrides", "Bristol"},
+														   {"13", "H02 1PQ", "Church St", "Yorkshire", "Hull"},
+														    {"14", "LP2 4FG", "Longton way", "Middlesex", "Suddersbury"}};
+	
 	// Private variables
 	private Connection connection;
 	
