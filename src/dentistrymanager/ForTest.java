@@ -118,5 +118,10 @@ public class ForTest {
 			
 		}
 		*/
+		try (Connection con = DBConnect.getConnection(false)){
+			System.out.println(CourseOfTreatment.getCourseOfTreatment(con, 1).getCourseOfTreatment());
+		} catch (SQLException e) {
+			DBConnect.printSQLError(e);
+		}
 	}
 }
