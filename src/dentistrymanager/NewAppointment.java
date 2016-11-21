@@ -60,6 +60,8 @@ public class NewAppointment extends JFrame {
 		patient = p;
 		selectedPartner = "";
 		
+		this.setTitle("New Appointment");
+		
 		// Initialise Frame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 345, 250);

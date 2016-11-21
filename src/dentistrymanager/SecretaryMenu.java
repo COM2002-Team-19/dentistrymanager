@@ -19,6 +19,7 @@ public class SecretaryMenu extends JFrame {
     public SecretaryMenu() {
     	setResizable(false);
         initComponents();
+		this.setTitle("Secretary Menu");
     }
 
     /**
