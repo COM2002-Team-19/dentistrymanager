@@ -145,13 +145,13 @@ public class FindPatient extends JFrame {
         owedField = new JTextField();
         owedField.setEditable(false);
         owedField.setColumns(10);
+        // #TODO Add patient balance to text field
         
         receiptButton = new JButton("Receipt"); 
         receiptButton.setEnabled(false);
         receiptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	//new PrintReceipt();
-            	// #TODO
+            	new PrintReceipt(selectedPatient);
             }
         });
         
@@ -187,8 +187,6 @@ public class FindPatient extends JFrame {
         		new FindAppointment(selectedPatient);
         	}
         });
-        
-        jScrollPane1 = new JScrollPane();
 
         // Generated code - do not modify
         GroupLayout changePlanLayout = new GroupLayout(changePlan.getContentPane());
@@ -503,12 +501,8 @@ public class FindPatient extends JFrame {
     private JButton subscribeButton;
     private JDialog changePlan;
     private JButton updatePlan;
-    private JDialog printReceipt;
-    private JButton printRecieptCloseButton;
-    private JButton printRecieptPayButton;
     private JButton receiptButton;
     private JButton addAppointmentButton;
     private JButton findAppointment;
-    private JScrollPane jScrollPane1;
     private JTextField owedField;
 }

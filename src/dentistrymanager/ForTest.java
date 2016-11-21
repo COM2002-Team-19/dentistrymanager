@@ -1,7 +1,6 @@
 package dentistrymanager;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class ForTest {
 
@@ -21,7 +20,7 @@ public class ForTest {
 			DBConnect.printSQLError(e);
 		}
 		*/
-		/*
+		
 		try (Connection con = DBConnect.getConnection(true)){
 			
 			DatabaseBuilder builder = new DatabaseBuilder(con);
@@ -35,7 +34,7 @@ public class ForTest {
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
 		} 
-		*/
+		
 		/*
 		// Store new Address and Patient
 		Address testAddress = new Address(34, "clementson rd.","south yorkshire","sheffield","s10 1gs");
@@ -94,7 +93,7 @@ public class ForTest {
 			DBConnect.printSQLError(e);
 		} 
 		*/
-		
+		/*
 		Patient patient = new Patient();
 		try (Connection con = DBConnect.getConnection(false)){
 			patient = Patient.getPatientByID(con, 1);
@@ -117,7 +116,6 @@ public class ForTest {
 		} catch (DuplicateKeyException e) {
 			
 		}
-		
-		
+		*/
 	}
 }
