@@ -1,6 +1,7 @@
 package dentistrymanager;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -163,6 +164,7 @@ public class ManageTreatment extends JFrame {
 				    		"Submission Error", JOptionPane.ERROR_MESSAGE);
 			}
 		});
+		Dimension d = new Dimension(200,100);
 		buttonPane.add(btnSubmit);
 		buttonPane.add(btnDelete);
 		
