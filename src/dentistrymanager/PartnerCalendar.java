@@ -65,18 +65,18 @@ public class PartnerCalendar extends JFrame {
 		
 		// Buttons at the bottom
 		currentButtons.setLayout(new GridLayout(1,0));
-		JButton manageTreatment = new JButton("Manage Treatments");
-		manageTreatment.setPreferredSize(new Dimension(100, 100));
-		manageTreatment.addActionListener(new ActionListener() {
+		JButton manageTreatmentButton = new JButton("Manage Treatments");
+		manageTreatmentButton.setPreferredSize(new Dimension(100, 100));
+		manageTreatmentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(nextAppointment != null)
 					new ManageTreatment(nextAppointment);
 			}
 		});
 		
-		JButton finishCurrent = new JButton("Finish Appointment");
-		finishCurrent.setPreferredSize(new Dimension(100, 100));
-		finishCurrent.addActionListener(new ActionListener() {
+		JButton finishCurrentButton = new JButton("Finish Appointment");
+		finishCurrentButton.setPreferredSize(new Dimension(100, 100));
+		finishCurrentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try(Connection connection = DBConnect.getConnection(true)){
 					if(nextAppointment != null) {
@@ -99,17 +99,17 @@ public class PartnerCalendar extends JFrame {
 			}
 		});
 		
-//		JButton btnBack = new JButton("Back");
-//		btnBack.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent evt) {
-//            	new SplashScreen();
-//            	dispose();
-//            }
-//        });
-//		
-//		currentButtons.add(btnBack);
-		currentButtons.add(manageTreatment);
-		currentButtons.add(finishCurrent);
+		JButton backButton = new JButton("Back");
+		backButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new SplashScreen();
+				dispose();
+			}
+		});
+		
+		currentButtons.add(backButton);
+		currentButtons.add(manageTreatmentButton);
+		currentButtons.add(finishCurrentButton);
 		currentAppointment.add(currentButtons, BorderLayout.SOUTH);
 		
 		// Next appointments on the right
@@ -144,7 +144,6 @@ public class PartnerCalendar extends JFrame {
 	
 	private void updateValues(){
 		if (!this.nextPatients.isEmpty() ){
-			String newline = "\n";
 			String dateLabel = nextAppointment.getDate().toString();
 			String forenameLabel = nextAppointment.getPatient().getForename();
 			String surnameLabel = nextAppointment.getPatient().getSurname();
@@ -156,13 +155,13 @@ public class PartnerCalendar extends JFrame {
 			if (nextAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
 			
 			currentAppDisplay.setText("");
-			currentAppDisplay.append("Date : "+dateLabel+newline);
-			currentAppDisplay.append("First Name : "+forenameLabel+newline);
-			currentAppDisplay.append("Surname : "+surnameLabel+newline);
-			currentAppDisplay.append("Start time : "+startTimeLabel+newline);
-			currentAppDisplay.append("End time : "+endTimeLabel+newline);
-			currentAppDisplay.append("Course of Treatment : "+courseOfTreatment+newline);
-			currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+newline);
+			currentAppDisplay.append("Date : "+dateLabel+"\n");
+			currentAppDisplay.append("First Name : "+forenameLabel+"\n");
+			currentAppDisplay.append("Surname : "+surnameLabel+"\n");
+			currentAppDisplay.append("Start time : "+startTimeLabel+"\n");
+			currentAppDisplay.append("End time : "+endTimeLabel+"\n");
+			currentAppDisplay.append("Course of Treatment : "+courseOfTreatment+"\n");
+			currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+"\n");
 		}
 	}
 	
