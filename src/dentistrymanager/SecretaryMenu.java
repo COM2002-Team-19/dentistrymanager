@@ -26,6 +26,8 @@ public class SecretaryMenu extends JFrame {
      */
     // initialise Components
     private void initComponents() {
+    	
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         buttonPanel = new JPanel();
         calendarButton = new JButton("Calendars");
         registerButton = new JButton("Register Patient");

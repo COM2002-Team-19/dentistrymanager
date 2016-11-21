@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -35,6 +36,7 @@ public class PartnerCalendar extends JFrame {
 	private Partner p;
 	private Appointment nextAppointment;
 	private JList<Appointment> nextAppResultsList;
+	private JTextArea currentAppDisplay;
  
 	public PartnerCalendar(int i) {
 		try(Connection connection = DBConnect.getConnection(false)){
@@ -55,8 +57,9 @@ public class PartnerCalendar extends JFrame {
 		JLabel currentAppTitle = new JLabel("Current Appointment:");
 		
 		// Text area
-		JTextArea currentAppDisplay = new JTextArea();
-		if (!this.nextPatients.isEmpty()){
+		currentAppDisplay = new JTextArea();
+		if (!this.nextPatients.isEmpty() ){
+			/*
 			String newline = "\n";
 			String dateLabel = nextAppointment.getDate().toString();
 			String forenameLabel = nextAppointment.getPatient().getForename();
@@ -75,6 +78,8 @@ public class PartnerCalendar extends JFrame {
 			currentAppDisplay.append("End time : "+endTimeLabel+newline);
 			currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+newline);
 			currentAppDisplay.append("Course of treatment : "+courseOfTreatment+newline);
+			*/
+			updateValues();
 		}		
 		JScrollPane scrollPaneCurrent = new JScrollPane(currentAppDisplay);
 		
@@ -103,7 +108,9 @@ public class PartnerCalendar extends JFrame {
 				try(Connection connection = DBConnect.getConnection(true)){
 					if(nextAppointment != null) {
 						nextAppointment.finish(connection);
-						updateAppResulttList();
+						nextAppointment = p.getNextAppointment(connection);
+						updateAppResultList();
+						updateValues();
 					}
 				}
 		    	catch(SQLException ex){
@@ -124,7 +131,7 @@ public class PartnerCalendar extends JFrame {
 		
 		// Insert JList
 		nextAppResultsList = new JList<Appointment>();
-		updateAppResulttList();
+		updateAppResultList();
 		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
 		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
 
@@ -135,7 +142,7 @@ public class PartnerCalendar extends JFrame {
 		JPanel nextButtons = new JPanel();
 		nextButtons.setLayout(new GridLayout(1,0));
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1100, 300);
 		contentPane = new JPanel();
    		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -147,7 +154,28 @@ public class PartnerCalendar extends JFrame {
  		setVisible(true);
  	}
 	
-	private void updateAppResulttList() {
+	private void updateValues(){
+		String newline = "\n";
+		String dateLabel = nextAppointment.getDate().toString();
+		String forenameLabel = nextAppointment.getPatient().getForename();
+		String surnameLabel = nextAppointment.getPatient().getSurname();
+		Time startTimeLabel = nextAppointment.getStartTime();
+		Time endTimeLabel = nextAppointment.getEndTime();
+		String typeOfTreatmentLabel = nextAppointment.getTypeOfTreatment();
+		String courseOfTreatment = "False";
+		
+		if (nextAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
+		
+		currentAppDisplay.setText("");
+		currentAppDisplay.append("Date : "+dateLabel+newline);
+		currentAppDisplay.append("First Name : "+forenameLabel+newline);
+		currentAppDisplay.append("Surname : "+surnameLabel+newline);
+		currentAppDisplay.append("Start time : "+startTimeLabel+newline);
+		currentAppDisplay.append("End time : "+endTimeLabel+newline);
+		currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+newline);
+	}
+	
+	private void updateAppResultList() {
     	DefaultListModel<Appointment> model = new DefaultListModel<>();
     	for(Appointment appointment: nextPatients)
     		model.addElement(appointment);
