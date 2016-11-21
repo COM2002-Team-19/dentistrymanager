@@ -54,6 +54,10 @@ public class PartnerCalendar extends JFrame {
 		currentAppDisplay = new JTextArea();
 		
 		updateValues();
+		nextAppResultsList = new JList<Appointment>();
+		updateAppResultList();
+		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
+		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
 			
 		JScrollPane scrollPaneCurrent = new JScrollPane(currentAppDisplay);
 		
@@ -81,13 +85,9 @@ public class PartnerCalendar extends JFrame {
 				try(Connection connection = DBConnect.getConnection(true)){
 					if(presentAppointment != null) {
 						presentAppointment.finish(connection);
-						System.out.println(presentAppointment.toString());
-						
 						// Get the cost of the appointment
 						double cost = presentAppointment.getTotalCost(connection);
 						presentAppointment.getPatient().updateBalance(connection, cost);
-						System.out.println(cost);
-						System.out.println("BUMP");
 						presentAppointment = p.getNextAppointment(connection);
 						updateValues();
 						updateAppResultList();
@@ -121,10 +121,10 @@ public class PartnerCalendar extends JFrame {
 		JLabel nextAppTitle = new JLabel("Next Appointments:");
 		
 		// Insert JList
-		nextAppResultsList = new JList<Appointment>();
-		updateAppResultList();
-		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
-		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
+//		nextAppResultsList = new JList<Appointment>();
+//		updateAppResultList();
+//		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
+//		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
 
 		
 		JScrollPane scrollPaneNext = new JScrollPane(nextAppResults);
