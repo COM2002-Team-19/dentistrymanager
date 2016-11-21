@@ -40,7 +40,7 @@ public class Patient {
 	}
 	
 	public Patient() {
-		this(0, "", "test", "test", null, "", 0, null, null);
+		this(0, "", "Not", "Applicable", null, "", 0, null, null);
 	}
 	
 
