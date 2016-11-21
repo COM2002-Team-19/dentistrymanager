@@ -2,7 +2,8 @@ package dentistrymanager;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -27,7 +28,7 @@ public class PrintReceipt extends JFrame {
 	
 
 	public PrintReceipt(Patient patient) {
-		
+		this.setTitle("Print Receipt");
 		balance = patient.getBalance();
 		id = patient.getPatientID();
 		try(Connection connection = DBConnect.getConnection(false)){
@@ -55,6 +56,13 @@ public class PrintReceipt extends JFrame {
 		
 		// Button
 		JButton payAll = new JButton("Pay All");
+		/*
+		payAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		*/
 		JButton close = new JButton("Close");
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

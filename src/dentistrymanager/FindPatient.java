@@ -452,6 +452,7 @@ public class FindPatient extends JFrame {
 		setSubscribeButtonText();
     
 		//#TODO fill in owedField
+		owedField.setText(Double.toHexString(selectedPatient.getBalance()));
 		receiptButton.setEnabled(true);
     	
     	addAppointmentButton.setEnabled(true);

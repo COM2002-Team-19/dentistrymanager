@@ -85,8 +85,8 @@ public class SecretaryCalendar extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try(Connection connection = DBConnect.getConnection(true)){
 					selectedAppointmentDentist.delete(connection);
-					updateDentistList();
         			getData();
+					updateDentistList();
 				}catch(SQLException ex){
 		    		DBConnect.printSQLError(ex);
 		    	}catch(DeleteForeignKeyException ex){
@@ -115,8 +115,8 @@ public class SecretaryCalendar extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try(Connection connection = DBConnect.getConnection(true)){
 					selectedAppointmentHygienist.delete(connection);
-					updateHygienistList();
         			getData();
+					updateHygienistList();
 				}catch(SQLException ex){
 		    		DBConnect.printSQLError(ex);
 		    	}catch(DeleteForeignKeyException ex){
