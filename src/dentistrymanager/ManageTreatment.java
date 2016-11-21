@@ -177,8 +177,7 @@ public class ManageTreatment extends JFrame {
 		
 		treatmentCombo = new JComboBox<Treatment>();
 		treatmentCombo.setRenderer(new TreatmentListRenderer());
-    	DefaultComboBoxModel<Treatment> model = new DefaultComboBoxModel<>();
-    	
+    	DefaultComboBoxModel<Treatment> model = new DefaultComboBoxModel<>();    	
     	for(Treatment treatment: allTreatments)
     		model.addElement(treatment);
     	treatmentCombo.setModel(model);
