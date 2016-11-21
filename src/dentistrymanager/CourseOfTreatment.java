@@ -72,7 +72,6 @@ public class CourseOfTreatment {
 			if(res.first())
 				courseOfTreatment = new CourseOfTreatment(res.getInt("courseOfTreatment"), res.getInt("patientID"), 
 																							res.getBoolean("complete"));
-			return courseOfTreatment;
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
 		}

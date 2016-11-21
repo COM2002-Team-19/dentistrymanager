@@ -173,7 +173,7 @@ public class Patient {
 								+ "AND (ct.complete IS NULL OR ct.complete = FALSE);";
 			ResultSet res = stmt.executeQuery(sql);
 			while(res.next())
-				amountOwedDetails.add(res.getString("treatment") + " " + res.getDouble("outstandingCost")  + " " + 
+				amountOwedDetails.add(res.getString("treatment") + " | Outstanding Cost : " + res.getDouble("outstandingCost")  + " Covered Cost :  " + 
 																						res.getDouble("coveredCost"));
 			
 		} catch(SQLException e) {

@@ -60,6 +60,8 @@ public class NewAppointment extends JFrame {
 		patient = p;
 		selectedPartner = "";
 		
+		this.setTitle("New Appointment");
+		
 		// Initialise Frame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 345, 250);
@@ -155,12 +157,14 @@ public class NewAppointment extends JFrame {
 		});
 		updatePartnerList();
 		
-		//if (patient != null) {
-			// Treatment section
-			lblTypeOfTreatment = new JLabel("Type of Treatment:");
-			typeOfTreatmentCombo = new JComboBox<String>();
-			updateTreatmentList();
-		//}#TODO
+		// Treatment section
+		lblTypeOfTreatment = new JLabel("Type of Treatment:");
+		typeOfTreatmentCombo = new JComboBox<String>();
+		updateTreatmentList();
+		if (patient == null) {
+			typeOfTreatmentCombo.setSelectedIndex(1);
+			typeOfTreatmentCombo.setEnabled(false);
+		}
 		
 		// Buttons
 		JButton btnSubmit = new JButton("Submit");
@@ -171,12 +175,11 @@ public class NewAppointment extends JFrame {
 				else
 				    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in adding this appointment. Please try again.",
 				    		"Submission Error", JOptionPane.ERROR_MESSAGE);
-				dispose();
 			}
 		});
 		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
+		JButton btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
@@ -190,7 +193,7 @@ public class NewAppointment extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(btnCancel)
+							.addComponent(btnClose)
 							.addGap(18)
 							.addComponent(btnSubmit))
 						.addGroup(gl_contentPane.createSequentialGroup()
@@ -254,7 +257,7 @@ public class NewAppointment extends JFrame {
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnSubmit)
-						.addComponent(btnCancel))
+						.addComponent(btnClose))
 					.addContainerGap())
 		);
 		contentPane.setLayout(gl_contentPane);
@@ -282,7 +285,6 @@ public class NewAppointment extends JFrame {
 		}
 		else {
 			JOptionPane.showMessageDialog(new JFrame(),"This slot is unavailable.","Submission Error",JOptionPane.ERROR_MESSAGE);
-			new NewAppointment();
 		}
 		return success;
     }
@@ -322,10 +324,10 @@ public class NewAppointment extends JFrame {
 		String partner = partnerCombo.getSelectedItem().toString();
 		Time startTime = DateTimeUtilities.stringToTime(startTimeCombo.getSelectedItem().toString());
 		Time endTime = DateTimeUtilities.stringToTime(endTimeCombo.getSelectedItem().toString());
+		String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
 		if (patient == null)
-			return new Appointment(partner, date, startTime, endTime, null, null, 0);
+			return new Appointment(partner, date, startTime, endTime, null, typeOfT, 0);
 		else {
-			String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
 			int courseOfT=0;
 			try(Connection con = DBConnect.getConnection(false)){
 				courseOfT = CourseOfTreatment.getCourseOfTreatment(con, patient.getPatientID()).getCourseOfTreatment();

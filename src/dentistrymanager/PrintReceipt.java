@@ -1,10 +1,11 @@
 package dentistrymanager;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
+
 import java.sql.Connection;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 
+@SuppressWarnings("serial")
 public class PrintReceipt extends JFrame {
 
 	private JPanel contentPane;
@@ -29,7 +31,6 @@ public class PrintReceipt extends JFrame {
 		balance = patient.getBalance();
 		id = patient.getPatientID();
 		try(Connection connection = DBConnect.getConnection(false)){
-//			this.coveredCost = CoveredTreatment.getCoveredCost(connection, id, typeOfTreatment);
 			this.amountOwed = patient.getAmountOwed(connection);
 		}catch (SQLException e){
 			DBConnect.printSQLError(e);
@@ -40,8 +41,6 @@ public class PrintReceipt extends JFrame {
 		recieptTextArea.setEditable(false);
 		String newline = "\n";
 		recieptTextArea.append("Patient : "+patient.getForename()+" "+patient.getSurname()+newline);
-		recieptTextArea.append("Balance : "+patient.getBalance()+newline);
-		recieptTextArea.append("Covered Cost : ");
 		for(int i=0; i<amountOwed.size(); i++){
 			recieptTextArea.append(amountOwed.get(i)+newline);
 		}
@@ -58,7 +57,7 @@ public class PrintReceipt extends JFrame {
 		JButton payAll = new JButton("Pay All");
 		JButton close = new JButton("Close");
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

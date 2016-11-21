@@ -32,6 +32,7 @@ public class SecretaryCalendar extends JFrame {
     public SecretaryCalendar() {
     	getData();
         initComponents();
+		this.setTitle("Calendar");
     }
 
     /**

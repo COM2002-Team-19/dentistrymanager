@@ -1,7 +1,6 @@
 package dentistrymanager;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class ForTest {
 
@@ -120,10 +119,7 @@ public class ForTest {
 		}
 		*/
 		try (Connection con = DBConnect.getConnection(false)){
-			ArrayList<Appointment> test = Appointment.findByPartnerPatient(con, "", "");
-			for (Appointment ap : test){
-				System.out.println(ap.toString());
-			}
+			System.out.println(CourseOfTreatment.getCourseOfTreatment(con, 1).getCourseOfTreatment());
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
 		}
