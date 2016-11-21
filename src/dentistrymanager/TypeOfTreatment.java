@@ -20,6 +20,7 @@ public class TypeOfTreatment {
 		this(name, duration, new ArrayList<>());
 	}
 	
+	//toString
 	public String toString() {
 		return this.getName();
 	}
