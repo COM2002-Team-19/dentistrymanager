@@ -67,13 +67,14 @@ public class NewAppointment extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		if (patient!=null) {
-			lblPatientName = new JLabel("Name:");
-			patientNameField = new JTextField();
-			patientNameField.setEditable(false);
-			patientNameField.setColumns(10);
+		lblPatientName = new JLabel("Name:");
+		patientNameField = new JTextField();
+		patientNameField.setEditable(false);
+		patientNameField.setColumns(10);
+		if (patient!=null)
 			patientNameField.setText(patient.getForename()+" "+patient.getSurname());
-		}
+		else
+			patientNameField.setText("N/A");
 		
 		// Date section
 		lblDate = new JLabel("Date:");
@@ -154,12 +155,12 @@ public class NewAppointment extends JFrame {
 		});
 		updatePartnerList();
 		
-		if (patient != null) {
+		//if (patient != null) {
 			// Treatment section
 			lblTypeOfTreatment = new JLabel("Type of Treatment:");
 			typeOfTreatmentCombo = new JComboBox<String>();
 			updateTreatmentList();
-		}
+		//}#TODO
 		
 		// Buttons
 		JButton btnSubmit = new JButton("Submit");
@@ -275,16 +276,14 @@ public class NewAppointment extends JFrame {
 				DBConnect.printSQLError(e);
 				success = false;
 			} catch (DuplicateKeyException e) {
-				JOptionPane.showMessageDialog(new JFrame(), "There has been an error with the database, please see admin.", "Submission Error",
-											  JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 				success = false;
 			}
 		}
-		else
-			JOptionPane.showMessageDialog(new JFrame(), "This slot is unavailable.", "Submission Error",
-					JOptionPane.ERROR_MESSAGE);
-		
+		else {
+			JOptionPane.showMessageDialog(new JFrame(),"This slot is unavailable.","Submission Error",JOptionPane.ERROR_MESSAGE);
+			new NewAppointment();
+		}
 		return success;
     }
     
@@ -323,10 +322,19 @@ public class NewAppointment extends JFrame {
 		String partner = partnerCombo.getSelectedItem().toString();
 		Time startTime = DateTimeUtilities.stringToTime(startTimeCombo.getSelectedItem().toString());
 		Time endTime = DateTimeUtilities.stringToTime(endTimeCombo.getSelectedItem().toString());
-		String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
-		int courseOfT = 0;//getCourseOfTreatment(); #TODO
+		if (patient == null)
+			return new Appointment(partner, date, startTime, endTime, null, null, 0);
+		else {
+			String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
+			int courseOfT=0;
+			try(Connection con = DBConnect.getConnection(false)){
+				courseOfT = CourseOfTreatment.getCourseOfTreatment(con, patient.getPatientID()).getCourseOfTreatment();
+			} catch (SQLException e){
+				DBConnect.printSQLError(e);
+			}
 		
-		return new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
+			return new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
+		}
 	}
 	
 	private void updatePartnerList() {
