@@ -156,6 +156,8 @@ public class ManageTreatment extends JFrame {
 				if (updateDB(-1)) {
 					getData();
 					updateTreatmentRecordList();
+					if (appointmentTreatments.isEmpty())
+						btnDelete.setEnabled(false);
 					JOptionPane.showMessageDialog(new JFrame(), "Treatment Deleted");
 				}
 				else

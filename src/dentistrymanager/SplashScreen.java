@@ -117,5 +117,7 @@ public class SplashScreen extends JFrame {
 					.addContainerGap(18, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(groupLayout);
+		pack();
+		setVisible(true);
 	}
 }
