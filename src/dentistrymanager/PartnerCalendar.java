@@ -89,8 +89,9 @@ public class PartnerCalendar extends JFrame {
 						System.out.println(cost);
 						System.out.println("BUMP");
 						presentAppointment = p.getNextAppointment(connection);
-						updateAppResultList();
 						updateValues();
+						updateAppResultList();
+
 					}
 				}
 		    	catch(SQLException ex){
