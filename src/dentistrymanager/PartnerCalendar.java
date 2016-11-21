@@ -91,7 +91,6 @@ public class PartnerCalendar extends JFrame {
 						presentAppointment = p.getNextAppointment(connection);
 						updateValues();
 						updateAppResultList();
-
 					}
 				}
 		    	catch(SQLException ex){
@@ -160,6 +159,9 @@ public class PartnerCalendar extends JFrame {
 			currentAppDisplay.append("Course of Treatment : "+courseOfTreatment+"\n");
 			currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+"\n");
 		}
+		
+		else
+			currentAppDisplay.setText("All your appointments are done for the day.");
 	}
 	
 	private void updateAppResultList() {
