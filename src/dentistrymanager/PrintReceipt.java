@@ -39,9 +39,11 @@ public class PrintReceipt extends JFrame {
 		JTextArea recieptTextArea = new JTextArea();
 		recieptTextArea.setEditable(false);
 		recieptTextArea.append("Patient : "+patient.getForename()+" "+patient.getSurname()+"\n");
+		
 		for(int i=0; i<amountOwed.size(); i++){
 			recieptTextArea.append(amountOwed.get(i)+"\n");
 		}
+		
 		Font font2 = new Font("courier", Font.BOLD, 20);
 		JTextField amountOwedField = new JTextField();
 		amountOwedField.setFont(font2);

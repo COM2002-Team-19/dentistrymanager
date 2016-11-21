@@ -328,15 +328,15 @@ public class NewAppointment extends JFrame {
 		Time startTime = DateTimeUtilities.stringToTime(startTimeCombo.getSelectedItem().toString());
 		Time endTime = DateTimeUtilities.stringToTime(endTimeCombo.getSelectedItem().toString());
 		String typeOfT = typeOfTreatmentCombo.getSelectedItem().toString();
+		int courseOfT=0;
 		if (patient == null)
-			return new Appointment(partner, date, startTime, endTime, null, typeOfT, 0);
+			return new Appointment(partner, date, startTime, endTime, null, typeOfT, courseOfT);
 		else {
-			int courseOfT=0;
-			try(Connection con = DBConnect.getConnection(false)){
+			/*try(Connection con = DBConnect.getConnection(false)){
 				courseOfT = CourseOfTreatment.getCourseOfTreatment(con, patient.getPatientID()).getCourseOfTreatment();
 			} catch (SQLException e){
 				DBConnect.printSQLError(e);
-			}
+			}*/
 		
 			return new Appointment(partner, date, startTime, endTime, patient, typeOfT, courseOfT);
 		}
