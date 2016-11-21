@@ -39,6 +39,9 @@ public class ManageTreatment extends JFrame {
 	private ArrayList<Treatment> allTreatments;
 	private JTextArea treatmentField;
 	private JTextArea costField;
+	private JPanel buttonPane;
+	private JButton btnSubmit;
+	private JButton btnDelete;
 	private int appointmentID;
 	private int patientID;
 	private ArrayList<TreatmentRecord> appointmentTreatments;
@@ -94,12 +97,7 @@ public class ManageTreatment extends JFrame {
 		this.patientID = appointment.getPatient().getPatientID();
 		this.appointmentID = appointment.getAppointmentID();
 		
-		try(Connection con = DBConnect.getConnection(false)){
-			this.allTreatments = Treatment.getAll(con);
-			this.appointmentTreatments = TreatmentRecord.getAll(con, appointmentID);
-		} catch (SQLException e){
-			DBConnect.printSQLError(e);
-		}
+		getData();
 		
 		// Treatment record list
 		JPanel treatmentRecordPanel = new JPanel(new BorderLayout());
@@ -108,6 +106,7 @@ public class ManageTreatment extends JFrame {
 		treatmentRecordList.setCellRenderer(new TreatmentRecordListRenderer());
 		treatmentRecordList.addListSelectionListener(new ListSelectionListener() {
         	public void valueChanged(ListSelectionEvent event) {
+        		btnDelete.setEnabled(true);
         		int selectedIndex = treatmentRecordList.getSelectedIndex();
         		if(selectedIndex != -1) {
         			selectedTreatmentRecord = treatmentRecordList.getSelectedValue();
@@ -136,27 +135,32 @@ public class ManageTreatment extends JFrame {
         costPane.add(costField);
         
         // Submit button
-        JPanel buttonPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JButton btnSubmit = new JButton("Submit");
+        buttonPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		btnSubmit = new JButton("Submit");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (updateDB(1))
+				if (updateDB(1)) {
+					getData();
+					updateTreatmentRecordList();
 					JOptionPane.showMessageDialog(new JFrame(), "Treatment Added");
+				}
 				else
 				    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in adding this treatment. Please try again.",
 				    		"Submission Error", JOptionPane.ERROR_MESSAGE);
-				dispose();
 			}
 		});
-		JButton btnDelete = new JButton("Delete");
+		btnDelete = new JButton("Delete");
+		btnDelete.setEnabled(false);
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					if (updateDB(-1))
-						JOptionPane.showMessageDialog(new JFrame(), "Treatment Deleted");
-					else
-					    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in deleting this treatment. Please try again.",
-					    		"Submission Error", JOptionPane.ERROR_MESSAGE);
-					dispose();
+				if (updateDB(-1)) {
+					getData();
+					updateTreatmentRecordList();
+					JOptionPane.showMessageDialog(new JFrame(), "Treatment Deleted");
+				}
+				else
+				    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in deleting this treatment. Please try again.",
+				    		"Submission Error", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		buttonPane.add(btnSubmit);
@@ -196,6 +200,15 @@ public class ManageTreatment extends JFrame {
 		
 		setVisible(true);
 		pack();
+	}
+	
+	private void getData() {
+		try(Connection con = DBConnect.getConnection(false)){
+			this.allTreatments = Treatment.getAll(con);
+			this.appointmentTreatments = TreatmentRecord.getAll(con, appointmentID);
+		} catch (SQLException e){
+			DBConnect.printSQLError(e);
+		}
 	}
 	
 	private void updateTreatmentFields() {
