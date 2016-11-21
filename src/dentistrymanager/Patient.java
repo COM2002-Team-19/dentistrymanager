@@ -208,7 +208,7 @@ public class Patient {
 								+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment acs ON acs.appointmentID = a.appointmentID "
 								+ "LEFT OUTER JOIN CourseOfTreatment ct ON ct.courseOfTreatment = acs.courseOfTreatment "
 								+ "WHERE a.finish = TRUE AND tr.outstandingCost > 0 AND p.patientID = '" + patientID + "' "
-								+ "AND (ct.complete IS NULL OR ct.complete = 0);";
+								+ "AND (ct.complete IS NULL OR ct.complete = TRUE);";
 			ResultSet res = stmt.executeQuery(sql);
 			DecimalFormat moneyFormat = new DecimalFormat("#0.00");
 			while(res.next())

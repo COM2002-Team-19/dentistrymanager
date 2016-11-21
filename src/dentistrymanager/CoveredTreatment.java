@@ -42,6 +42,22 @@ public class CoveredTreatment {
 		}
 	}
 	
+	public boolean updateCoveredTreatments(Connection connection, int appointmentID, int patientID) {
+		try(Statement stmt = connection.createStatement()) {
+			String sql = "UPDATE CoveredTreatment SET coveredTreatmentsLeft = coveredTreatmentsLeft - 1 "
+							+ "WHERE coveredTreatmentsLeft > 0 AND patientID = " + patientID + " "
+							+ "AND typeOfTreatment = (SELECT tt.typeOfTreatment FROM TreatmentRecord tr, Treatment t"
+							+ " WHERE tr.treatment = t.name AND tr.appointmentID = " + appointmentID + ");";
+			int numRowsUpdated = stmt.executeUpdate(sql);
+			connection.commit();
+			return numRowsUpdated == 1 ? true : false;
+		} catch (SQLException e) {
+			DBConnect.rollback(connection);
+			DBConnect.printSQLError(e);
+			return false;
+		}
+	}
+	
 	// Static methods
 	public static double getCoveredCost(Connection connection, int patientID, String typeOfTreatment) {
 		double costCovered = 0;

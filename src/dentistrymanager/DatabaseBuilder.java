@@ -200,16 +200,6 @@ public class DatabaseBuilder {
 	public static final String[][] PRESET_TYPES_TREATMENT_PER_PARTNER = {{"REPAIR", "DENTIST"}, {"CHECK-UP", "DENTIST"}, 
 																		 {"EMPTY-DENTIST", "DENTIST"},{"HYGIENE","HYGIENIST"},
 																		 {"EMPTY-HYGIENIST","HYGIENIST"}};
-	
-	/*
-	public static final String[][] PRESET_ADDRESSES = {{"52", "SE12 7LU", "Sunnyside Avenue", "Westshire", "London"},
-														{"2", "WS1 5FG", "London Road", "Essex", "Halfthorne"},
-														 {"3", "S10 3AQ", "Rosa Road", "South Yorkshire", "Sheffield"},
-														  {"12", "BR6 0AX", "Summit way", "Hebrides", "Bristol"},
-														   {"13", "H02 1PQ", "Church St", "Yorkshire", "Hull"},
-														    {"14", "LP2 4FG", "Longton way", "Middlesex", "Suddersbury"}};
-	*/
-	
 
 	public static final Patient[] PRESET_PATIENTS = {
 			new Patient("Mr.", "Bruno", "Mars", DateTimeUtilities.stringToDate("1981", "07", "07"), "08976579897", 
