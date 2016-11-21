@@ -209,9 +209,7 @@ public class DatabaseBuilder {
 														    {"14", "LP2 4FG", "Longton way", "Middlesex", "Suddersbury"}};
 	
 
-	public static final String[][] PRESET_PATIENTS = {{1, ""}};
-
-	public static final Patient[] PRESET_PATIENTS = {};
+	//public static final Patient[] PRESET_PATIENTS = {new Patient("Mr.", "Bruno", "Mars", "1981-07-07", "089765798")};
 	
 	// Private variables
 	private Connection connection;

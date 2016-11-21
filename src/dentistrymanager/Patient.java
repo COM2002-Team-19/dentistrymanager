@@ -178,7 +178,7 @@ public class Patient {
 	public boolean payAll(Connection connection) {
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "UPDATE TreatmentRecord SET coveredCost = outstandingCost WHERE appointmentID = "
-							+ "(SELECTED a.appointmentID FROM Appointment a "
+							+ "(SELECT a.appointmentID FROM Appointment a "
 							+ "JOIN AppointmentsPerPatient ap ON a.appointmentID = ap.appointmentID "
 							+ "LEFT OUTER JOIN AppointmentsPerCourseOfTreatment acs ON a.appointmentID = acs.appointmentID "
 							+ "LEFT OUTER JOIN CourseOfTreatment ct ON ct.courseOfTreatment = acs.courseOfTreatment "
