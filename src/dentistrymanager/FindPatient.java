@@ -32,6 +32,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 
 import java.sql.*;
+import java.text.DecimalFormat;
 
 @SuppressWarnings("serial")
 public class FindPatient extends JFrame {
@@ -451,7 +452,8 @@ public class FindPatient extends JFrame {
     	
 		setSubscribeButtonText();
  
-		owedField.setText(Double.toString(selectedPatient.getBalance()));
+		DecimalFormat twoDecimals = new DecimalFormat("#0.00");
+		owedField.setText(twoDecimals.format(selectedPatient.getBalance()));
 		receiptButton.setEnabled(true);
     	
     	addAppointmentButton.setEnabled(true);

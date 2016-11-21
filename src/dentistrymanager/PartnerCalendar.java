@@ -27,7 +27,7 @@ public class PartnerCalendar extends JFrame {
 	private ArrayList<Partner> partners;
 	private ArrayList<Appointment> nextPatients;
 	private Partner p;
-	private Appointment nextAppointment;
+	private Appointment presentAppointment;
 	private JList<Appointment> nextAppResultsList;
 	private JTextArea currentAppDisplay;
  
@@ -37,7 +37,7 @@ public class PartnerCalendar extends JFrame {
 			this.partners = Partner.getAll(connection);
 			this.p = partners.get(i);
 			this.nextPatients = p.getDaysAppointments(connection);
-			this.nextAppointment = p.getNextAppointment(connection);
+			this.presentAppointment = p.getNextAppointment(connection);
 		}
     	catch(SQLException e){
     		DBConnect.printSQLError(e);
@@ -54,6 +54,10 @@ public class PartnerCalendar extends JFrame {
 		currentAppDisplay = new JTextArea();
 		
 		updateValues();
+		nextAppResultsList = new JList<Appointment>();
+		updateAppResultList();
+		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
+		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
 			
 		JScrollPane scrollPaneCurrent = new JScrollPane(currentAppDisplay);
 		
@@ -65,31 +69,29 @@ public class PartnerCalendar extends JFrame {
 		
 		// Buttons at the bottom
 		currentButtons.setLayout(new GridLayout(1,0));
-		JButton manageTreatment = new JButton("Manage Treatments");
-		manageTreatment.setPreferredSize(new Dimension(100, 100));
-		manageTreatment.addActionListener(new ActionListener() {
+		JButton manageTreatmentButton = new JButton("Manage Treatments");
+		manageTreatmentButton.setPreferredSize(new Dimension(100, 100));
+		manageTreatmentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(nextAppointment != null)
-					new ManageTreatment(nextAppointment);
+				if(presentAppointment != null)
+					new ManageTreatment(presentAppointment);
 			}
 		});
 		
-		JButton finishCurrent = new JButton("Finish Appointment");
-		finishCurrent.setPreferredSize(new Dimension(100, 100));
-		finishCurrent.addActionListener(new ActionListener() {
+		JButton finishCurrentButton = new JButton("Finish Appointment");
+		finishCurrentButton.setPreferredSize(new Dimension(100, 100));
+		finishCurrentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try(Connection connection = DBConnect.getConnection(true)){
-					if(nextAppointment != null) {
-						nextAppointment.finish(connection);
-						System.out.println(nextAppointment.toString());
+					if(presentAppointment != null) {
+						presentAppointment.finish(connection);
 						// Get the cost of the appointment
-						double cost = nextAppointment.getTotalCost(connection);
-						nextAppointment.getPatient().updateBalance(connection, cost);
-						System.out.println(cost);
-						System.out.println("BUMP");
-						nextAppointment = p.getNextAppointment(connection);
-						updateAppResultList();
+						double cost = presentAppointment.getTotalCost(connection);
+						presentAppointment.getPatient().updateBalance(connection, cost);
+						presentAppointment = p.getNextAppointment(connection);
 						updateValues();
+						updateAppResultList();
+
 					}
 				}
 		    	catch(SQLException ex){
@@ -98,18 +100,19 @@ public class PartnerCalendar extends JFrame {
 				
 			}
 		});
+
+		JButton backButton = new JButton("Back");
+		backButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new SplashScreen();
+				dispose();
+			}
+		});
 		
-//		JButton btnBack = new JButton("Back");
-//		btnBack.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent evt) {
-//            	new SplashScreen();
-//            	dispose();
-//            }
-//        });
-//		
-//		currentButtons.add(btnBack);
-		currentButtons.add(manageTreatment);
-		currentButtons.add(finishCurrent);
+		currentButtons.add(backButton);
+		currentButtons.add(manageTreatmentButton);
+		currentButtons.add(finishCurrentButton);
+
 		currentAppointment.add(currentButtons, BorderLayout.SOUTH);
 		
 		// Next appointments on the right
@@ -118,10 +121,10 @@ public class PartnerCalendar extends JFrame {
 		JLabel nextAppTitle = new JLabel("Next Appointments:");
 		
 		// Insert JList
-		nextAppResultsList = new JList<Appointment>();
-		updateAppResultList();
-		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
-		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
+//		nextAppResultsList = new JList<Appointment>();
+//		updateAppResultList();
+//		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
+//		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
 
 		
 		JScrollPane scrollPaneNext = new JScrollPane(nextAppResults);
@@ -143,33 +146,34 @@ public class PartnerCalendar extends JFrame {
  	}
 	
 	private void updateValues(){
-		if (!this.nextPatients.isEmpty() ){
-			String newline = "\n";
-			String dateLabel = nextAppointment.getDate().toString();
-			String forenameLabel = nextAppointment.getPatient().getForename();
-			String surnameLabel = nextAppointment.getPatient().getSurname();
-			Time startTimeLabel = nextAppointment.getStartTime();
-			Time endTimeLabel = nextAppointment.getEndTime();
-			String typeOfTreatmentLabel = nextAppointment.getTypeOfTreatment();
+
+		if (presentAppointment != null ){
+			String dateLabel = presentAppointment.getDate().toString();
+			String forenameLabel = presentAppointment.getPatient().getForename();
+			String surnameLabel = presentAppointment.getPatient().getSurname();
+			Time startTimeLabel = presentAppointment.getStartTime();
+			Time endTimeLabel = presentAppointment.getEndTime();
+			String typeOfTreatmentLabel = presentAppointment.getTypeOfTreatment();
+
 			String courseOfTreatment = "False";
 			
-			if (nextAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
+			if (presentAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
 			
 			currentAppDisplay.setText("");
-			currentAppDisplay.append("Date : "+dateLabel+newline);
-			currentAppDisplay.append("First Name : "+forenameLabel+newline);
-			currentAppDisplay.append("Surname : "+surnameLabel+newline);
-			currentAppDisplay.append("Start time : "+startTimeLabel+newline);
-			currentAppDisplay.append("End time : "+endTimeLabel+newline);
-			currentAppDisplay.append("Course of Treatment : "+courseOfTreatment+newline);
-			currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+newline);
+			currentAppDisplay.append("Date : "+dateLabel+"\n");
+			currentAppDisplay.append("First Name : "+forenameLabel+"\n");
+			currentAppDisplay.append("Surname : "+surnameLabel+"\n");
+			currentAppDisplay.append("Start time : "+startTimeLabel+"\n");
+			currentAppDisplay.append("End time : "+endTimeLabel+"\n");
+			currentAppDisplay.append("Course of Treatment : "+courseOfTreatment+"\n");
+			currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+"\n");
 		}
 	}
 	
 	private void updateAppResultList() {
     	DefaultListModel<Appointment> model = new DefaultListModel<>();
-    	for(Appointment appointment: nextPatients)
-    		model.addElement(appointment);
+    	for(int i = 1; i<nextPatients.size();i++)
+    		model.addElement(nextPatients.get(i));
     	nextAppResultsList.setModel(model);
     }
  }

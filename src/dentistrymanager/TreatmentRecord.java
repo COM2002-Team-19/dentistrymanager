@@ -66,8 +66,7 @@ public class TreatmentRecord {
 	// Delete treatment record to database
 	public boolean delete(Connection connection) throws DeleteForeignKeyException {
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "DELETE FROM TreatmentRecord WHERE appointmentID = " + appointmentID 
-													+ " AND treatment = '" + treatment + "';";
+			String sql = "DELETE FROM TreatmentRecord WHERE treatmentRecordID = " + treatmentRecordID + ";"; 
 			stmt.executeUpdate(sql);
 			connection.commit();
 			return true;

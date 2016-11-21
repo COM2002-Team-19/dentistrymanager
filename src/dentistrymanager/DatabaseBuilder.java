@@ -208,7 +208,10 @@ public class DatabaseBuilder {
 														   {"13", "H02 1PQ", "Church St", "Yorkshire", "Hull"},
 														    {"14", "LP2 4FG", "Longton way", "Middlesex", "Suddersbury"}};
 	
+
 	public static final String[][] PRESET_PATIENTS = {{1, ""}};
+
+	public static final Patient[] PRESET_PATIENTS = {};
 	
 	// Private variables
 	private Connection connection;
