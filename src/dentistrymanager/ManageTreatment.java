@@ -42,12 +42,6 @@ public class ManageTreatment extends JFrame {
 	private int appointmentID;
 	private int patientID;
 	private ArrayList<TreatmentRecord> appointmentTreatments;
-	
-    public boolean formFilled() {
-    	if (treatmentField.getText().isEmpty())
-    		return false;
-    	return true;
-    }
     
     public boolean updateDB(int mode) {
 		boolean success = true;
@@ -73,7 +67,6 @@ public class ManageTreatment extends JFrame {
 			
 			if(mode==1){
 				TreatmentRecord rec = new TreatmentRecord(appointmentID,n,oc,cc);
-				System.out.println(rec.toString());
 				rec.add(connection);
 			}
 			if(mode==-1){
@@ -96,6 +89,8 @@ public class ManageTreatment extends JFrame {
     }
 
 	public ManageTreatment(Appointment appointment) {
+		this.setTitle("Manage Treatments");
+		
 		this.patientID = appointment.getPatient().getPatientID();
 		this.appointmentID = appointment.getAppointmentID();
 		
@@ -145,17 +140,12 @@ public class ManageTreatment extends JFrame {
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (formFilled()) {
-					if (updateDB(1))
-						JOptionPane.showMessageDialog(new JFrame(), "Treatment Added");
-					else
-					    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in adding this treatment. Please try again.",
-					    		"Submission Error", JOptionPane.ERROR_MESSAGE);
-					dispose();
-				}
+				if (updateDB(1))
+					JOptionPane.showMessageDialog(new JFrame(), "Treatment Added");
 				else
-				    JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Submission Error",
-				            JOptionPane.ERROR_MESSAGE);
+				    JOptionPane.showMessageDialog(new JFrame(), "There has been an error in adding this treatment. Please try again.",
+				    		"Submission Error", JOptionPane.ERROR_MESSAGE);
+				dispose();
 			}
 		});
 		JButton btnDelete = new JButton("Delete");
@@ -180,11 +170,11 @@ public class ManageTreatment extends JFrame {
     	treatmentCombo.setModel(model);
         treatmentCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectedTreatment = (Treatment)treatmentCombo.getSelectedItem();
-		        treatmentField.setText(selectedTreatment.getTypeOfTreatment());
-		        costField.setText(Double.toString(selectedTreatment.getCost()));
+				updateTreatmentFields();
 			}
 		});
+        
+		updateTreatmentFields();
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		mainPane = new JPanel();
@@ -206,6 +196,12 @@ public class ManageTreatment extends JFrame {
 		
 		setVisible(true);
 		pack();
+	}
+	
+	private void updateTreatmentFields() {
+		selectedTreatment = (Treatment)treatmentCombo.getSelectedItem();
+        treatmentField.setText(selectedTreatment.getTypeOfTreatment());
+        costField.setText(Double.toString(selectedTreatment.getCost()));
 	}
 	
     private void updateTreatmentRecordList() {
