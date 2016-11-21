@@ -64,7 +64,7 @@ public class CourseOfTreatment {
 	
 	// Static methods
 	public static CourseOfTreatment getCourseOfTreatment(Connection connection, int patientID) {
-		CourseOfTreatment courseOfTreatment = new CourseOfTreatment();
+		CourseOfTreatment courseOfTreatment = null;
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "SELECT * FROM CourseOfTreatment WHERE patientID = " + patientID + " AND  complete = FALSE ;";
 			
@@ -76,10 +76,14 @@ public class CourseOfTreatment {
 		} catch(SQLException e) {
 			DBConnect.printSQLError(e);
 		}
+		
+		if(courseOfTreatment == null)
+			courseOfTreatment = CourseOfTreatment.newCourseOfTreatment(connection, patientID);
+		
 		return courseOfTreatment;
 	}
 	
-	public static CourseOfTreatment newCourseOfTreatment(Connection connection, int patientID) {
+	private static CourseOfTreatment newCourseOfTreatment(Connection connection, int patientID) {
 		CourseOfTreatment courseOfTreatment = new CourseOfTreatment();
 		try(Statement stmt = connection.createStatement()) {
 			connection.setAutoCommit(false);
