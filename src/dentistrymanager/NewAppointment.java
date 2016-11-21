@@ -284,7 +284,6 @@ public class NewAppointment extends JFrame {
 		}
 		else {
 			JOptionPane.showMessageDialog(new JFrame(),"This slot is unavailable.","Submission Error",JOptionPane.ERROR_MESSAGE);
-			new NewAppointment();
 		}
 		return success;
     }

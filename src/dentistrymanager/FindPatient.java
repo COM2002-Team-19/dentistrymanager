@@ -180,7 +180,7 @@ public class FindPatient extends JFrame {
         	}
         });
         
-        findAppointment = new JButton("Find Available Appointment Slots");
+        findAppointment = new JButton("Find Appointments");
         findAppointment.setEnabled(false);
         findAppointment.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent evt) {

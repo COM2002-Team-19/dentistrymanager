@@ -188,7 +188,8 @@ public class DatabaseBuilder {
 	public static final TypeOfTreatment[] PRESET_TYPES_OF_TREATMENT = {new TypeOfTreatment("REPAIR", 60),
 																		new TypeOfTreatment("HYGIENE", 20),
 																		new TypeOfTreatment("CHECK-UP", 20),
-																		new TypeOfTreatment("EMPTY", 60)};
+																		new TypeOfTreatment("EMPTY-DENTIST", 60),
+																		new TypeOfTreatment("EMPTY-HYGIENIST", 60)};
 	
 	public static final Treatment[] PRESET_TREATMENTS = {new Treatment("HYGIENE", 45, "HYGIENE"),
 														 new Treatment("CHECK-UP", 45, "CHECK-UP"),
@@ -196,9 +197,9 @@ public class DatabaseBuilder {
 														 new Treatment("WHITE COMPOSITE RESIN FILLING", 150, "REPAIR"),
 														 new Treatment("GOLD CROWN FITTING", 500, "REPAIR")};
 	
-	public static final String[][] PRESET_TYPES_TREATMENT_PER_PATIENT = {{"REPAIR", "DENTIST"}, {"CHECK-UP", "DENTIST"}, 
-																		 {"EMPTY", "DENTIST"},{"HYGIENE","HYGIENIST"},
-																		 {"EMPTY","HYGIENIST"}};
+	public static final String[][] PRESET_TYPES_TREATMENT_PER_PARTNER = {{"REPAIR", "DENTIST"}, {"CHECK-UP", "DENTIST"}, 
+																		 {"EMPTY-DENTIST", "DENTIST"},{"HYGIENE","HYGIENIST"},
+																		 {"EMPTY-HYGIENIST","HYGIENIST"}};
 	
 	// Private variables
 	private Connection connection;
@@ -309,7 +310,7 @@ public class DatabaseBuilder {
 			connection.commit();		
 			
 			// Creates types of treatment per patient
-			for(String[] record: PRESET_TYPES_TREATMENT_PER_PATIENT) {
+			for(String[] record: PRESET_TYPES_TREATMENT_PER_PARTNER) {
 				insertTypeTreatPerPartner.setString(1, record[0]);
 				insertTypeTreatPerPartner.setString(2, record[1]);
 				insertTypeTreatPerPartner.addBatch();

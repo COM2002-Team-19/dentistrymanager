@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-
 @SuppressWarnings("serial")
 public class AppointmentListRenderer extends JLabel implements ListCellRenderer<Appointment> {
 	
@@ -21,7 +20,7 @@ public class AppointmentListRenderer extends JLabel implements ListCellRenderer<
 		
 		Font font = new Font("Courier", Font.BOLD,14);
 		setFont(font);
-		setText(appointment.getStartTime()+" - "+appointment.getEndTime()+ " | Date : " +appointment.getDate() + " | Patient Name : " + appointment.getPatient().getForename() + " " + appointment.getPatient().getSurname());
+		setText(appointment.getDate() +" | "+ appointment.getStartTime()+" - "+appointment.getEndTime()+ " | " + appointment.getPatient().getForename() + " " + appointment.getPatient().getSurname());
         Color background;
         Color foreground;
 
@@ -49,5 +48,4 @@ public class AppointmentListRenderer extends JLabel implements ListCellRenderer<
         setForeground(foreground);
 		return this;
 	}
-
 }
