@@ -32,6 +32,7 @@ public class PartnerCalendar extends JFrame {
 	private JTextArea currentAppDisplay;
  
 	public PartnerCalendar(int i) {
+		
 		try(Connection connection = DBConnect.getConnection(false)){
 			this.partners = Partner.getAll(connection);
 			this.p = partners.get(i);
@@ -51,6 +52,8 @@ public class PartnerCalendar extends JFrame {
 		
 		// Text area
 		currentAppDisplay = new JTextArea();
+		
+		updateValues();
 			
 		JScrollPane scrollPaneCurrent = new JScrollPane(currentAppDisplay);
 		
@@ -137,7 +140,7 @@ public class PartnerCalendar extends JFrame {
 			
 			if (nextAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
 			
-//			currentAppDisplay.setText("");
+			currentAppDisplay.setText("");
 			currentAppDisplay.append("Date : "+dateLabel+newline);
 			currentAppDisplay.append("First Name : "+forenameLabel+newline);
 			currentAppDisplay.append("Surname : "+surnameLabel+newline);
