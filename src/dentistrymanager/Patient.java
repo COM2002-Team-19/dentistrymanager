@@ -44,7 +44,6 @@ public class Patient {
 		this(0, "", "Not", "Applicable", null, "", 0, null, null);
 	}
 	
-
 	// Accessors
 	public int getPatientID() { return patientID; }
 	public Title getTitle() { return title;	}
@@ -186,7 +185,7 @@ public class Patient {
 							+ "WHERE a.finish = TRUE AND (ct.complete IS NULL OR ct.complete = TRUE) "
 							+ "AND ap.patientID = " + patientID + ");";
 			stmt.addBatch(sql);
-			sql = "UPDATE Patient SET balance = 0 WHERE PatientID = " + patientID + ";";
+			sql = "UPDATE Patient SET balance = 0 WHERE patientID = " + patientID + ";";
 			stmt.addBatch(sql);
 			stmt.executeBatch();
 			connection.commit();
@@ -246,7 +245,6 @@ public class Patient {
 											res.getString("city"), res.getString("postCode")),	subscribedPlan
 							));
 			}
-
 		}
 		catch(SQLException e){
 			DBConnect.printSQLError(e);
@@ -260,7 +258,7 @@ public class Patient {
 			String sql = "SELECT p.*, a.street, a.district, a.city, pp.plan, pp.startDate, pp.endDate FROM Patient p "
 							+ "JOIN Address a ON p.houseNumber = a.houseNumber AND p.postCode = a.postCode "
 							+ "LEFT OUTER JOIN PatientPlan pp ON pp.patientID = p.patientID "
-							+ "WHERE p.patientID = " + patientID +";";
+							+ "WHERE p.patientID = " + patientID + ";";
 			ResultSet res = stmt.executeQuery(sql);
 			if(res.first()){
 				PlanSubscription subscribedPlan = null;

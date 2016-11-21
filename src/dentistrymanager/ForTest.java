@@ -122,11 +122,11 @@ public class ForTest {
 			
 			
 			//System.out.println(CoveredTreatment.getCoveredCost(con, 1, "CHECK-UP"));
-			/*
+			
 			Partner partner = new Partner("DENTIST");
 			Appointment ap = partner.getNextAppointment(con);
 			System.out.println(ap);
-			*/
+			
 			//System.out.println(CourseOfTreatment.getCourseOfTreatment(con, 1).getCourseOfTreatment());
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
