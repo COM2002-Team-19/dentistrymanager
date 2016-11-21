@@ -2,6 +2,7 @@ package dentistrymanager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -17,11 +18,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import java.util.ArrayList;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import java.util.ArrayList;
+
+@SuppressWarnings("serial")
 public class SecretaryCalendar extends JFrame {
 
     /**
@@ -35,7 +37,6 @@ public class SecretaryCalendar extends JFrame {
     /**
      * This method is called from within the constructor to initialise the form.
      */
-    @SuppressWarnings("unchecked")
     // initialise components
     private void initComponents() {
 

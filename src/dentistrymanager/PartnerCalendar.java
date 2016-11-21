@@ -26,6 +26,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+@SuppressWarnings("serial")
 public class PartnerCalendar extends JFrame {
 
 	private JPanel contentPane;
@@ -49,6 +50,7 @@ public class PartnerCalendar extends JFrame {
 		// Current appointments on the left
 		JPanel currentAppointment = new JPanel();
 		currentAppointment.setLayout(new BorderLayout());
+		
 		// Title at the top
 		JLabel currentAppTitle = new JLabel("Current Appointment:");
 		
@@ -63,7 +65,9 @@ public class PartnerCalendar extends JFrame {
 			Time endTimeLabel = nextAppointment.getEndTime();
 			String typeOfTreatmentLabel = nextAppointment.getTypeOfTreatment();
 			String courseOfTreatment = "False";
+			
 			if (nextAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
+			
 			currentAppDisplay.append("Date : "+dateLabel+newline);
 			currentAppDisplay.append("First Name : "+forenameLabel+newline);
 			currentAppDisplay.append("Surname : "+surnameLabel+newline);
@@ -86,7 +90,8 @@ public class PartnerCalendar extends JFrame {
 		manageTreatment.setPreferredSize(new Dimension(100, 100));
 		manageTreatment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ManageTreatment(nextAppointment);
+				if(nextAppointment != null)
+					new ManageTreatment(nextAppointment);
 			}
 		});
 		
@@ -96,7 +101,8 @@ public class PartnerCalendar extends JFrame {
 		finishCurrent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try(Connection connection = DBConnect.getConnection(false)){
-					nextAppointment.finish(connection);
+					if(nextAppointment != null)
+						nextAppointment.finish(connection);
 				}
 		    	catch(SQLException ex){
 		    		DBConnect.printSQLError(ex);
@@ -117,7 +123,6 @@ public class PartnerCalendar extends JFrame {
 		// Insert JList
 		nextAppResultsList = new JList<Appointment>();
 		updateAppResulttList();
-		//nextAppResultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
 		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
 

@@ -187,7 +187,8 @@ public class DatabaseBuilder {
 	
 	public static final TypeOfTreatment[] PRESET_TYPES_OF_TREATMENT = {new TypeOfTreatment("REPAIR", 60),
 																		new TypeOfTreatment("HYGIENE", 20),
-																		new TypeOfTreatment("CHECK-UP", 20)};
+																		new TypeOfTreatment("CHECK-UP", 20),
+																		new TypeOfTreatment("EMPTY", 60)};
 	
 	public static final Treatment[] PRESET_TREATMENTS = {new Treatment("HYGIENE", 45, "HYGIENE"),
 														 new Treatment("CHECK-UP", 45, "CHECK-UP"),
@@ -196,7 +197,8 @@ public class DatabaseBuilder {
 														 new Treatment("GOLD CROWN FITTING", 500, "REPAIR")};
 	
 	public static final String[][] PRESET_TYPES_TREATMENT_PER_PATIENT = {{"REPAIR", "DENTIST"}, {"CHECK-UP", "DENTIST"}, 
-																		{"HYGIENE","HYGIENIST"}};
+																		 {"EMPTY", "DENTIST"},{"HYGIENE","HYGIENIST"},
+																		 {"EMPTY","HYGIENIST"}};
 	
 	// Private variables
 	private Connection connection;
