@@ -119,14 +119,7 @@ public class PartnerCalendar extends JFrame {
 		JPanel nextAppointment = new JPanel();
 		nextAppointment.setLayout(new BorderLayout());
 		JLabel nextAppTitle = new JLabel("Next Appointments:");
-		
-		// Insert JList
-//		nextAppResultsList = new JList<Appointment>();
-//		updateAppResultList();
-//		nextAppResultsList.setCellRenderer(new AppointmentListRenderer());
-//		JScrollPane nextAppResults = new JScrollPane(nextAppResultsList);
-
-		
+				
 		JScrollPane scrollPaneNext = new JScrollPane(nextAppResults);
 		nextAppointment.add(nextAppTitle, BorderLayout.NORTH);
 		nextAppointment.add(scrollPaneNext, BorderLayout.CENTER);
@@ -156,7 +149,6 @@ public class PartnerCalendar extends JFrame {
 			String typeOfTreatmentLabel = presentAppointment.getTypeOfTreatment();
 
 			String courseOfTreatment = "False";
-			
 			if (presentAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
 			
 			currentAppDisplay.setText("");
@@ -172,7 +164,9 @@ public class PartnerCalendar extends JFrame {
 	
 	private void updateAppResultList() {
     	DefaultListModel<Appointment> model = new DefaultListModel<>();
-    	for(int i = 1; i<nextPatients.size();i++)
+    	if (!nextPatients.isEmpty())
+    		nextPatients.remove(0);
+    	for(int i=0; i<nextPatients.size();i++)
     		model.addElement(nextPatients.get(i));
     	nextAppResultsList.setModel(model);
     }
