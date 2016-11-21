@@ -75,8 +75,7 @@ public class SecretaryCalendar extends JFrame {
         dentistAddAppButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new FindPatient();
-    			getData();
-				updateDentistList();
+    			dispose();
 				// redirects to FindPatient where they can choose patient the appointment is for
 			}
 		});
@@ -98,6 +97,7 @@ public class SecretaryCalendar extends JFrame {
         dentistUnavailableButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new NewAppointment();
+				dispose();
 			}
 		});
 
@@ -105,8 +105,7 @@ public class SecretaryCalendar extends JFrame {
         hygienistAddAppButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new FindPatient();
-				updateHygienistList();
-				getData();
+				dispose();
 				// redirects to FindPatient where they can choose patient the appointment is for
 			}
 		});
@@ -128,6 +127,7 @@ public class SecretaryCalendar extends JFrame {
         hygienistUnavailableButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new NewAppointment();
+				dispose();
 			}
 		});
 

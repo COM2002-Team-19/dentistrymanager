@@ -172,6 +172,7 @@ public class NewAppointment extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (updateDB()) {
 					JOptionPane.showMessageDialog(new JFrame(), "Appointment Added");
+					new SecretaryCalendar();
 					dispose();
 				}
 				else

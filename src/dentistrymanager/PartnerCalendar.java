@@ -81,6 +81,11 @@ public class PartnerCalendar extends JFrame {
 				try(Connection connection = DBConnect.getConnection(true)){
 					if(nextAppointment != null) {
 						nextAppointment.finish(connection);
+						
+						// Get the cost of the appointment
+						double cost = nextAppointment.getTotalCost(connection);
+						nextAppointment.getPatient();
+						
 						nextAppointment = p.getNextAppointment(connection);
 						updateAppResultList();
 						updateValues();
@@ -93,6 +98,15 @@ public class PartnerCalendar extends JFrame {
 			}
 		});
 		
+//		JButton btnBack = new JButton("Back");
+//		btnBack.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent evt) {
+//            	new SplashScreen();
+//            	dispose();
+//            }
+//        });
+//		
+//		currentButtons.add(btnBack);
 		currentButtons.add(manageTreatment);
 		currentButtons.add(finishCurrent);
 		currentAppointment.add(currentButtons, BorderLayout.SOUTH);
@@ -128,7 +142,7 @@ public class PartnerCalendar extends JFrame {
  	}
 	
 	private void updateValues(){
-//		if (!this.nextPatients.isEmpty() ){
+		if (!this.nextPatients.isEmpty() ){
 			String newline = "\n";
 			String dateLabel = nextAppointment.getDate().toString();
 			String forenameLabel = nextAppointment.getPatient().getForename();
@@ -148,7 +162,7 @@ public class PartnerCalendar extends JFrame {
 			currentAppDisplay.append("End time : "+endTimeLabel+newline);
 			currentAppDisplay.append("Course of Treatment : "+courseOfTreatment+newline);
 			currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+newline);
-//		}
+		}
 	}
 	
 	private void updateAppResultList() {
