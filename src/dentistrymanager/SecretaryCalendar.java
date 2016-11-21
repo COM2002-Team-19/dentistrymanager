@@ -75,8 +75,8 @@ public class SecretaryCalendar extends JFrame {
         dentistAddAppButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new FindPatient();
-				updateDentistList();
     			getData();
+				updateDentistList();
 				// redirects to FindPatient where they can choose patient the appointment is for
 			}
 		});

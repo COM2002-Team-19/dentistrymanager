@@ -125,7 +125,7 @@ public class PartnerCalendar extends JFrame {
  	}
 	
 	private void updateValues(){
-		if (!this.nextPatients.isEmpty() ){
+//		if (!this.nextPatients.isEmpty() ){
 			String newline = "\n";
 			String dateLabel = nextAppointment.getDate().toString();
 			String forenameLabel = nextAppointment.getPatient().getForename();
@@ -137,7 +137,7 @@ public class PartnerCalendar extends JFrame {
 			
 			if (nextAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
 			
-			currentAppDisplay.setText("");
+//			currentAppDisplay.setText("");
 			currentAppDisplay.append("Date : "+dateLabel+newline);
 			currentAppDisplay.append("First Name : "+forenameLabel+newline);
 			currentAppDisplay.append("Surname : "+surnameLabel+newline);
@@ -145,7 +145,7 @@ public class PartnerCalendar extends JFrame {
 			currentAppDisplay.append("End time : "+endTimeLabel+newline);
 			currentAppDisplay.append("Course of Treatment : "+courseOfTreatment+newline);
 			currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+newline);
-		}
+//		}
 	}
 	
 	private void updateAppResultList() {
