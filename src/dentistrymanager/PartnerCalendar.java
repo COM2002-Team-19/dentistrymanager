@@ -53,29 +53,7 @@ public class PartnerCalendar extends JFrame {
 		
 		// Text area
 		currentAppDisplay = new JTextArea();
-		if (!this.nextPatients.isEmpty() ){
-			/*
-			String newline = "\n";
-			String dateLabel = nextAppointment.getDate().toString();
-			String forenameLabel = nextAppointment.getPatient().getForename();
-			String surnameLabel = nextAppointment.getPatient().getSurname();
-			Time startTimeLabel = nextAppointment.getStartTime();
-			Time endTimeLabel = nextAppointment.getEndTime();
-			String typeOfTreatmentLabel = nextAppointment.getTypeOfTreatment();
-			String courseOfTreatment = "False";
 			
-			if (nextAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
-			
-			currentAppDisplay.append("Date : "+dateLabel+newline);
-			currentAppDisplay.append("First Name : "+forenameLabel+newline);
-			currentAppDisplay.append("Surname : "+surnameLabel+newline);
-			currentAppDisplay.append("Start time : "+startTimeLabel+newline);
-			currentAppDisplay.append("End time : "+endTimeLabel+newline);
-			currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+newline);
-			currentAppDisplay.append("Course of treatment : "+courseOfTreatment+newline);
-			*/
-			updateValues();
-		}		
 		JScrollPane scrollPaneCurrent = new JScrollPane(currentAppDisplay);
 		
 		//Adding to display
@@ -105,7 +83,6 @@ public class PartnerCalendar extends JFrame {
 						nextAppointment = p.getNextAppointment(connection);
 						updateAppResultList();
 						updateValues();
-						updateAppResultList();
 					}
 				}
 		    	catch(SQLException ex){
@@ -150,24 +127,27 @@ public class PartnerCalendar extends JFrame {
  	}
 	
 	private void updateValues(){
-		String newline = "\n";
-		String dateLabel = nextAppointment.getDate().toString();
-		String forenameLabel = nextAppointment.getPatient().getForename();
-		String surnameLabel = nextAppointment.getPatient().getSurname();
-		Time startTimeLabel = nextAppointment.getStartTime();
-		Time endTimeLabel = nextAppointment.getEndTime();
-		String typeOfTreatmentLabel = nextAppointment.getTypeOfTreatment();
-		String courseOfTreatment = "False";
-		
-		if (nextAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
-		
-		currentAppDisplay.setText("");
-		currentAppDisplay.append("Date : "+dateLabel+newline);
-		currentAppDisplay.append("First Name : "+forenameLabel+newline);
-		currentAppDisplay.append("Surname : "+surnameLabel+newline);
-		currentAppDisplay.append("Start time : "+startTimeLabel+newline);
-		currentAppDisplay.append("End time : "+endTimeLabel+newline);
-		currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+newline);
+		if (!this.nextPatients.isEmpty() ){
+			String newline = "\n";
+			String dateLabel = nextAppointment.getDate().toString();
+			String forenameLabel = nextAppointment.getPatient().getForename();
+			String surnameLabel = nextAppointment.getPatient().getSurname();
+			Time startTimeLabel = nextAppointment.getStartTime();
+			Time endTimeLabel = nextAppointment.getEndTime();
+			String typeOfTreatmentLabel = nextAppointment.getTypeOfTreatment();
+			String courseOfTreatment = "False";
+			
+			if (nextAppointment.getCourseOfTreatment()>0){courseOfTreatment = "True";}
+			
+			currentAppDisplay.setText("");
+			currentAppDisplay.append("Date : "+dateLabel+newline);
+			currentAppDisplay.append("First Name : "+forenameLabel+newline);
+			currentAppDisplay.append("Surname : "+surnameLabel+newline);
+			currentAppDisplay.append("Start time : "+startTimeLabel+newline);
+			currentAppDisplay.append("End time : "+endTimeLabel+newline);
+			currentAppDisplay.append("Course of Treatment : "+courseOfTreatment+newline);
+			currentAppDisplay.append("Type of treatment : "+typeOfTreatmentLabel+newline);
+		}
 	}
 	
 	private void updateAppResultList() {
