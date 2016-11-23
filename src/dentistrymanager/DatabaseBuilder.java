@@ -203,13 +203,13 @@ public class DatabaseBuilder {
 
 	public static final Patient[] PRESET_PATIENTS = {
 			new Patient("Mr.", "Bruno", "Mars", DateTimeUtilities.stringToDate("1981", "07", "07"), "08976579897", 
-					new Address(52, "SE12 7LU", "Sunnyside Avenue", "Westshire", "London")),
+					new Address(52, "Sunnyside Avenue", "London", "Westshire", "SE12 7LU")),
 			new Patient("Dr.", "Matias", "Orr", DateTimeUtilities.stringToDate("1961", "04", "01"), "07934166620", 
-					new Address(2, "WS1 5FG", "London Road", "Essex", "Halfthorne")),
+					new Address(2,  "London Road", "Halfthorne", "Essex", "WS1 5FG")),
 			new Patient("Mr.", "Aysha", "Bamidele", DateTimeUtilities.stringToDate("1988", "06", "08"), "07451885641", 
-					new Address(3, "S10 3AQ", "Rosa Road", "South Yorkshire", "Sheffield")),
+					new Address(3, "Rosa Road", "Sheffield", "South Yorkshire", "S10 3AQ" )),
 			new Patient("Miss", "Peggy", "Malone", DateTimeUtilities.stringToDate("1999", "01", "06"), "07083421637", 
-					new Address(52, "SE12 7LU", "Sunnyside Avenue", "Westshire", "London")),
+					new Address(52, "Sunnyside Avenue", "London", "Westshire",  "SE12 7LU")),
 	};
 	
 	// Private variables

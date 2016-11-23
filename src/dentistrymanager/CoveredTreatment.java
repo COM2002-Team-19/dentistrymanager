@@ -42,11 +42,12 @@ public class CoveredTreatment {
 		}
 	}
 	
-	public boolean updateCoveredTreatments(Connection connection, int appointmentID, int patientID) {
+	public static boolean updateCoveredTreatments(Connection connection, int appointmentID, int patientID) {
 		try(Statement stmt = connection.createStatement()) {
+			connection.setAutoCommit(false);
 			String sql = "UPDATE CoveredTreatment SET coveredTreatmentsLeft = coveredTreatmentsLeft - 1 "
 							+ "WHERE coveredTreatmentsLeft > 0 AND patientID = " + patientID + " "
-							+ "AND typeOfTreatment = (SELECT tt.typeOfTreatment FROM TreatmentRecord tr, Treatment t"
+							+ "AND typeOfTreatment IN (SELECT t.typeOfTreatment FROM TreatmentRecord tr, Treatment t"
 							+ " WHERE tr.treatment = t.name AND tr.appointmentID = " + appointmentID + ");";
 			int numRowsUpdated = stmt.executeUpdate(sql);
 			connection.commit();
@@ -59,17 +60,20 @@ public class CoveredTreatment {
 	}
 	
 	// Static methods
-	public static double getCoveredCost(Connection connection, int patientID, String typeOfTreatment) {
+	public static double getCoveredCost(Connection connection, int patientID, String treatment) {
 		double costCovered = 0;
 		try(Statement stmt = connection.createStatement()) {
 			String sql = "SELECT c.costCovered "
-						+ "FROM Patient p, PatientPlan pp, Coverage c, CoveredTreatment ct "
+						+ "FROM Patient p, PatientPlan pp, Coverage c, CoveredTreatment ct, Treatment t "
 						+ "WHERE ct.patientID = p.patientID "
 						+ "AND pp.patientID = p.patientID "
+						+ "AND c.typeOfTreatment = t.typeOfTreatment "
 						+ "AND c.plan = pp.plan "
+						+ "AND t.typeOfTreatment = ct.typeOfTreatment "
 						+ "AND p.patientID = '" + patientID + "' "
-						+ "AND ct.typeOfTreatment = '" + typeOfTreatment + "' "
+						+ "AND t.name = '" + treatment + "' "
 						+ "AND ct.coveredTreatmentsLeft > 0 ;";
+			System.out.println(sql);
 			ResultSet res = stmt.executeQuery(sql);
 			if(res.first())
 				costCovered = (double)DBUtilities.nullToZero(res.getString("costCovered"));

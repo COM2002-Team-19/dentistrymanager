@@ -85,9 +85,12 @@ public class PartnerCalendar extends JFrame {
 				try(Connection connection = DBConnect.getConnection(true)){
 					if(presentAppointment != null) {
 						presentAppointment.finish(connection);
+						
 						// Get the cost of the appointment
 						double cost = presentAppointment.getTotalCost(connection);
 						presentAppointment.getPatient().updateBalance(connection, cost);
+						CoveredTreatment.updateCoveredTreatments(connection, presentAppointment.getAppointmentID(), 
+																	presentAppointment.getPatient().getPatientID());
 						presentAppointment = p.getNextAppointment(connection);
 						updateValues();
 						updateAppResultList();

@@ -182,11 +182,22 @@ public class Appointment {
 	// Check availability
 	public boolean checkAvailability(Connection connection) {
 		try(Statement stmt = connection.createStatement()) {
-			String sql = "SELECT * FROM Appointment WHERE partner = '" + partner + "' AND date = '" + date 
+			String sql = "";
+			if(patient == null)
+				sql = "SELECT * FROM Appointment WHERE partner = '" + partner + "' AND date = '" + date 
 							+ "' AND ((startTime <= '" + startTime + "' AND endTime >= '" + endTime + "') "
-								+ " OR (startTime <= '" + startTime + "' AND endTime >= '" + startTime + "') "
-								+ " OR (startTime <= '" + endTime + "' AND endTime >= '" + endTime + "'))"
+								+ " OR (startTime <= '" + startTime + "' AND endTime > '" + startTime + "') "
+								+ " OR (startTime < '" + endTime + "' AND endTime >= '" + endTime + "'))"
 								+ " AND finish = FALSE;";
+			else 
+				sql = "SELECT * FROM Appointment a, AppointmentsPerPatient ap "
+						+ " WHERE a.appointmentID = ap.appointmentID "
+						+ " AND date = '" + date +"' "
+						+ " AND ap.patientID = " + patient.getPatientID()
+						+ " AND ((startTime <= '" + startTime + "' AND endTime >= '" + endTime + "') "
+						+ " OR (startTime <= '" + startTime + "' AND endTime > '" + startTime + "') "
+						+ " OR (startTime < '" + endTime + "' AND endTime >= '" + endTime + "'))"
+						+ " AND finish = FALSE;";
 			ResultSet res = stmt.executeQuery(sql);
 			int numConflicts = 0;
 			while(res.next())
