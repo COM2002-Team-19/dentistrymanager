@@ -174,14 +174,14 @@ public class DatabaseBuilder {
 	
 	public static final Coverage[] PRESET_PLAN_COVERAGE = {new Coverage("NHS FREE PLAN", "CHECK-UP", 2, 45),
 															new Coverage("NHS FREE PLAN", "HYGIENE", 2, 45),
-															new Coverage("NHS FREE PLAN", "REPAIR", 6, 500),
+															new Coverage("NHS FREE PLAN", "REPAIR", 6, 70),
 															new Coverage("MAINTENANCE PLAN", "CHECK-UP", 2, 45),
 															new Coverage("MAINTENANCE PLAN", "HYGIENE", 2, 45),
 															new Coverage("ORAL HEALTHPLAN", "CHECK-UP", 2, 45),
 															new Coverage("ORAL HEALTHPLAN", "HYGIENE", 4, 45),
 															new Coverage("DENTAL REPAIR PLAN", "CHECK-UP", 2, 45),
 															new Coverage("DENTAL REPAIR PLAN", "HYGIENE", 2, 45),
-															new Coverage("DENTAL REPAIR PLAN", "REPAIR", 2, 500)};
+															new Coverage("DENTAL REPAIR PLAN", "REPAIR", 2, 70)};
 	
 	
 	

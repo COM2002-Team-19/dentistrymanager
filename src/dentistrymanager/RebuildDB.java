@@ -12,10 +12,8 @@ public class RebuildDB {
 			
 			System.out.println(builder.checkIfAllTablesExist());
 			
-			if(!builder.checkIfAllTablesExist()) {
-				builder.resetTables();
-				builder.fillWithDefaultValues();
-			}
+			builder.resetTables();
+			builder.fillWithDefaultValues();
 		} catch (SQLException e) {
 			DBConnect.printSQLError(e);
 		} 
